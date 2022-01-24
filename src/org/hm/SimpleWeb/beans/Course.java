@@ -1,0 +1,53 @@
+package org.hm.SimpleWeb.beans;
+
+import java.util.Date;
+
+public class Course {
+	private String idCourse;
+	private String idTeacher;
+	private String idSubject;
+	private Date fromDate;
+	private Date toDate; 
+	public Course() {
+		
+	}
+	public Course(String idCourse,String idTeacher,String idSubject,
+			Date fromDate, Date toDate ) {
+		this.idCourse = idCourse;
+		this.idTeacher = idTeacher;
+		this.idSubject = idSubject;
+		this.fromDate = fromDate;
+		this.toDate = toDate;
+	}
+	public String getIdCourse() {
+		return idCourse;
+	}
+	public void setIdCourse(String id) {
+		idCourse = id;
+	}
+	public String getIdTeacher() {
+		return idTeacher;
+	}
+	public void setIdTeacher(String id) {
+		idTeacher = id;
+	}
+	public String getIdSubject() {
+		return idSubject;
+	}
+	public void setIdSubject(String id) {
+		idSubject = id;
+	}
+	public Date getFromDate() {
+		return fromDate;
+	}
+	public void setFromDate(Date date) {
+		fromDate = date;
+	}
+	public Date getToDate() {
+		return toDate;
+	}
+	public void setToDate(Date date) {
+		toDate = date;
+	}
+
+}

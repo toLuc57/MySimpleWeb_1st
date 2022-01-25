@@ -40,6 +40,7 @@ private static final String table ="tketqua";
 	public static LearningOutcomes find(String findRowById) 
 			throws SQLException {
 		Connection conn = null;
+		LearningOutcomes mh = null;
 		try {
 			conn = MySQLConnUtils.getMySQLConUtils();
 			String sql = "select " + idStudent + ", " + idCourse + ", " 
@@ -51,12 +52,11 @@ private static final String table ="tketqua";
 			
 			ResultSet rs = pstm.executeQuery();
 			if(rs.next()) {
-				LearningOutcomes mh = new LearningOutcomes();
+				mh = new LearningOutcomes();
 				mh.setIdStudent(rs.getString(idStudent));
 				mh.setIdCourse(rs.getString(idCourse));
 				mh.setNumberOfTest(rs.getString(numberOfTests));
 				mh.setPoint(rs.getDouble(point));
-				return mh;
 			}
 		} catch (ClassNotFoundException | SQLException e) {
 			MySQLConnUtils.rollbackQuietly(conn);
@@ -65,7 +65,7 @@ private static final String table ="tketqua";
 		finally {
 			MySQLConnUtils.closeQuietly(conn);
 		}
-		return null;
+		return mh;
 	}
 	
 	public static void insert(LearningOutcomes insertRow) 

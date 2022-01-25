@@ -39,6 +39,7 @@ public class SubjectDBUtils {
 	public static Subject find(String findRowById) 
 			throws SQLException {
 		Connection conn = null;
+		Subject mh = null;
 		try {
 			conn = MySQLConnUtils.getMySQLConUtils();
 			String sql = "select " + id + ", " + name + ", " 
@@ -50,12 +51,11 @@ public class SubjectDBUtils {
 			
 			ResultSet rs = pstm.executeQuery();
 			if(rs.next()) {
-				Subject mh = new Subject();
+				mh = new Subject();
 				mh.setId(rs.getString(id));
 				mh.setName(rs.getString(name));
 				mh.setNumberOfTheoryLesson(rs.getInt(theoryLesson));
 				mh.setNumberOfPracticeLesson(rs.getInt(practiceLesson));
-				return mh;
 			}
 		}
 		catch(ClassNotFoundException | SQLException e ) {
@@ -65,7 +65,7 @@ public class SubjectDBUtils {
 		finally {
 			MySQLConnUtils.closeQuietly(conn); 
 		}
-		return null;
+		return mh;
 	}
 	public static void insert(Subject insertRow) 
 			throws SQLException {

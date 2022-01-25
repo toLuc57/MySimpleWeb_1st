@@ -24,7 +24,7 @@ import org.hm.SimpleWeb.beans.UserAccount;
 			pstm.setString(2, password1);
 			ResultSet rs = pstm.executeQuery();
 
-			if (rs.next()) {
+			while (rs.next()) {
 				boolean isStudent = rs.getBoolean("isStudent");
 				UserAccount user = new UserAccount();
 				user.setUserName(userName1);

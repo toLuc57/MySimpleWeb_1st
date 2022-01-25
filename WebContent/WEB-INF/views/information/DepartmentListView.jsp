@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Teacher List</title>
+<title>DepartmentList</title>
 </head>
 <body>
 <jsp:include page="..//_header.jsp"></jsp:include>
@@ -34,10 +34,10 @@
 			   <td><%= i.getAddress()%></td>
 			   <td><%= i.getTelephone()%></td>
 			   <td>
-		          <a href="editDepartment?code=<%=i.getId()%>">Edit</a>
+		          <a href="editDepartment?id=<%=i.getId()%>">Edit</a>
 		       </td>
 		       <td>
-		      		<a href="deleteDepartment?code=<%=i.getId()%>">Delete</a>
+		      		<a href="deleteDepartment?id=<%=i.getId()%>">Delete</a>
 		       </td>
 	       </tr>
        <% 

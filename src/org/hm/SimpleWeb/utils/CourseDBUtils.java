@@ -42,6 +42,7 @@ public class CourseDBUtils {
 	public static Course find(String findRowById) 
 			throws SQLException {
 		Connection conn = null;
+		Course mh = null;
 		try {
 			conn = MySQLConnUtils.getMySQLConUtils();
 			String sql = "select *from " + table + " where " + id + " =?";
@@ -53,13 +54,12 @@ public class CourseDBUtils {
 			System.out.println(sql);
 			System.out.println(rs.first());
 			if(rs.next()) {
-				Course mh = new Course();
+				mh = new Course();
 				mh.setIdCourse(rs.getString(id));
 				mh.setIdTeacher(rs.getString(idTeacher));
 				mh.setFromDate(rs.getDate(fromDate));
 				mh.setIdSubject(rs.getString(idSubject));
 				mh.setToDate(rs.getDate(toDate));
-				return mh;
 			}
 		} catch (ClassNotFoundException | SQLException e) {
 			MySQLConnUtils.rollbackQuietly(conn);
@@ -68,7 +68,7 @@ public class CourseDBUtils {
 		finally {
 			MySQLConnUtils.closeQuietly(conn);
 		}
-		return null;
+		return mh;
 		
 	}
 	public static void insert(Course insertRow) 

@@ -40,23 +40,24 @@ public class DepartmentDBUtils {
 	public static Department find(String findRowById) 
 			throws SQLException {
 		Connection conn = null;
+		Department mh = null;
 		try {
 			conn = MySQLConnUtils.getMySQLConUtils();
 			String sql = "select " + id + ", " + name + ", " 
 					+ address + ", " + telephone 
 					+ " from " + table + " where " + id + "=?";
-			PreparedStatement pstm = conn.prepareStatement(sql);
+			PreparedStatement pstm = conn.prepareStatement(sql, 
+					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			
 			pstm.setString(1, findRowById);
 			
 			ResultSet rs = pstm.executeQuery();
 			if(rs.next()) {
-				Department mh = new Department();
+				mh = new Department();
 				mh.setId(rs.getString(id));
 				mh.setName(rs.getString(name));
 				mh.setAddress(rs.getString(address));
 				mh.setTelephone(rs.getString(telephone));
-				return mh;
 			}
 		} catch (ClassNotFoundException | SQLException e) {
 			MySQLConnUtils.rollbackQuietly(conn);
@@ -65,7 +66,7 @@ public class DepartmentDBUtils {
 		finally {
 			MySQLConnUtils.closeQuietly(conn);
 		}
-		return null;
+		return mh;
 	}
 	public static void insert(Department insertRow) 
 			throws SQLException {

@@ -47,6 +47,7 @@ public class StudentDBUtils {
 	}
 	public static Student find(String findRowById) throws SQLException {
 		Connection conn = null;
+		Student sv = null;
 		try {
 			conn = MySQLConnUtils.getMySQLConUtils();
 			String query = "select "
@@ -61,7 +62,7 @@ public class StudentDBUtils {
 			
 			ResultSet rs = pstm.executeQuery();
 			if(rs.next()) {
-				Student sv = new Student();
+				sv = new Student();
 				sv.setId(rs.getString(id));
 				sv.setLastName(rs.getString(lastName));
 				sv.setFirstName(rs.getString(firstName));
@@ -70,7 +71,6 @@ public class StudentDBUtils {
 				sv.setTelephone(rs.getString(telephone));
 				sv.setAddress(rs.getString(address));
 				sv.setIdDepartment(rs.getString(idDepartment));
-				return sv;
 			}
 		} catch (ClassNotFoundException | SQLException e) {
 			MySQLConnUtils.rollbackQuietly(conn);
@@ -78,7 +78,7 @@ public class StudentDBUtils {
 		} finally {
 			MySQLConnUtils.closeQuietly(conn);
 		}
-		return null;
+		return sv;
 	}
 	
 	public static void insert(Student insertRow) throws SQLException{

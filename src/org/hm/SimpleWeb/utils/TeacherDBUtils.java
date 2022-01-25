@@ -41,24 +41,25 @@ public class TeacherDBUtils {
 	public static Teacher find(String findRowById) 
 			throws SQLException {
 		Connection conn = null;
+		Teacher mh = null;
 		try {
 			conn = MySQLConnUtils.getMySQLConUtils();
 			String sql = "select *from " + table + " where " + id + " =?";
-			PreparedStatement pstm = conn.prepareStatement(sql);
+			PreparedStatement pstm = conn.prepareStatement(sql, 
+					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			
 			pstm.setString(1, findRowById);
 			
 			ResultSet rs = pstm.executeQuery();
 			System.out.println(sql);
-			System.out.println(rs.first());
+			System.out.println("id: " + findRowById );
 			if(rs.next()) {
-				Teacher mh = new Teacher();
+				mh = new Teacher();
 				mh.setId(rs.getString(id));
 				mh.setName(rs.getString(name));
 				mh.setTelephone(rs.getString(teplephone));
 				mh.setDegree(rs.getString(degree));
 				mh.setIdDepartment(rs.getString(idDepartment));
-				return mh;
 			}
 		} catch (ClassNotFoundException | SQLException e) {
 			MySQLConnUtils.rollbackQuietly(conn);
@@ -67,7 +68,7 @@ public class TeacherDBUtils {
 		finally {
 			MySQLConnUtils.closeQuietly(conn);
 		}
-		return null;
+		return mh;
 		
 	}
 	public static void insert(Teacher insertRow) 

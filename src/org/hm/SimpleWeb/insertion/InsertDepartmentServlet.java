@@ -54,7 +54,7 @@ public class InsertDepartmentServlet extends HttpServlet {
 		}
 		
 		else {
-			response.sendRedirect(request.getContextPath() + "/departmentListt");
+			response.sendRedirect(request.getContextPath() + "/departmentList");
 		}
 	}
 

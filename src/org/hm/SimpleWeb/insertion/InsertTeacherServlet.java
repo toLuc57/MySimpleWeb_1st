@@ -52,13 +52,19 @@ public class InsertTeacherServlet extends HttpServlet {
 		String telephone = (String) request.getParameter("telephone");
 		String idDepartment = (String) request.getParameter("idDepartment");
 		
-		Teacher newTeacher = new Teacher(name,hocVi,telephone,idDepartment);
-
 		String errorString = null;
-		if (errorString == null) {
+		Department findDepartment = null;
+		try {
+			findDepartment = DepartmentDBUtils.find(idDepartment);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			errorString = e.getMessage();
+		}
+		
+		if (errorString == null && findDepartment != null) {
 			try {
-				TeacherDBUtils.insert(newTeacher);
-				
+				Teacher newTeacher = new Teacher(name,hocVi,telephone,idDepartment);
+				TeacherDBUtils.insert(newTeacher);				
 			} catch (SQLException e) {
 				e.printStackTrace();
 				errorString = e.getMessage();

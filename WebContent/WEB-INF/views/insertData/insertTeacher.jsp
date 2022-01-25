@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-<%@ page import="java.util.List,org.hm.SimpleWeb.beans.Khoa" %>
+<%@ page import="java.util.List,org.hm.SimpleWeb.beans.Department" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -24,8 +24,8 @@
 
        </tr>
        <%
-       List<Khoa> list = (List<Khoa>) request.getAttribute("departmentList");	
-       for(Khoa i : list){    	   
+       List<Department> list = (List<Department>) request.getAttribute("departmentList");	
+       for(Department i : list){    	   
 	   %>
 	   	   <tr>
 		   	   <td><%= i.getId() %></td>
@@ -55,7 +55,7 @@
                <td><input type="text" name="degress" value="${k.degree}" /></td>
             </tr>
             <tr>
-               <td>IDKhoa</td>
+               <td>ID Department</td>
                <td><input type="text" name="idDepartment" value="${k.idDepartment}" /></td>
             </tr>
             <tr>

@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>  
-<%@ page import="java.util.List,org.hm.SimpleWeb.beans.GiaoVien" %>
+<%@ page import="java.util.List,org.hm.SimpleWeb.beans.Teacher" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -26,8 +26,8 @@
           <th>Delete</th>
        </tr>
        <%
-       List<GiaoVien> list = (List<GiaoVien>) request.getAttribute("teacherList");
-       for(GiaoVien i : list){    	   
+       List<Teacher> list = (List<Teacher>) request.getAttribute("teacherList");
+       for(Teacher i : list){    	   
 	   	   %>
 	   	   <tr>
 		   	   <td><%= i.getId() %></td>

@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>  
-<%@ page import="java.util.List,org.hm.SimpleWeb.beans.Khoa" %>
+<%@ page import="java.util.List,org.hm.SimpleWeb.beans.Department" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -25,8 +25,8 @@
           <th>Delete</th>
        </tr>
        <%
-       List<Khoa> list = (List<Khoa>) request.getAttribute("KhoaList");	
-       for(Khoa i : list){    	   
+       List<Department> list = (List<Department>) request.getAttribute("departmentList");	
+       for(Department i : list){    	   
 	   %>
 	   	   <tr>
 		   	   <td><%= i.getId() %></td>

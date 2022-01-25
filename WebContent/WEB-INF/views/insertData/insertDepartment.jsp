@@ -21,13 +21,10 @@
                <td><input type="text" name="telephone" value="${k.telephone}" /></td>
             </tr>
             <tr>
-               <td>HocVi</td>
-               <td><input type="text" name=degress value="${k.degress}" /></td>
+               <td>Address</td>
+               <td><input type="text" name="address" value="${k.address}" /></td>
             </tr>
-            <tr>
-               <td>IDKhoa</td>
-               <td><input type="text" name="idDepartment" value="${k.idDepartment}" /></td>
-            </tr>
+
             <tr>
                <td colspan="2">                   
                    <input type="submit" value="Submit" />

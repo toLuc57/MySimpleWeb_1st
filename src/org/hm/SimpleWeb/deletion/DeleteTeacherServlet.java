@@ -1,7 +1,6 @@
 package org.hm.SimpleWeb.deletion;
 
 import java.io.IOException;
-import java.sql.Connection;
 import java.sql.SQLException;
 
 import javax.servlet.RequestDispatcher;
@@ -11,14 +10,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.hm.SimpleWeb.utils.GiaoVienDBUtils;
-import org.hm.SimpleWeb.utils.MyUtils;
+import org.hm.SimpleWeb.utils.TeacherDBUtils;
 
 @WebServlet("/deleteTeacher")
-public class DeleteGVServlet extends HttpServlet {
+public class DeleteTeacherServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-    public DeleteGVServlet() {
+    public DeleteTeacherServlet() {
         super();
     }
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -28,7 +26,7 @@ public class DeleteGVServlet extends HttpServlet {
 		String errorString = null;
 
 		try {
-			GiaoVienDBUtils.delete(code);
+			TeacherDBUtils.delete(code);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			errorString = e.getMessage();

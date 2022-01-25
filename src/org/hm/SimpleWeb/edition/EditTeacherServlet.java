@@ -1,7 +1,6 @@
 package org.hm.SimpleWeb.edition;
 
 import java.io.IOException;
-import java.sql.Connection;
 import java.sql.SQLException;
 
 import javax.servlet.RequestDispatcher;
@@ -13,7 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.hm.SimpleWeb.beans.Teacher;
 import org.hm.SimpleWeb.utils.TeacherDBUtils;
-import org.hm.SimpleWeb.utils.MyUtils;
 
 
 @WebServlet("/editTeacher")

@@ -12,18 +12,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.hm.SimpleWeb.beans.GiaoVien;
-import org.hm.SimpleWeb.beans.Khoa;
-import org.hm.SimpleWeb.utils.GiaoVienDBUtils;
-import org.hm.SimpleWeb.utils.KhoaDBUtils;
+import org.hm.SimpleWeb.beans.Teacher;
+import org.hm.SimpleWeb.utils.TeacherDBUtils;
 import org.hm.SimpleWeb.utils.MyUtils;
 
 
 @WebServlet("/teacherList")
-public class GiaoVienListServlet extends HttpServlet {
+public class TeacherListServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-    public GiaoVienListServlet() {
+    public TeacherListServlet() {
         super();
     }
 
@@ -31,9 +29,9 @@ public class GiaoVienListServlet extends HttpServlet {
 		Connection conn = MyUtils.getStoredConnection(request);
 
 		String errorString = null;
-		List<GiaoVien> list = null;
+		List<Teacher> list = null;
 		try {
-			list = GiaoVienDBUtils.query(conn);
+			list = TeacherDBUtils.query(conn);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			errorString = e.getMessage();
@@ -42,10 +40,9 @@ public class GiaoVienListServlet extends HttpServlet {
 		request.setAttribute("teacherList", list);		
 		
 		System.out.println("===================================");
-		for(GiaoVien i : list) {
+		for(Teacher i : list) {
 			System.out.println(i.getId() + " " + i.getName());
 		}
-		System.out.println("===================================");
 		
 		RequestDispatcher dispatcher = request.getServletContext()
 				.getRequestDispatcher("/WEB-INF/views/information/TeacherListView.jsp");

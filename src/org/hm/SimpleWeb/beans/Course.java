@@ -1,9 +1,9 @@
 package org.hm.SimpleWeb.beans;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class Course {
-	private String idCourse;
+	private String id;
 	private String idTeacher;
 	private String idSubject;
 	private Date fromDate;
@@ -11,19 +11,19 @@ public class Course {
 	public Course() {
 		
 	}
-	public Course(String idCourse,String idTeacher,String idSubject,
+	public Course(String id,String idTeacher,String idSubject,
 			Date fromDate, Date toDate ) {
-		this.idCourse = idCourse;
+		this.id = id;
 		this.idTeacher = idTeacher;
 		this.idSubject = idSubject;
 		this.fromDate = fromDate;
 		this.toDate = toDate;
 	}
 	public String getIdCourse() {
-		return idCourse;
+		return id;
 	}
 	public void setIdCourse(String id) {
-		idCourse = id;
+		this.id = id;
 	}
 	public String getIdTeacher() {
 		return idTeacher;

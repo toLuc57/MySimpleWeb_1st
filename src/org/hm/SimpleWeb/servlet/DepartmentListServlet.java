@@ -12,18 +12,18 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.hm.SimpleWeb.beans.Khoa;
-import org.hm.SimpleWeb.utils.KhoaDBUtils;
+import org.hm.SimpleWeb.beans.Department;
+import org.hm.SimpleWeb.utils.DepartmentDBUtils;
 import org.hm.SimpleWeb.utils.MyUtils;
 
 /**
- * Servlet implementation class KhoaListServlet
+ * Servlet implementation class DepartmentListServlet
  */
 @WebServlet("/departmentList")
-public class KhoaListServlet extends HttpServlet {
+public class DepartmentListServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-    public KhoaListServlet() {
+    public DepartmentListServlet() {
         super();
     }
 
@@ -31,10 +31,10 @@ public class KhoaListServlet extends HttpServlet {
 		Connection conn = MyUtils.getStoredConnection(request);
 
 		String errorString = null;	
-		List<Khoa> list = null;
+		List<Department> list = null;
 		try 
 		{
-			list = KhoaDBUtils.query(conn);			
+			list = DepartmentDBUtils.query(conn);			
 		} 
 		catch (SQLException e) {
 			e.printStackTrace();

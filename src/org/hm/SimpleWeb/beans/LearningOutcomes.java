@@ -21,10 +21,10 @@ public class LearningOutcomes {
 	public void setIdStudent(String idStudent) {
 		this.idStudent = idStudent;
 	}
-	public String getIdScience() {
+	public String getIdCourse() {
 		return idCourse;
 	}
-	public void setIdScience(String idCourse) {
+	public void setIdCourse(String idCourse) {
 		this.idCourse = idCourse;
 	}
 	public String getNumberOfTest() {

@@ -13,8 +13,8 @@ import org.hm.SimpleWeb.jdbc.MySQLConnUtils;
 public class DepartmentDBUtils {
 	
 	private static final String table ="tkhoa";
-	private static final String id = "MaDepartment";
-	private static final String name = "TenDepartment";
+	private static final String id = "MaKhoa";
+	private static final String name = "TenKhoa";
 	private static final String address = "DiaChi";
 	private static final String telephone = "DienThoai";
 		

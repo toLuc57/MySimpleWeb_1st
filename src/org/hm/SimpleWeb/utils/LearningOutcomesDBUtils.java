@@ -7,42 +7,42 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hm.SimpleWeb.beans.GiaoVien;
-import org.hm.SimpleWeb.beans.KetQua;
+import org.hm.SimpleWeb.beans.LearningOutcomes;
 import org.hm.SimpleWeb.jdbc.MySQLConnUtils;
 
-public class KetQuaDBUtils {
-	private static final String table ="tketqua";
+public class LearningOutcomesDBUtils {
+private static final String table ="tketqua";
+	
 	private static final String idStudent = "MaSinhVien";
-	private static final String subjects = "idHoc";
+	private static final String idCourse = "MaKhoaHoc";
 	private static final String numberOfTests = "LanThi";
 	private static final String point = "Diem";
 		
-	public static List<KetQua> query(Connection conn) 
+	public static List<LearningOutcomes> query(Connection conn) 
 		throws SQLException {
-		String sql = "select " + idStudent + ", " + subjects + ", " 
+		String sql = "select " + idStudent + ", " + idCourse + ", " 
 				+ numberOfTests + ", " + point 
 				+ " from " + table;
 		PreparedStatement pstm = conn.prepareStatement(sql);
 		
 		ResultSet rs = pstm.executeQuery();
-		List<KetQua> list = new ArrayList<KetQua>();
+		List<LearningOutcomes> list = new ArrayList<LearningOutcomes>();
 		while(rs.next()) {
-			KetQua mh = new KetQua();
-			mh.setMaSinhVien(rs.getString(idStudent));
-			mh.setMaKhoaHoc(rs.getString(subjects));
-			mh.setLanThi(rs.getString(numberOfTests));
-			mh.setDiem(rs.getDouble(point));
+			LearningOutcomes mh = new LearningOutcomes();
+			mh.setIdStudent(rs.getString(idStudent));
+			mh.setIdCourse(rs.getString(idCourse));
+			mh.setNumberOfTest(rs.getString(numberOfTests));
+			mh.setPoint(rs.getDouble(point));
 			list.add(mh);
 		}
 		return list;
 	}
-	public static KetQua find(String findRowById) 
+	public static LearningOutcomes find(String findRowById) 
 			throws SQLException {
 		Connection conn = null;
 		try {
 			conn = MySQLConnUtils.getMySQLConUtils();
-			String sql = "select " + idStudent + ", " + subjects + ", " 
+			String sql = "select " + idStudent + ", " + idCourse + ", " 
 					+ numberOfTests + ", " + point 
 					+ "from " + table + "where " + idStudent + " = ?";
 			PreparedStatement pstm = conn.prepareStatement(sql);
@@ -51,11 +51,11 @@ public class KetQuaDBUtils {
 			
 			ResultSet rs = pstm.executeQuery();
 			if(rs.next()) {
-				KetQua mh = new KetQua();
-				mh.setMaSinhVien(rs.getString(idStudent));
-				mh.setMaKhoaHoc(rs.getString(subjects));
-				mh.setLanThi(rs.getString(numberOfTests));
-				mh.setDiem(rs.getDouble(point));
+				LearningOutcomes mh = new LearningOutcomes();
+				mh.setIdStudent(rs.getString(idStudent));
+				mh.setIdCourse(rs.getString(idCourse));
+				mh.setNumberOfTest(rs.getString(numberOfTests));
+				mh.setPoint(rs.getDouble(point));
 				return mh;
 			}
 		} catch (ClassNotFoundException | SQLException e) {
@@ -68,19 +68,22 @@ public class KetQuaDBUtils {
 		return null;
 	}
 	
-	public static void insert(KetQua insertRow) 
+	public static void insert(LearningOutcomes insertRow) 
 			throws SQLException {
 		Connection conn = null;
 		try {
 			conn = MySQLConnUtils.getMySQLConUtils();
-			String sql = "insert into " + table + " values (?,?,?,?)" ;
+			String sql = "insert into " + table 
+					+ " (" + idStudent + ", " + idCourse + ", " 
+					+ numberOfTests + ", " + point + ") " 
+					+ " values (?,?,?,?)" ;
 			
 			PreparedStatement pstm = conn.prepareStatement(sql);
 			
-			pstm.setString(1, insertRow.getMaSinhVien());
-			pstm.setString(2, insertRow.getMaKhoaHoc());
-			pstm.setString(3, insertRow.getLanThi());
-			pstm.setDouble(4, insertRow.getDiem());
+			pstm.setString(1, insertRow.getIdStudent());
+			pstm.setString(2, insertRow.getIdCourse());
+			pstm.setString(3, insertRow.getNumberOfTest());
+			pstm.setDouble(4, insertRow.getPoint());
 			
 			pstm.executeUpdate();
 		} catch (ClassNotFoundException | SQLException e) {
@@ -110,21 +113,21 @@ public class KetQuaDBUtils {
 			MySQLConnUtils.closeQuietly(conn);
 		}		
 	}
-	public static void update(KetQua updateRow) 
+	public static void update(LearningOutcomes updateRow) 
 			throws SQLException {
 		Connection conn = null;
 		try {
 			conn = MySQLConnUtils.getMySQLConUtils();
 			String sql = "update " + table + " set " 
-					+ subjects + " = ?, " + numberOfTests +  " = ?, " + point +  " = ?, "
-					+ " where " + idStudent + " = ?";
+					+ numberOfTests +  " = ?, " + point +  " = ?, "
+					+ " where " + idStudent + " = ? and " + idCourse + " = ?";
 				
 			PreparedStatement pstm = conn.prepareStatement(sql);
 			
-			pstm.setString(1, updateRow.getMaKhoaHoc());
-			pstm.setString(2, updateRow.getLanThi());
-			pstm.setDouble(3, updateRow.getDiem());
-			pstm.setString(4, updateRow.getMaSinhVien());
+			pstm.setString(1, updateRow.getNumberOfTest());
+			pstm.setDouble(2, updateRow.getPoint());
+			pstm.setString(3, updateRow.getIdStudent());
+			pstm.setString(4, updateRow.getIdCourse());
 			
 			pstm.executeUpdate();
 		} catch (ClassNotFoundException | SQLException e) {
@@ -135,5 +138,4 @@ public class KetQuaDBUtils {
 			MySQLConnUtils.closeQuietly(conn);
 		}	
 	}
-	
 }

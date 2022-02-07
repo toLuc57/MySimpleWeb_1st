@@ -53,13 +53,13 @@ public class LoginServlet extends HttpServlet {
 				if (user == null) {
 					hasError = true;
 					errorString = "User Name or password invalid";
-				} 
+				} /*
 				else {
 					System.out.println("-----Information for user-----");
 					System.out.println(user.getUserName());
 					System.out.println("Student? " + user.isStudent());
 					System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-				}
+				}*/
 			} catch (SQLException e) {
 				e.printStackTrace();
 				hasError = true;

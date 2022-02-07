@@ -44,19 +44,19 @@
          <table border="0">
             <tr>
                <td>Name</td>
-               <td><input type="text" name="name" value="${k.name}" /></td>
+               <td><input type="text" name="name" value="${teacher.name}" /></td>
             </tr>
             <tr>
                <td>Telephone</td>
-               <td><input type="text" name="telephone" value="${k.teplephone}" /></td>
+               <td><input type="text" name="telephone" value="${teacher.teplephone}" /></td>
             </tr>
             <tr>
                <td>HocVi</td>
-               <td><input type="text" name="degress" value="${k.degree}" /></td>
+               <td><input type="text" name="degress" value="${teacher.degree}" /></td>
             </tr>
             <tr>
                <td>ID Department</td>
-               <td><input type="text" name="idDepartment" value="${k.idDepartment}" /></td>
+               <td><input type="text" name="idDepartment" value="${teacher.idDepartment}" required/></td>
             </tr>
             <tr>
                <td colspan="2">                   

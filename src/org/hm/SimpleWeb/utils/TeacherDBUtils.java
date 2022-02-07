@@ -141,4 +141,23 @@ public class TeacherDBUtils {
 			MySQLConnUtils.closeQuietly(conn);
 		}
 	}
+	public static void deleteIdDepartment( String deleteRowById) {
+		Connection conn = null;
+		try {
+			conn = MySQLConnUtils.getMySQLConUtils();
+			String sql = "delete from " + table + " where " + idDepartment + "=?";
+			
+			PreparedStatement pstm = conn.prepareStatement(sql);
+			
+			pstm.setString(1,deleteRowById);
+			
+			pstm.executeUpdate();
+		} catch (ClassNotFoundException | SQLException e) {
+			MySQLConnUtils.rollbackQuietly(conn);
+			e.printStackTrace();
+		}
+		finally {
+			MySQLConnUtils.closeQuietly(conn);
+		}
+	}
 }

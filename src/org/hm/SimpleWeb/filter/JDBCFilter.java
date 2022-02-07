@@ -66,7 +66,6 @@ public class JDBCFilter implements Filter {
 				
 				MyUtils.storeConnection(request, conn);
 				chain.doFilter(request, response);
-				System.out.println("@@@@@");				
 			} catch(Exception e) {
 				e.printStackTrace();
 				MySQLConnUtils.rollbackQuietly(conn);

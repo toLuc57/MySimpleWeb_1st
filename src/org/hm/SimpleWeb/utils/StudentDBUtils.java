@@ -85,17 +85,21 @@ public class StudentDBUtils {
 		Connection conn = null;
 		try {
 			conn = MySQLConnUtils.getMySQLConUtils();
-			String sql ="insert into " + table + " values(?,?,?,?,?,?,?,?)";
+			String sql ="insert into " + table 
+					+ " (" + lastName + ", " + firstName +", " 
+					+ birthday + ", " + sex + ", " +telephone + ", " 
+					+ address + ", " + idDepartment + ") "
+					+ " values(?,?,?,?,?,?,?)";
 			
 			PreparedStatement pstm = conn.prepareStatement(sql);
 			
-			pstm.setString(2,insertRow.getLastName());
-			pstm.setString(3,insertRow.getFirstName());
-			pstm.setDate(4,insertRow.getBirthday());
-			pstm.setString(5,insertRow.getSex());
-			pstm.setString(6,insertRow.getTelephone());
-			pstm.setString(7,insertRow.getAddress());
-			pstm.setString(8,insertRow.getIdDepartment());
+			pstm.setString(1,insertRow.getLastName());
+			pstm.setString(2,insertRow.getFirstName());
+			pstm.setDate(3,insertRow.getBirthday());
+			pstm.setString(4,insertRow.getSex());
+			pstm.setString(5,insertRow.getTelephone());
+			pstm.setString(6,insertRow.getAddress());
+			pstm.setString(7,insertRow.getIdDepartment());
 			
 			pstm.executeUpdate();
 		} catch (ClassNotFoundException | SQLException e) {
@@ -110,6 +114,7 @@ public class StudentDBUtils {
 		Connection conn = null;
 		try {
 			conn = MySQLConnUtils.getMySQLConUtils();
+			LearningOutcomesDBUtils.delete(deleteRowById);
 			String sql = "delete from " + table + " where " + id + " = ?";
 			
 			PreparedStatement pstm = conn.prepareStatement(sql);
@@ -154,5 +159,24 @@ public class StudentDBUtils {
 		} finally {
 			MySQLConnUtils.closeQuietly(conn);
 		}		
+	}
+	public static void deleteIdDepartment(String deleteRowById) throws SQLException{
+		Connection conn = null;
+		try {
+			conn = MySQLConnUtils.getMySQLConUtils();
+			String sql = "delete from " + table + " where " + idDepartment + " = ?";
+			
+			PreparedStatement pstm = conn.prepareStatement(sql);
+			
+			pstm.setString(1,deleteRowById);
+			
+			pstm.executeUpdate();
+		} catch (ClassNotFoundException | SQLException e) {
+			MySQLConnUtils.rollbackQuietly(conn);
+			e.printStackTrace();
+		} finally {
+			MySQLConnUtils.closeQuietly(conn);
+		}
+				
 	}
 }

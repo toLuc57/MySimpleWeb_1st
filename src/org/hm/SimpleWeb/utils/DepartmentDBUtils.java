@@ -97,6 +97,10 @@ public class DepartmentDBUtils {
 		Connection conn = null;
 		try {
 			conn = MySQLConnUtils.getMySQLConUtils();
+			
+			TeacherDBUtils.deleteIdDepartment(deleteRowById);
+			StudentDBUtils.deleteIdDepartment(deleteRowById);
+			
 			String sql = "delete from " + table + " where " + id + " = ?";
 			
 			PreparedStatement pstm = conn.prepareStatement(sql);
@@ -118,9 +122,9 @@ public class DepartmentDBUtils {
 		try {
 			conn = MySQLConnUtils.getMySQLConUtils();
 			String sql = "update " + table + " set " 
-					+ name + " = ?, " + address +  " = ?, " + telephone +  " = ?, "
+					+ name + " = ?, " + address +  " = ?, " + telephone +  " = ? "
 					+ " where " + id + " = ?";
-				
+			System.out.println(sql);
 			PreparedStatement pstm = conn.prepareStatement(sql);
 			
 			pstm.setString(1, updateRow.getName());
@@ -129,6 +133,7 @@ public class DepartmentDBUtils {
 			pstm.setString(4, updateRow.getId());
 			
 			pstm.executeUpdate();
+			
 		} catch (ClassNotFoundException | SQLException e) {
 			MySQLConnUtils.rollbackQuietly(conn);
 			e.printStackTrace();

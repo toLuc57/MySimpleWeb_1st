@@ -7,7 +7,9 @@
    |
    <a href="${pageContext.request.contextPath}/teacherList">Teacher List</a>
    |
-   <a href="${pageContext.request.contextPath}/departmentList">Department</a>
+   <a href="${pageContext.request.contextPath}/departmentList">Department List</a>
+   |
+   <a href="${pageContext.request.contextPath}/studentList">Student List</a>
    |
    <a href="${pageContext.request.contextPath}/userinfo">My Account Info</a>
    |

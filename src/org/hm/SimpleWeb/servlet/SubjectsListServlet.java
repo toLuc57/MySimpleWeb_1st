@@ -12,16 +12,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.hm.SimpleWeb.beans.Department;
-import org.hm.SimpleWeb.utils.DepartmentDBUtils;
+import org.hm.SimpleWeb.beans.Subject;
+import org.hm.SimpleWeb.utils.SubjectDBUtils;
 import org.hm.SimpleWeb.utils.MyUtils;
 
-
-@WebServlet("/departmentList")
-public class DepartmentListServlet extends HttpServlet {
+@WebServlet("/subjectsList")
+public class SubjectsListServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-    public DepartmentListServlet() {
+    public SubjectsListServlet() {
         super();
     }
 
@@ -29,20 +28,20 @@ public class DepartmentListServlet extends HttpServlet {
 		Connection conn = MyUtils.getStoredConnection(request);
 
 		String errorString = null;	
-		List<Department> list = null;
+		List<Subject> list = null;
 		try 
 		{
-			list = DepartmentDBUtils.query(conn);			
+			list = SubjectDBUtils.query(conn);			
 		} 
 		catch (SQLException e) {
 			e.printStackTrace();
 			errorString = e.getMessage();
 		}
 		request.setAttribute("errorString", errorString);
-		request.setAttribute("departmentList", list);
+		request.setAttribute("subjectsList", list);
 				
 		RequestDispatcher dispatcher = request.getServletContext()
-				.getRequestDispatcher("/WEB-INF/views/information/DepartmentListView.jsp");
+				.getRequestDispatcher("/WEB-INF/views/information/SubjectListView.jsp");
 		dispatcher.forward(request, response);
 	}
 

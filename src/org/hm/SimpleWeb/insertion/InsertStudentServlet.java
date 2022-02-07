@@ -1,7 +1,8 @@
-package org.hm.SimpleWeb.edition;
+package org.hm.SimpleWeb.insertion;
 
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -13,92 +14,81 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.hm.SimpleWeb.beans.Department;
-import org.hm.SimpleWeb.beans.Teacher;
+import org.hm.SimpleWeb.beans.Student;
 import org.hm.SimpleWeb.utils.DepartmentDBUtils;
 import org.hm.SimpleWeb.utils.MyUtils;
-import org.hm.SimpleWeb.utils.TeacherDBUtils;
+import org.hm.SimpleWeb.utils.StudentDBUtils;
 
-
-@WebServlet("/editTeacher")
-public class EditTeacherServlet extends HttpServlet {
+@WebServlet("/insertStudent")
+public class InsertStudentServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
-    public EditTeacherServlet() {
+       
+    public InsertStudentServlet() {
         super();
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Connection conn = MyUtils.getStoredConnection(request);
 		
-		String code = (String) request.getParameter("id");
-
-		Teacher editRow = null;
-		List<Department> list = null;
 		String errorString = null;
-		
+		List<Department> list = null;
 		try {
-			editRow = TeacherDBUtils.find(code);
+			list = DepartmentDBUtils.query(conn);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			errorString = e.getMessage();
 		}
-		if (editRow == null) {
-			errorString = "Is null";
-			System.out.println(errorString);
-		}
-		else {
-			try {
-				list = DepartmentDBUtils.query(conn);
-			} catch (SQLException e) {
-				e.printStackTrace();
-				errorString = e.getMessage();
-			}			
-		}
 		request.setAttribute("errorString", errorString);
-		request.setAttribute("teacher", editRow);
-		request.setAttribute("departmentList", list);
-		
+		request.setAttribute("departmentList", list);	
 		RequestDispatcher dispatcher = request.getServletContext()
-				.getRequestDispatcher("/WEB-INF/views/editData/editTeacher.jsp");
+				.getRequestDispatcher("/WEB-INF/views/insertData/insertStudent.jsp");
 		dispatcher.forward(request, response);
-
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		String id = (String) request.getParameter("id");
-		String name = (String) request.getParameter("name");
-		String dergee = (String) request.getParameter("degree");
+		String lastName = (String) request.getParameter("lastName");
+		String firstName = (String) request.getParameter("firstName");
+		String day = (String) request.getParameter("day");
+		String month = (String) request.getParameter("month");
+		String year = (String) request.getParameter("year");
+		String sex = (String) request.getParameter("sex");
 		String telephone = (String) request.getParameter("telephone");
+		String address = (String) request.getParameter("address");
 		String idDepartment = (String) request.getParameter("idDepartment");
-		
-		System.out.println("EditTeacher-Id: " + id);
-		
-		Teacher editTeacher = new Teacher(id,name,dergee,telephone,idDepartment);
 
+		Date birthday = Date.valueOf(year + "-" + month + "-" + day);
+		
+		System.out.println("Birthday: " + birthday.toString());
+		System.out.println("Sex: " + sex);
 		String errorString = null;
+		Department findDepartment = null;
+		try {
+			findDepartment = DepartmentDBUtils.find(idDepartment);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			errorString = e.getMessage();
+		}
 
-		if (errorString == null) {
+		if (errorString == null && findDepartment != null) {
 			try {
-				TeacherDBUtils.update(editTeacher);
+				Student newRow = new Student(lastName,firstName,birthday,
+						sex,telephone,address,idDepartment);
+				StudentDBUtils.insert(newRow);
 				
 			} catch (SQLException e) {
 				e.printStackTrace();
 				errorString = e.getMessage();
 			}
 		}
-		
 		request.setAttribute("errorString", errorString);
-		request.setAttribute("teacher", editTeacher);
-
 		if (errorString != null) {
 			RequestDispatcher dispatcher = request.getServletContext()
-					.getRequestDispatcher("/WEB-INF/views/editData/editTeacher.jsp");
+					.getRequestDispatcher("/WEB-INF/views/insertData/insertTStudent.jsp");
 			dispatcher.forward(request, response);
 		}
 		
 		else {
-			response.sendRedirect(request.getContextPath() + "/teacherList");
+			response.sendRedirect(request.getContextPath() + "/studentList");
 		}
 	}
 

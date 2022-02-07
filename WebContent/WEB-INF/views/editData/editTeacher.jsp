@@ -5,16 +5,14 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>EditDepartment</title>
+<title>Edit Teacher</title>
 </head>
 <body>
 	<jsp:include page="..//_header.jsp"></jsp:include>
-      <jsp:include page="..//_menu.jsp"></jsp:include>
-      
-      <h3>Insert Teacher</h3>
-      
+           
       <p style="color: red;">${errorString}</p>
       
+      <h3>Department List</h3>
       <table border="1" cellpadding="5" cellspacing="1" >
        <tr>
           <th>ID</th>
@@ -38,7 +36,9 @@
        %>
   	</table>
       
-      </br>
+      <br/>
+      
+      <h3>Edit Teacher</h3>
       
       <form method="POST" action="${pageContext.request.contextPath}/editTeacher">
          <input type="hidden" name="id" value="${teacher.id}" />
@@ -49,19 +49,19 @@
          	</tr>
             <tr>
                <td>Name</td>
-               <td><input type="text" name="name" value="${teacher.name}" /></td>
+               <td><input type="text" name="name" placeholder="${teacher.name}" /></td>
             </tr>
             <tr>
                <td>Telephone</td>
-               <td><input type="text" name="telephone" value="${teacher.telephone}" /></td>
+               <td><input type="text" name="telephone" placeholder="${teacher.telephone}" /></td>
             </tr>
             <tr>
                <td>Degree</td>
-               <td><input type="text" name="degree" value="${teacher.degree}" /></td>
+               <td><input type="text" name="degree" placeholder="${teacher.degree}" /></td>
             </tr>
             <tr>
                <td>Id Department</td>
-               <td><input type="text" name="idDepartment" value="${teacher.idDepartment}" /></td>
+               <td><input type="text" name="idDepartment" placeholder="${teacher.idDepartment}" required/></td>
             </tr>
             <tr>
                <td colspan="2">                   

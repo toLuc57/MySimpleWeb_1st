@@ -80,7 +80,8 @@ public class CourseDBUtils {
 					+ "(" + idTeacher + ", " + idSubject
 					+ ", " + fromDate + ", " + toDate + ") "
 					+ " values (?,?,?,?)" ;
-			PreparedStatement pstm = conn.prepareStatement(sql);
+			PreparedStatement pstm = conn.prepareStatement(sql, 
+					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			
 			pstm.setString(1, insertRow.getIdTeacher());
 			pstm.setString(2, insertRow.getIdSubject());
@@ -100,6 +101,8 @@ public class CourseDBUtils {
 		Connection conn = null;
 		try {
 			conn = MySQLConnUtils.getMySQLConUtils();
+			
+			LearningOutcomesDBUtils.deleteIdCourse(deleteRowById);
 			String sql = "delete from " + table + " where " + id + "=?";
 			
 			PreparedStatement pstm = conn.prepareStatement(sql);
@@ -138,6 +141,44 @@ public class CourseDBUtils {
 			MySQLConnUtils.rollbackQuietly(conn);
 			e.printStackTrace();
 		}finally {
+			MySQLConnUtils.closeQuietly(conn);
+		}
+	}
+	public static void deleteIdTeacher(String deleteRowById) {
+		Connection conn = null;
+		try {
+			conn = MySQLConnUtils.getMySQLConUtils();
+			String sql = "delete from " + table + " where " + idTeacher + "=?";
+			
+			PreparedStatement pstm = conn.prepareStatement(sql);
+			
+			pstm.setString(1,deleteRowById);
+			
+			pstm.executeUpdate();
+		} catch (ClassNotFoundException | SQLException e) {
+			MySQLConnUtils.rollbackQuietly(conn);
+			e.printStackTrace();
+		}
+		finally {
+			MySQLConnUtils.closeQuietly(conn);
+		}
+	}
+	public static void deleteIdSubject(String deleteRowById) {
+		Connection conn = null;
+		try {
+			conn = MySQLConnUtils.getMySQLConUtils();
+			String sql = "delete from " + table + " where " + idSubject + "=?";
+			
+			PreparedStatement pstm = conn.prepareStatement(sql);
+			
+			pstm.setString(1,deleteRowById);
+			
+			pstm.executeUpdate();
+		} catch (ClassNotFoundException | SQLException e) {
+			MySQLConnUtils.rollbackQuietly(conn);
+			e.printStackTrace();
+		}
+		finally {
 			MySQLConnUtils.closeQuietly(conn);
 		}
 	}

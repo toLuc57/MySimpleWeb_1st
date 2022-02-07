@@ -46,8 +46,8 @@ private static final String table ="tketqua";
 			String sql = "select " + idStudent + ", " + idCourse + ", " 
 					+ numberOfTests + ", " + point 
 					+ "from " + table + "where " + idStudent + " = ?";
-			PreparedStatement pstm = conn.prepareStatement(sql);
-			
+			PreparedStatement pstm = conn.prepareStatement(sql, 
+					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);			
 			pstm.setString(1, findRowById);
 			
 			ResultSet rs = pstm.executeQuery();
@@ -93,6 +93,7 @@ private static final String table ="tketqua";
 			MySQLConnUtils.closeQuietly(conn);
 		}
 	}
+	// delete all student's information
 	public static void delete(String deleteRowById) 
 			throws SQLException {
 		Connection conn = null;
@@ -119,7 +120,7 @@ private static final String table ="tketqua";
 		try {
 			conn = MySQLConnUtils.getMySQLConUtils();
 			String sql = "update " + table + " set " 
-					+ numberOfTests +  " = ?, " + point +  " = ?, "
+					+ numberOfTests +  " = ?, " + point +  " = ? "
 					+ " where " + idStudent + " = ? and " + idCourse + " = ?";
 				
 			PreparedStatement pstm = conn.prepareStatement(sql);
@@ -137,5 +138,25 @@ private static final String table ="tketqua";
 		finally {
 			MySQLConnUtils.closeQuietly(conn);
 		}	
+	}
+	public static void deleteIdCourse(String deleteRowById) 
+			throws SQLException {
+		Connection conn = null;
+		try {
+			conn = MySQLConnUtils.getMySQLConUtils();
+			String sql = "delete from " + table + " where " + idCourse + " = ?";
+			
+			PreparedStatement pstm = conn.prepareStatement(sql);
+			
+			pstm.setString(1,deleteRowById);
+			
+			pstm.executeUpdate();
+		} catch (ClassNotFoundException | SQLException e) {
+			MySQLConnUtils.rollbackQuietly(conn);
+			e.printStackTrace();
+		}	
+		finally {
+			MySQLConnUtils.closeQuietly(conn);
+		}		
 	}
 }

@@ -122,7 +122,7 @@ public class SubjectDBUtils {
 			conn = MySQLConnUtils.getMySQLConUtils();
 			
 			String sql = "update " + table + " set " 
-				+ name + " = ?, " + theoryLesson +  " = ?, " + practiceLesson +  " = ?, "
+				+ name + " = ?, " + theoryLesson +  " = ?, " + practiceLesson +  " = ? "
 				+ " where " + id + " = ?";
 			
 			PreparedStatement pstm = conn.prepareStatement(sql);

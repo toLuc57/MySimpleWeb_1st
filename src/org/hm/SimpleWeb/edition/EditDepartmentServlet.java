@@ -49,6 +49,7 @@ public class EditDepartmentServlet extends HttpServlet {
 		String id = (String) request.getParameter("id");
 		String name = (String) request.getParameter("name");
 		String address = (String) request.getParameter("address");
+		System.out.println("Address: "+ address);
 		String telephone = (String) request.getParameter("telephone");
 		
 		

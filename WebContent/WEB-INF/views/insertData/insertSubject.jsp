@@ -4,35 +4,35 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Edit Department</title>
+<title>Insert Subject</title>
 </head>
 <body>
 	<jsp:include page="..//_header.jsp"></jsp:include>
       
-      <h3>Edit Teacher</h3>
+      <h3>Insert Subject</h3>
       
       <p style="color: red;">${errorString}</p>
       
-      <form method="POST" action="${pageContext.request.contextPath}/editDepartment">
-         <input type="hidden" name="id" value="${department.id}" />
+      <form method="POST" action="${pageContext.request.contextPath}/insertSubject">
+         <input type="hidden" name="id" value="${subject.id}" />
          <table border="0">
             <tr>
                <td>Name</td>
-               <td><input type="text" name="name" placeholder="${department.name}" /></td>
+               <td><input type="text" name="name" value="${subject.name}" /></td>
             </tr>
             <tr>
                <td>Telephone</td>
-               <td><input type="text" name="telephone" placeholder="${department.telephone}" /></td>
+               <td><input type="text" name="practiceLesson" value="${subject.practiceLesson}" /></td>
             </tr>
             <tr>
                <td>Address</td>
-               <td><input type="text" name="address" placeholder="${department.address}" /></td>
+               <td><input type="text" name="theoryLesson" value="${subject.theoryLesson}" /></td>
             </tr>
 
             <tr>
                <td colspan="2">                   
                    <input type="submit" value="Submit" />
-                   <a href="departmentList">Cancel</a>
+                   <a href="subjectList">Cancel</a>
                </td>
             </tr>
          </table>

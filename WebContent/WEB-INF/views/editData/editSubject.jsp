@@ -21,11 +21,11 @@
                <td><input type="text" name="name" placeholder="${subject.name}" /></td>
             </tr>
             <tr>
-               <td>Telephone</td>
+               <td>Practice Lesson</td>
                <td><input type="text" name="practiceLesson" placeholder="${subject.practiceLesson}" /></td>
             </tr>
             <tr>
-               <td>Address</td>
+               <td>Theory Lesson</td>
                <td><input type="text" name="theoryLesson" placeholder="${subject.theoryLesson}" /></td>
             </tr>
 

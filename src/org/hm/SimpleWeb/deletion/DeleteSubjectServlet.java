@@ -10,14 +10,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.hm.SimpleWeb.utils.DepartmentDBUtils;
+import org.hm.SimpleWeb.utils.SubjectDBUtils;
 
-
-@WebServlet("/deleteDepartment")
-public class DeleteDepartmentServlet extends HttpServlet {
+@WebServlet("/deleteSubject")
+public class DeleteSubjectServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-    public DeleteDepartmentServlet() {
+    public DeleteSubjectServlet() {
         super();
     }
 
@@ -26,7 +25,7 @@ public class DeleteDepartmentServlet extends HttpServlet {
 
 		String errorString = null;
 		try {
-			DepartmentDBUtils.delete(code);
+			SubjectDBUtils.delete(code);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			errorString = e.getMessage();
@@ -35,11 +34,11 @@ public class DeleteDepartmentServlet extends HttpServlet {
 		if (errorString != null) {
 			request.setAttribute("errorString", errorString);
 			RequestDispatcher dispatcher = request.getServletContext()
-					.getRequestDispatcher("/WEB-INF/views/information/DepartmentListView.jsp");
+					.getRequestDispatcher("/WEB-INF/views/information/SubjectListView.jsp");
 			dispatcher.forward(request, response);
 		}
 		else {
-			response.sendRedirect(request.getContextPath() + "/departmentList");
+			response.sendRedirect(request.getContextPath() + "/subjectList");
 		}
 	}
 

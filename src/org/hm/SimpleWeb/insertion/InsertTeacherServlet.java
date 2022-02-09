@@ -48,7 +48,7 @@ public class InsertTeacherServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		String name = (String) request.getParameter("name");
-		String hocVi = (String) request.getParameter("degress");
+		String degress = (String) request.getParameter("degress");
 		String telephone = (String) request.getParameter("telephone");
 		String idDepartment = (String) request.getParameter("idDepartment");
 		
@@ -63,7 +63,7 @@ public class InsertTeacherServlet extends HttpServlet {
 		
 		if (errorString == null && findDepartment != null) {
 			try {
-				Teacher newTeacher = new Teacher(name,hocVi,telephone,idDepartment);
+				Teacher newTeacher = new Teacher(name,degress,telephone,idDepartment);
 				TeacherDBUtils.insert(newTeacher);				
 			} catch (SQLException e) {
 				e.printStackTrace();

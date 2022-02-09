@@ -10,49 +10,61 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.hm.SimpleWeb.beans.Department;
-import org.hm.SimpleWeb.utils.DepartmentDBUtils;
+import org.hm.SimpleWeb.beans.Subject;
+import org.hm.SimpleWeb.utils.SubjectDBUtils;
 
 
-@WebServlet("/insertDepartment")
-public class InsertDepartmentServlet extends HttpServlet {
+@WebServlet("/insertSubject")
+public class InsertSubjectServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-    public InsertDepartmentServlet() {
+    public InsertSubjectServlet() {
         super();
     }
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		RequestDispatcher dispatcher = request.getServletContext()
-				.getRequestDispatcher("/WEB-INF/views/insertData/insertDepartment.jsp");
+				.getRequestDispatcher("/WEB-INF/views/insertData/insertSubject.jsp");
 		dispatcher.forward(request, response);
 	}
-	
+
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		String name = (String) request.getParameter("name");
-		String telephone = (String) request.getParameter("telephone");
-		String address = (String) request.getParameter("address");
+		String numberOfPracticeLessonSTR = (String) request.getParameter("numberOfPracticeLesson");
+		String numberOfTheoryLessonSTR = (String) request.getParameter("numberOfTheoryLesson");
 		
-		Department newRow = new Department(name,address,telephone);
+		int numberOfPracticeLesson;
+		int numberOfTheoryLesson;
+
+		try {
+			numberOfPracticeLesson = Integer.parseInt(numberOfPracticeLessonSTR);
+			numberOfTheoryLesson = Integer.parseInt(numberOfTheoryLessonSTR);
+		}catch (NumberFormatException e) {
+			numberOfPracticeLesson = 0;
+			numberOfTheoryLesson = 0;
+		}
+		
+		Subject newRow = new Subject(name, numberOfPracticeLesson, numberOfTheoryLesson);
 
 		String errorString = null;
 		try {
-			DepartmentDBUtils.insert(newRow);
+			SubjectDBUtils.insert(newRow);
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
 			errorString = e.getMessage();
 		}
-
+		
 		request.setAttribute("errorString", errorString);
 		if (errorString != null) {
 			RequestDispatcher dispatcher = request.getServletContext()
-					.getRequestDispatcher("/WEB-INF/views/insertData/insertTDepartment.jsp");
+					.getRequestDispatcher("/WEB-INF/views/insertData/insertTSubject.jsp");
 			dispatcher.forward(request, response);
 		}
 		
 		else {
-			response.sendRedirect(request.getContextPath() + "/departmentList");
+			response.sendRedirect(request.getContextPath() + "/subjectList");
 		}
 	}
 

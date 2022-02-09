@@ -10,23 +10,24 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.hm.SimpleWeb.utils.DepartmentDBUtils;
+import org.hm.SimpleWeb.utils.LearningOutcomesDBUtils;
 
 
-@WebServlet("/deleteDepartment")
-public class DeleteDepartmentServlet extends HttpServlet {
+@WebServlet("/DeleteLearningOutcomesServlet")
+public class DeleteLearningOutcomesServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-    public DeleteDepartmentServlet() {
+    public DeleteLearningOutcomesServlet() {
         super();
     }
+
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String code = (String) request.getParameter("id");
 
 		String errorString = null;
 		try {
-			DepartmentDBUtils.delete(code);
+			LearningOutcomesDBUtils.delete(code);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			errorString = e.getMessage();
@@ -35,16 +36,15 @@ public class DeleteDepartmentServlet extends HttpServlet {
 		if (errorString != null) {
 			request.setAttribute("errorString", errorString);
 			RequestDispatcher dispatcher = request.getServletContext()
-					.getRequestDispatcher("/WEB-INF/views/information/DepartmentListView.jsp");
+					.getRequestDispatcher("/WEB-INF/views/information/LearningOutcomesListView.jsp");
 			dispatcher.forward(request, response);
 		}
 		else {
-			response.sendRedirect(request.getContextPath() + "/departmentList");
+			response.sendRedirect(request.getContextPath() + "/learningOutcomesList");
 		}
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 

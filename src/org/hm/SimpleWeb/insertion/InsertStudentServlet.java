@@ -61,6 +61,7 @@ public class InsertStudentServlet extends HttpServlet {
 		System.out.println("Birthday: " + birthday.toString());
 		System.out.println("Sex: " + sex);
 		String errorString = null;
+
 		Department findDepartment = null;
 		try {
 			findDepartment = DepartmentDBUtils.find(idDepartment);
@@ -68,7 +69,6 @@ public class InsertStudentServlet extends HttpServlet {
 			e.printStackTrace();
 			errorString = e.getMessage();
 		}
-
 		if (errorString == null && findDepartment != null) {
 			try {
 				Student newRow = new Student(lastName,firstName,birthday,

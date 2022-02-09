@@ -17,8 +17,8 @@ import org.hm.SimpleWeb.beans.Course;
 import org.hm.SimpleWeb.beans.Subject;
 import org.hm.SimpleWeb.beans.Teacher;
 import org.hm.SimpleWeb.utils.CourseDBUtils;
-import org.hm.SimpleWeb.utils.MyUtils;
 import org.hm.SimpleWeb.utils.SubjectDBUtils;
+import org.hm.SimpleWeb.utils.MyUtils;
 import org.hm.SimpleWeb.utils.TeacherDBUtils;
 
 
@@ -76,7 +76,17 @@ public class InsertCourseServlet extends HttpServlet {
 		Course newRow = new Course(id,idTeacher,idSubject,fromDate,toDate);
 
 		String errorString = null;
-		if (errorString == null) {
+		Subject findSubject = null;
+		Teacher findTeacher = null;
+		try {
+			findSubject = SubjectDBUtils.find(idSubject);
+			findTeacher = TeacherDBUtils.find(idTeacher);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			errorString = e.getMessage();
+		}
+		
+		if (errorString == null && findSubject != null && findTeacher != null) {
 			try {
 				CourseDBUtils.insert(newRow);
 				
@@ -85,7 +95,6 @@ public class InsertCourseServlet extends HttpServlet {
 				errorString = e.getMessage();
 			}
 		}
-		
 		request.setAttribute("errorString", errorString);
 		if (errorString != null) {
 			RequestDispatcher dispatcher = request.getServletContext()

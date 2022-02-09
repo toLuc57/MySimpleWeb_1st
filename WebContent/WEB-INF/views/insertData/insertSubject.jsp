@@ -21,11 +21,11 @@
                <td><input type="text" name="name" value="${subject.name}" /></td>
             </tr>
             <tr>
-               <td>Telephone</td>
+               <td>Practice Lesson</td>
                <td><input type="text" name="practiceLesson" value="${subject.practiceLesson}" /></td>
             </tr>
             <tr>
-               <td>Address</td>
+               <td>Theory Lesson</td>
                <td><input type="text" name="theoryLesson" value="${subject.theoryLesson}" /></td>
             </tr>
 

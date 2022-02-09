@@ -3,12 +3,12 @@ package org.hm.SimpleWeb.beans;
 public class LearningOutcomes {
 	private String idStudent;
 	private String idCourse;
-	private String numberOfTest;
+	private int numberOfTest;
 	private double point;
 	public LearningOutcomes() {
 		
 	}
-	public LearningOutcomes(String idStudent,String idCourse,String numberOfTest,
+	public LearningOutcomes(String idStudent,String idCourse,int numberOfTest,
 			double point) {
 		this.idStudent = idStudent;
 		this.idCourse = idCourse;
@@ -27,10 +27,10 @@ public class LearningOutcomes {
 	public void setIdCourse(String idCourse) {
 		this.idCourse = idCourse;
 	}
-	public String getNumberOfTest() {
+	public int getNumberOfTest() {
 		return numberOfTest;
 	}
-	public void setNumberOfTest(String numberOfTest) {
+	public void setNumberOfTest(int numberOfTest) {
 		this.numberOfTest = numberOfTest;
 	}
 	public double getPoint() {

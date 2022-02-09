@@ -16,7 +16,7 @@ import org.hm.SimpleWeb.beans.Subject;
 import org.hm.SimpleWeb.utils.SubjectDBUtils;
 import org.hm.SimpleWeb.utils.MyUtils;
 
-@WebServlet("/subjectsList")
+@WebServlet("/subjectList")
 public class SubjectsListServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 

@@ -9,7 +9,7 @@
 <body>
 	<jsp:include page="..//_header.jsp"></jsp:include>
       
-      <h3>Edit Teacher</h3>
+      <h3>Edit Department</h3>
       
       <p style="color: red;">${errorString}</p>
       

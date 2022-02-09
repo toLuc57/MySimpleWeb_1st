@@ -5,11 +5,11 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<title>Edit Student</title>
 </head>
 <body>
 	<jsp:include page="..//_header.jsp"></jsp:include>
-	<h3>Edit Student</h3>
+	<h3>Department List</h3>
       
       <p style="color: red;">${errorString}</p>
 
@@ -36,6 +36,7 @@
   	</table>
       
       <br/>
+      <h3>Edit Student</h3>
       
       <form method="POST" action="${pageContext.request.contextPath}/editStudent">
          <input type="hidden" name="id" value="${student.id}" />

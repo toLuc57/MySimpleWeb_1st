@@ -31,7 +31,7 @@ private static final String table ="tketqua";
 			LearningOutcomes mh = new LearningOutcomes();
 			mh.setIdStudent(rs.getString(idStudent));
 			mh.setIdCourse(rs.getString(idCourse));
-			mh.setNumberOfTest(rs.getString(numberOfTests));
+			mh.setNumberOfTest(rs.getInt(numberOfTests));
 			mh.setPoint(rs.getDouble(point));
 			list.add(mh);
 		}
@@ -55,7 +55,7 @@ private static final String table ="tketqua";
 				mh = new LearningOutcomes();
 				mh.setIdStudent(rs.getString(idStudent));
 				mh.setIdCourse(rs.getString(idCourse));
-				mh.setNumberOfTest(rs.getString(numberOfTests));
+				mh.setNumberOfTest(rs.getInt(numberOfTests));
 				mh.setPoint(rs.getDouble(point));
 			}
 		} catch (ClassNotFoundException | SQLException e) {
@@ -82,7 +82,7 @@ private static final String table ="tketqua";
 			
 			pstm.setString(1, insertRow.getIdStudent());
 			pstm.setString(2, insertRow.getIdCourse());
-			pstm.setString(3, insertRow.getNumberOfTest());
+			pstm.setInt(3, insertRow.getNumberOfTest());
 			pstm.setDouble(4, insertRow.getPoint());
 			
 			pstm.executeUpdate();
@@ -125,7 +125,7 @@ private static final String table ="tketqua";
 				
 			PreparedStatement pstm = conn.prepareStatement(sql);
 			
-			pstm.setString(1, updateRow.getNumberOfTest());
+			pstm.setInt(1, updateRow.getNumberOfTest());
 			pstm.setDouble(2, updateRow.getPoint());
 			pstm.setString(3, updateRow.getIdStudent());
 			pstm.setString(4, updateRow.getIdCourse());

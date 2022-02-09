@@ -21,7 +21,7 @@ public class SubjectDBUtils {
 		throws SQLException {
 		String sql = "select " + id + ", " + name + ", " 
 				+ theoryLesson + ", " + practiceLesson 
-				+ "from " + table;
+				+ " from " + table;
 		PreparedStatement pstm = conn.prepareStatement(sql);
 		
 		ResultSet rs = pstm.executeQuery();
@@ -44,7 +44,7 @@ public class SubjectDBUtils {
 			conn = MySQLConnUtils.getMySQLConUtils();
 			String sql = "select " + id + ", " + name + ", " 
 					+ theoryLesson + ", " + practiceLesson 
-					+ "from " + table + "where " + id + " = ?";
+					+ " from " + table + "where " + id + " = ?";
 			PreparedStatement pstm = conn.prepareStatement(sql);
 			
 			pstm.setString(1, findRowById);

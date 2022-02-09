@@ -8,6 +8,13 @@ public class Subject {
 	public Subject() {
 		
 	}
+	public Subject(String name,int numberOfTheoryLesson, 
+			int numberOfPracticeLesson) {
+		id = null;
+		this.name = name;
+		this.numberOfTheoryLesson = numberOfTheoryLesson;
+		this.numberOfPracticeLesson = numberOfPracticeLesson;
+	}
 	public Subject(String id,String name,int numberOfTheoryLesson, 
 			int numberOfPracticeLesson) {
 		this.id = id;

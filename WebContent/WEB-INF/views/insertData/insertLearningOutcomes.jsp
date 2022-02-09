@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-<%@ page import="java.util.List,org.hm.SimpleWeb.beans.Course" %>
+<%@ page import="java.util.List,org.hm.SimpleWeb.beans.Course,org.hm.SimpleWeb.beans.Student" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,7 +11,38 @@
 	<jsp:include page="..//_header.jsp"></jsp:include>
            
       <p style="color: red;">${errorString}</p>
+      <h3>Student List</h3>
+      <table border="1" cellpadding="5" cellspacing="1" >
+       <tr>
+          <th>Id</th>
+          <th>Last Name</th>
+          <th>First Name</th>
+          <th>Birthday</th>
+          <th>Sex</th>
+          <th>Telephone</th>
+          <th>Address</th>
+          <th>IdDepartment</th>
+       </tr>
+       <%
+       List<Student> list1 = (List<Student>) request.getAttribute("studentList");	
+       for(Student i : list1){    	   
+	   %>
+	   	   <tr>
+		   	   <td><%= i.getId() %></td>
+		   	   <td><%= i.getLastName() %></td>
+			   <td><%= i.getFirstName() %></td>
+			   <td><%= i.getBirthday() %></td>
+			   <td><%= i.getSex() %> </td>
+			   <td><%= i.getTelephone() %></td>
+			   <td><%= i.getAddress() %></td>
+			   <td><%= i.getIdDepartment() %></td>
+	       </tr>
+       <% 
+       } 
+       %>
+  	</table>
       
+      <br/>
       <h3>Course List</h3>
       <table border="1" cellpadding="5" cellspacing="1" >
        <tr>
@@ -23,8 +54,8 @@
 
        </tr>
        <%
-       List<Course> list = (List<Course>) request.getAttribute("courseList");	
-       for(Course i : list){    	   
+       List<Course> list2 = (List<Course>) request.getAttribute("courseList");	
+       for(Course i : list2){    	   
 	   %>
 	   	   <tr>
 		   	   <td><%= i.getIdCourse() %></td>
@@ -46,7 +77,7 @@
          <table border="0">
          	<tr>
          		<td>ID student:</td>
-         		<td><output name="id">${learningOutcomes.idStudent}</output></td>
+         		<td><input type="text" name="idStudent" value="${learningOutcomes.idStudent}" /></td>
          	</tr>
             <tr>
                <td>ID course:</td>

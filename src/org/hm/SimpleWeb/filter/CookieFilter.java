@@ -18,7 +18,7 @@ import org.hm.SimpleWeb.beans.UserAccount;
 import org.hm.SimpleWeb.utils.UserAccountDBUtils;
 import org.hm.SimpleWeb.utils.MyUtils;
 
-@WebFilter(filterName="cookieFilter", urlPatterns= {"/*"})
+@WebFilter(filterName="cookieFilter", urlPatterns= {"/home/*"})
 public class CookieFilter implements Filter {
 
     public CookieFilter() {
@@ -35,10 +35,12 @@ public class CookieFilter implements Filter {
 		
 		UserAccount userInSession = MyUtils.getLoginedUser(session);
 		
+		System.out.println("================================================");
 		if(userInSession != null) {
 			session.setAttribute("COOKIE_CHECKED", "CHECKED");
 			System.out.println("Account: " + userInSession.getUserName());
 			chain.doFilter(request, response);
+			System.out.println("========================1=======================");
 			return;
 		}
 		System.out.println("Account is null");
@@ -50,7 +52,7 @@ public class CookieFilter implements Filter {
 			try {
 				UserAccount user = UserAccountDBUtils.find(conn, userName);
 				MyUtils.storeLoginedUser(session, user);
-				if(user== null) {
+				if(user == null) {
 					System.out.println("Store Logined User(null)");
 				}
 			} catch (SQLException e) {
@@ -58,6 +60,7 @@ public class CookieFilter implements Filter {
 			}
 			
 		}
+		System.out.println("======================2=========================");
 		chain.doFilter(request, response);
 	}
 

@@ -48,7 +48,8 @@ public class EditStudentServlet extends HttpServlet {
 		}
 		else {
 			try {
-				list = DepartmentDBUtils.query(conn);
+				// Stub
+				list = DepartmentDBUtils.query(conn,0);
 			} catch (SQLException e) {
 				e.printStackTrace();
 				errorString = e.getMessage();

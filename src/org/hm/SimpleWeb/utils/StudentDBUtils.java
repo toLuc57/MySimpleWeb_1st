@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +13,9 @@ import org.hm.SimpleWeb.jdbc.MySQLConnUtils;
 
 public class StudentDBUtils {
 	private static final String table = "tSinhVien";
+	private static int amountRowsLimit = 10;
+	private static int amountRowsOffset = 10;
+	
 	private static final String id = "MaSinhVien";
 	private static final String lastName = "HoSinhVien";
 	private static final String firstName = "TenSinhVien";
@@ -21,11 +25,12 @@ public class StudentDBUtils {
 	private static final String address = "DiaChi";
 	private static final String idDepartment = "MaKhoa"; 
 	
-	public static List<Student> query(Connection conn) 
+	public static List<Student> query(Connection conn,int x) 
 			throws SQLException {
 		String query = "select "+ id +" ," + lastName +" ," + firstName
 				+ " ," + birthday + " ," + sex + " ," + telephone
-				+ " ," + address + " ," + idDepartment + " from " + table;
+				+ " ," + address + " ," + idDepartment + " from " + table
+				+" limit " + amountRowsLimit + " offset " + x*amountRowsOffset;
 		PreparedStatement pstm = conn.prepareStatement(query);
 		
 		ResultSet rs = pstm.executeQuery();
@@ -176,7 +181,27 @@ public class StudentDBUtils {
 			e.printStackTrace();
 		} finally {
 			MySQLConnUtils.closeQuietly(conn);
+		}		
+	}
+	
+	public static int getTotalRow() {
+		Connection conn = null;
+		try {
+			conn = MySQLConnUtils.getMySQLConUtils();
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("select count(*) from " + table);
+            int totalRow = 0;
+            if(rs.next()) {
+            	totalRow = rs.getInt(1);
+            }
+            System.out.println("So dong (trong DepartmentDBUtils): " + totalRow);
+            return totalRow;
+        } catch (ClassNotFoundException | SQLException e) {
+        	e.printStackTrace();
+        }
+		finally {
+			MySQLConnUtils.closeQuietly(conn);
 		}
-				
+		return 0;
 	}
 }

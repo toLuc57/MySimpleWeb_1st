@@ -27,12 +27,27 @@ public class CourseListServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Connection conn = MyUtils.getStoredConnection(request);
-
+		String indexPageSTR = request.getParameter("inputPage");
+		if(indexPageSTR == null) {
+			indexPageSTR = request.getParameter("page");
+		}
+		int indexPage = 0;
+		if(indexPageSTR != null) {
+			try {
+				indexPage = Integer.parseInt(indexPageSTR);
+			}catch(NumberFormatException e) {
+				indexPage = 0;
+			}
+			
+		}
 		String errorString = null;	
 		List<Course> list = null;
+		int totalRow = 0;
 		try 
 		{
-			list = CourseDBUtils.query(conn);			
+			list = CourseDBUtils.query(conn,indexPage);		
+			totalRow = CourseDBUtils.getTotalRow();
+			System.out.println("Total: " + totalRow);
 		} 
 		catch (SQLException e) {
 			e.printStackTrace();
@@ -40,6 +55,8 @@ public class CourseListServlet extends HttpServlet {
 		}
 		request.setAttribute("errorString", errorString);
 		request.setAttribute("courseList", list);
+		request.setAttribute("totalRow", totalRow);
+		request.setAttribute("page", indexPage);
 				
 		RequestDispatcher dispatcher = request.getServletContext()
 				.getRequestDispatcher("/WEB-INF/views/information/CourseListView.jsp");

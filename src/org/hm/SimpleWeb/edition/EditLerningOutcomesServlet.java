@@ -49,8 +49,9 @@ public class EditLerningOutcomesServlet extends HttpServlet {
 		else {			
 			try 
 			{
-				list1 = StudentDBUtils.query(conn);		
-				list2 = LearningOutcomesDBUtils.query(conn);
+				// Stub
+				list1 = StudentDBUtils.query(conn,0);		
+				list2 = LearningOutcomesDBUtils.query(conn,0);
 			} 
 			catch (SQLException e) {
 				e.printStackTrace();

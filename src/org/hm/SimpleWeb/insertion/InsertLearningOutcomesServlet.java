@@ -35,8 +35,9 @@ public class InsertLearningOutcomesServlet extends HttpServlet {
 		List<LearningOutcomes> list1 = null;
 		List<Student> list2 = null;
 		try {
-			list1 = LearningOutcomesDBUtils.query(conn);
-			list2 = StudentDBUtils.query(conn);
+			// Stub
+			list1 = LearningOutcomesDBUtils.query(conn,0);
+			list2 = StudentDBUtils.query(conn,0);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			errorString = e.getMessage();

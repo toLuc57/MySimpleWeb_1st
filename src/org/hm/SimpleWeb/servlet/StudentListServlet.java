@@ -26,17 +26,34 @@ public class StudentListServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Connection conn = MyUtils.getStoredConnection(request);
-
+		String indexPageSTR = request.getParameter("inputPage");
+		if(indexPageSTR == null) {
+			indexPageSTR = request.getParameter("page");
+		}
+		int indexPage = 0;
+		if(indexPageSTR != null) {
+			try {
+				indexPage = Integer.parseInt(indexPageSTR);
+			}catch(NumberFormatException e) {
+				indexPage = 0;
+			}
+			
+		}
+		
 		String errorString = null;
 		List<Student> list = null;
+		int totalRow = 0;
 		try {
-			list = StudentDBUtils.query(conn);
+			list = StudentDBUtils.query(conn,indexPage);
+			totalRow = StudentDBUtils.getTotalRow();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			errorString = e.getMessage();
 		}
 		request.setAttribute("errorString", errorString);
 		request.setAttribute("studentList", list);		
+		request.setAttribute("totalRow", totalRow);
+		request.setAttribute("page", indexPage);
 
 		RequestDispatcher dispatcher = request.getServletContext()
 				.getRequestDispatcher("/WEB-INF/views/information/StudentListView.jsp");

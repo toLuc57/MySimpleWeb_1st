@@ -33,7 +33,8 @@ public class InsertStudentServlet extends HttpServlet {
 		String errorString = null;
 		List<Department> list = null;
 		try {
-			list = DepartmentDBUtils.query(conn);
+			//Stub
+			list = DepartmentDBUtils.query(conn,0);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			errorString = e.getMessage();

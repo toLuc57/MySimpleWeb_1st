@@ -11,16 +11,17 @@
 <jsp:include page="..//_header.jsp"></jsp:include>
     <jsp:include page="..//_menu.jsp"></jsp:include>
 
-    <h3>Course List</h3>
+    <h3>Course List (<%=request.getAttribute("page") %>)</h3>
 
     <p style="color: red;">${errorString}</p>
 
     <table border="1" cellpadding="5" cellspacing="1" >
        <tr>
           <th>Id</th>
-          <th>Name</th>
-          <th>Address</th>
-          <th>Telephone</th>
+          <th>Id Subject</th>
+          <th>Id Teacher</th>
+          <th>From Date</th>
+          <th>To Date</th>
           <th>Edit</th>
           <th>Delete</th>
        </tr>
@@ -45,9 +46,10 @@
        } 
        %>
     </table>
-
     <a href="insertCourse" >Insert Course</a>
-
+    <br/>
+	<jsp:include page="..//_pagination.jsp"></jsp:include>
+	<br/>
     <jsp:include page="..//_footer.jsp"></jsp:include>
 </body>
 </html>

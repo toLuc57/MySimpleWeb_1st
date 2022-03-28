@@ -41,8 +41,9 @@ public class InsertCourseServlet extends HttpServlet {
 
 		try 
 		{
-			list1 = SubjectDBUtils.query(conn);		
-			list2 = TeacherDBUtils.query(conn);
+			//Stub
+			list1 = SubjectDBUtils.query(conn,0);		
+			list2 = TeacherDBUtils.query(conn,0);
 		} 
 		catch (SQLException e) {
 			e.printStackTrace();

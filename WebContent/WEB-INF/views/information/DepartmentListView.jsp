@@ -11,7 +11,7 @@
 <jsp:include page="..//_header.jsp"></jsp:include>
     <jsp:include page="..//_menu.jsp"></jsp:include>
 
-    <h3>Department List</h3>
+    <h3>Department List (<%=request.getAttribute("page")%>)</h3>
 
     <p style="color: red;">${errorString}</p>
 
@@ -46,7 +46,9 @@
     </table>
 
     <a href="insertDepartment" >Insert Department</a>
-
+	<br/>
+	<jsp:include page="..//_pagination.jsp"></jsp:include>
+	<br/>
     <jsp:include page="..//_footer.jsp"></jsp:include>
 </body>
 </html>

@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,16 +13,20 @@ import org.hm.SimpleWeb.jdbc.MySQLConnUtils;
 
 public class SubjectDBUtils {
 	private static final String table ="tmonhoc";
+	private static int amountRowsLimit = 10;
+	private static int amountRowsOffset = 10;
+	
 	private static final String id = "MaMonHoc";
 	private static final String name = "TenMonHoc";
 	private static final String theoryLesson = "SoTietLyThuyet";
 	private static final String practiceLesson = "SoTietThucHanh";
 		
-	public static List<Subject> query(Connection conn) 
+	public static List<Subject> query(Connection conn, int x) 
 		throws SQLException {
 		String sql = "select " + id + ", " + name + ", " 
 				+ theoryLesson + ", " + practiceLesson 
-				+ " from " + table;
+				+ " from " + table
+				+" limit " + amountRowsLimit + " offset " + x*amountRowsOffset;
 		PreparedStatement pstm = conn.prepareStatement(sql);
 		
 		ResultSet rs = pstm.executeQuery();
@@ -140,5 +145,25 @@ public class SubjectDBUtils {
 		finally {
 			MySQLConnUtils.closeQuietly(conn); 
 		}
+	}
+	public static int getTotalRow() {
+		Connection conn = null;
+		try {
+			conn = MySQLConnUtils.getMySQLConUtils();
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("select count(*) from " + table);
+            int totalRow = 0;
+            if(rs.next()) {
+            	totalRow = rs.getInt(1);
+            }
+            System.out.println("So dong (trong DepartmentDBUtils): " + totalRow);
+            return totalRow;
+        } catch (ClassNotFoundException | SQLException e) {
+        	e.printStackTrace();
+        }
+		finally {
+			MySQLConnUtils.closeQuietly(conn);
+		}
+		return 0;
 	}
 }

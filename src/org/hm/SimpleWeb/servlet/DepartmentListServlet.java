@@ -27,12 +27,27 @@ public class DepartmentListServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Connection conn = MyUtils.getStoredConnection(request);
-
+		String indexPageSTR = request.getParameter("inputPage");
+		if(indexPageSTR == null) {
+			indexPageSTR = request.getParameter("page");
+		}
+		int indexPage = 0;
+		if(indexPageSTR != null) {
+			try {
+				indexPage = Integer.parseInt(indexPageSTR);
+			}catch(NumberFormatException e) {
+				indexPage = 0;
+			}
+			
+		}
 		String errorString = null;	
 		List<Department> list = null;
+		int totalRow = 0;
 		try 
 		{
-			list = DepartmentDBUtils.query(conn);			
+			list = DepartmentDBUtils.query(conn,indexPage);	
+			totalRow = DepartmentDBUtils.getTotalRow();
+			
 		} 
 		catch (SQLException e) {
 			e.printStackTrace();
@@ -40,6 +55,8 @@ public class DepartmentListServlet extends HttpServlet {
 		}
 		request.setAttribute("errorString", errorString);
 		request.setAttribute("departmentList", list);
+		request.setAttribute("totalRow", totalRow);
+		request.setAttribute("page", indexPage);
 				
 		RequestDispatcher dispatcher = request.getServletContext()
 				.getRequestDispatcher("/WEB-INF/views/information/DepartmentListView.jsp");

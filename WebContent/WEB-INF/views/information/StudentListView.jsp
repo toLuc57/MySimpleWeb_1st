@@ -54,7 +54,9 @@
     </table>
 
     <a href="insertStudent" >Insert Student</a>
-
+	<br/>
+	<jsp:include page="..//_pagination.jsp"></jsp:include>
+	<br/>
     <jsp:include page="..//_footer.jsp"></jsp:include>
 </body>
 </html>

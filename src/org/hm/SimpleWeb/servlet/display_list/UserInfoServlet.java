@@ -1,4 +1,4 @@
-package org.hm.SimpleWeb.servlet;
+package org.hm.SimpleWeb.servlet.display_list;
 
 import java.io.IOException;
 

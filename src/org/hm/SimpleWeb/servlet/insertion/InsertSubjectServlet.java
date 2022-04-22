@@ -1,4 +1,4 @@
-package org.hm.SimpleWeb.insertion;
+package org.hm.SimpleWeb.servlet.insertion;
 
 import java.io.IOException;
 import java.sql.SQLException;

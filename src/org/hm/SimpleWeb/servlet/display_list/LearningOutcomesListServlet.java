@@ -1,4 +1,4 @@
-package org.hm.SimpleWeb.servlet;
+package org.hm.SimpleWeb.servlet.display_list;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -12,16 +12,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.hm.SimpleWeb.beans.Teacher;
-import org.hm.SimpleWeb.utils.TeacherDBUtils;
+import org.hm.SimpleWeb.beans.LearningOutcomes;
+import org.hm.SimpleWeb.utils.LearningOutcomesDBUtils;
 import org.hm.SimpleWeb.utils.MyUtils;
 
 
-@WebServlet("/teacherList")
-public class TeacherListServlet extends HttpServlet {
+@WebServlet("/learningOutcomesList")
+public class LearningOutcomesListServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-    public TeacherListServlet() {
+    public LearningOutcomesListServlet() {
         super();
     }
 
@@ -38,30 +38,27 @@ public class TeacherListServlet extends HttpServlet {
 			}catch(NumberFormatException e) {
 				indexPage = 0;
 			}
+			
 		}
-		
-		String errorString = null;
-		List<Teacher> list = null;
+		String errorString = null;	
+		List<LearningOutcomes> list = null;
 		int totalRow = 0;
-		try {
-			list = TeacherDBUtils.query(conn,indexPage);
-			totalRow = TeacherDBUtils.getTotalRow();
-		} catch (SQLException e) {
+		try 
+		{
+			list = LearningOutcomesDBUtils.query(conn,indexPage);
+			totalRow = LearningOutcomesDBUtils.getTotalRow();
+		} 
+		catch (SQLException e) {
 			e.printStackTrace();
 			errorString = e.getMessage();
 		}
 		request.setAttribute("errorString", errorString);
-		request.setAttribute("teacherList", list);		
+		request.setAttribute("learningOutcomesList", list);
 		request.setAttribute("totalRow", totalRow);
 		request.setAttribute("page", indexPage);
-		
-		System.out.println("===================================");
-		for(Teacher i : list) {
-			System.out.println(i.getId() + " " + i.getName());
-		}
-		
+				
 		RequestDispatcher dispatcher = request.getServletContext()
-				.getRequestDispatcher("/WEB-INF/views/information/TeacherListView.jsp");
+				.getRequestDispatcher("/WEB-INF/views/information/LearningOutcomesListView.jsp");
 		dispatcher.forward(request, response);
 	}
 

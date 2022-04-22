@@ -1,12 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="java.util.List,org.hm.SimpleWeb.beans.Course" %>
+<%@ page import="java.util.List" %>
 <style>
 	.pagination{
-		display: inline-block;
+		list-style-type: none;
 		float: right;
-		padding: 8px 16px;
-		margin: 10px;
+	}
+	.pagination li{
+		display: inline-block;
 	}
 	.pagination a{
 		color: black;
@@ -39,7 +40,7 @@
 <div style="float:right">Total pages: <%=totalPages %></div>
 <br/>
 <div style="float:right;margin: 10px">
-	<form method="POST"">
+	<form href="post">
 		Number of page:			
 		<input type="number" name="inputPage" min="0" max="<%= totalPages %>>" size="3" 
 			placeholder="<%=indexPage %>" >
@@ -48,34 +49,48 @@
 </div>
 <br/>
 <div>
-	<div class="pagination">
-		<a href="#">&laquo; </a>
+  <ul class="pagination">
+	<li>
+	  <a href="#?page=0" > &laquo;</a>
+    <li>
 		<%
 			if(indexPage <= 5){
 				for(int i = 0; i < 5; ++i){
 		    	   if (indexPage == i){
 		    		%>
-	   		 			<a class="active"><%=i%></a>
+	   		 			<li><a class="active"><%=i%></a></li>
 			 		<%
 		    	   }
 		    	   else {
 	 		   		%>
-	    		 		<a href="?page=<%=i%>"><%=i%></a>
+	    		 		<li><a href="?page=<%=i%>"><%=i%></a></li>
 	 		 		<%
 		    	   }
 				}
 	     	} 
 			else {
-				for(int i = 0; i < 5; ++i){
+				for(int i = indexPage - 2; i < indexPage; ++i){
 		   		%>
-	  		 		<a href="?page=<%=i%>"><%=i%></a>
+	  		 		<li>
+	  		 		  <a href="?page=<%=i%>"><%=i%></a>
+	  		 		</li>
 		 		<%
 				}
 				%> 
-					<a class="active" href=""><%=indexPage%></a>
+					<li><a class="active"><%=indexPage%></a></li>
 				<%
+				for(int i = indexPage; i < totalPages && i < indexPage + 2 ; ++i){
+			   		%>
+		  		 		<li>
+		  		 		  <a href="?page=<%=i%>"><%=i%></a>
+		  		 		</li>
+			 		<%
+				}
 	       }
 	 	%>
-		<a href="#">&raquo;</a>
-	</div>
+		<li>
+		  <a href="?page=<%=totalPages%>">&raquo;</a>
+    </li>
+  </ul>
 </div>
+	

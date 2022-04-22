@@ -1,4 +1,4 @@
-package org.hm.SimpleWeb.deletion;
+package org.hm.SimpleWeb.servlet.deletion;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -10,22 +10,24 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.hm.SimpleWeb.utils.TeacherDBUtils;
+import org.hm.SimpleWeb.utils.LearningOutcomesDBUtils;
 
-@WebServlet("/deleteTeacher")
-public class DeleteTeacherServlet extends HttpServlet {
+
+@WebServlet("/DeleteLearningOutcomesServlet")
+public class DeleteLearningOutcomesServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-    public DeleteTeacherServlet() {
+    public DeleteLearningOutcomesServlet() {
         super();
     }
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String code = (String) request.getParameter("id");
 
 		String errorString = null;
 		try {
-			TeacherDBUtils.delete(code);
+			LearningOutcomesDBUtils.delete(code);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			errorString = e.getMessage();
@@ -34,16 +36,15 @@ public class DeleteTeacherServlet extends HttpServlet {
 		if (errorString != null) {
 			request.setAttribute("errorString", errorString);
 			RequestDispatcher dispatcher = request.getServletContext()
-					.getRequestDispatcher("/WEB-INF/views/information/TeacherListView.jsp");
+					.getRequestDispatcher("/WEB-INF/views/information/LearningOutcomesListView.jsp");
 			dispatcher.forward(request, response);
 		}
 		else {
-			response.sendRedirect(request.getContextPath() + "/teacherList");
+			response.sendRedirect(request.getContextPath() + "/learningOutcomesList");
 		}
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 

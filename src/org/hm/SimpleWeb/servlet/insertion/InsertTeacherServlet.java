@@ -1,7 +1,9 @@
-package org.hm.SimpleWeb.edition;
+package org.hm.SimpleWeb.servlet.insertion;
 
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -10,57 +12,60 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.hm.SimpleWeb.beans.Teacher;
 import org.hm.SimpleWeb.beans.Department;
+import org.hm.SimpleWeb.utils.TeacherDBUtils;
 import org.hm.SimpleWeb.utils.DepartmentDBUtils;
+import org.hm.SimpleWeb.utils.MyUtils;
 
-@WebServlet("/editDepartment")
-public class EditDepartmentServlet extends HttpServlet {
+@WebServlet("/insertTeacher")
+public class InsertTeacherServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    public EditDepartmentServlet() {
+
+    public InsertTeacherServlet() {
         super();
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String code = (String) request.getParameter("id");
-
-		Department editRow = null;
-
+		Connection conn = MyUtils.getStoredConnection(request);
+		
 		String errorString = null;
-
+		List<Department> list = null;
 		try {
-			editRow = DepartmentDBUtils.find(code);
+			//Stub
+			list = DepartmentDBUtils.query(conn,0);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			errorString = e.getMessage();
 		}
-		if (editRow == null) {
-			errorString += " Is null";
-			System.out.println(errorString);
-		}
 		request.setAttribute("errorString", errorString);
-		request.setAttribute("department", editRow);
+		request.setAttribute("departmentList", list);		
 		
 		RequestDispatcher dispatcher = request.getServletContext()
-				.getRequestDispatcher("/WEB-INF/views/editData/editDepartment.jsp");
+				.getRequestDispatcher("/WEB-INF/views/insertData/insertTeacher.jsp");
 		dispatcher.forward(request, response);
 	}
+
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String id = (String) request.getParameter("id");
+		
 		String name = (String) request.getParameter("name");
-		String address = (String) request.getParameter("address");
-		System.out.println("Address: "+ address);
+		String degress = (String) request.getParameter("degress");
 		String telephone = (String) request.getParameter("telephone");
+		String idDepartment = (String) request.getParameter("idDepartment");
 		
-		
-		Department editRow = new Department(id,name,address,telephone);
-
 		String errorString = null;
-
-		if (errorString == null) {
+		Department findDepartment = null;
+		try {
+			findDepartment = DepartmentDBUtils.find(idDepartment);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			errorString = e.getMessage();
+		}
+		
+		if (errorString == null && findDepartment != null) {
 			try {
-				DepartmentDBUtils.update(editRow);
-				
+				Teacher newTeacher = new Teacher(name,degress,telephone,idDepartment);
+				TeacherDBUtils.insert(newTeacher);				
 			} catch (SQLException e) {
 				e.printStackTrace();
 				errorString = e.getMessage();
@@ -68,16 +73,14 @@ public class EditDepartmentServlet extends HttpServlet {
 		}
 		
 		request.setAttribute("errorString", errorString);
-		request.setAttribute("department", editRow);
-
 		if (errorString != null) {
 			RequestDispatcher dispatcher = request.getServletContext()
-					.getRequestDispatcher("/WEB-INF/views/editData/editDepartment.jsp");
+					.getRequestDispatcher("/WEB-INF/views/insertData/insertTeacher.jsp");
 			dispatcher.forward(request, response);
 		}
 		
 		else {
-			response.sendRedirect(request.getContextPath() + "/departmentList");
+			response.sendRedirect(request.getContextPath() + "/teacherList");
 		}
 	}
 

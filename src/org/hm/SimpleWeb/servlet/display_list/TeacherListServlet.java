@@ -1,4 +1,4 @@
-package org.hm.SimpleWeb.servlet;
+package org.hm.SimpleWeb.servlet.display_list;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -12,15 +12,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.hm.SimpleWeb.beans.Subject;
-import org.hm.SimpleWeb.utils.SubjectDBUtils;
+import org.hm.SimpleWeb.beans.Teacher;
+import org.hm.SimpleWeb.utils.TeacherDBUtils;
 import org.hm.SimpleWeb.utils.MyUtils;
 
-@WebServlet("/subjectList")
-public class SubjectsListServlet extends HttpServlet {
+
+@WebServlet("/teacherList")
+public class TeacherListServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-    public SubjectsListServlet() {
+    public TeacherListServlet() {
         super();
     }
 
@@ -38,25 +39,29 @@ public class SubjectsListServlet extends HttpServlet {
 				indexPage = 0;
 			}
 		}
-		String errorString = null;	
-		List<Subject> list = null;
+		
+		String errorString = null;
+		List<Teacher> list = null;
 		int totalRow = 0;
-		try 
-		{
-			list = SubjectDBUtils.query(conn,indexPage);
-			totalRow = SubjectDBUtils.getTotalRow();
-		} 
-		catch (SQLException e) {
+		try {
+			list = TeacherDBUtils.query(conn,indexPage);
+			totalRow = TeacherDBUtils.getTotalRow();
+		} catch (SQLException e) {
 			e.printStackTrace();
 			errorString = e.getMessage();
 		}
 		request.setAttribute("errorString", errorString);
-		request.setAttribute("subjectsList", list);
+		request.setAttribute("teacherList", list);		
 		request.setAttribute("totalRow", totalRow);
 		request.setAttribute("page", indexPage);
-				
+		
+		System.out.println("===================================");
+		for(Teacher i : list) {
+			System.out.println(i.getId() + " " + i.getName());
+		}
+		
 		RequestDispatcher dispatcher = request.getServletContext()
-				.getRequestDispatcher("/WEB-INF/views/information/SubjectListView.jsp");
+				.getRequestDispatcher("/WEB-INF/views/information/TeacherListView.jsp");
 		dispatcher.forward(request, response);
 	}
 

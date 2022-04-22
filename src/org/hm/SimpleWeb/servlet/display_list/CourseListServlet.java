@@ -1,4 +1,4 @@
-package org.hm.SimpleWeb.servlet;
+package org.hm.SimpleWeb.servlet.display_list;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -12,16 +12,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.hm.SimpleWeb.beans.Department;
-import org.hm.SimpleWeb.utils.DepartmentDBUtils;
+import org.hm.SimpleWeb.beans.Course;
+import org.hm.SimpleWeb.utils.CourseDBUtils;
 import org.hm.SimpleWeb.utils.MyUtils;
 
 
-@WebServlet("/departmentList")
-public class DepartmentListServlet extends HttpServlet {
+@WebServlet("/courseList")
+public class CourseListServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-    public DepartmentListServlet() {
+    public CourseListServlet() {
         super();
     }
 
@@ -41,25 +41,25 @@ public class DepartmentListServlet extends HttpServlet {
 			
 		}
 		String errorString = null;	
-		List<Department> list = null;
+		List<Course> list = null;
 		int totalRow = 0;
 		try 
 		{
-			list = DepartmentDBUtils.query(conn,indexPage);	
-			totalRow = DepartmentDBUtils.getTotalRow();
-			
+			list = CourseDBUtils.query(conn,indexPage);		
+			totalRow = CourseDBUtils.getTotalRow();
+			System.out.println("Total: " + totalRow);
 		} 
 		catch (SQLException e) {
 			e.printStackTrace();
 			errorString = e.getMessage();
 		}
 		request.setAttribute("errorString", errorString);
-		request.setAttribute("departmentList", list);
+		request.setAttribute("courseList", list);
 		request.setAttribute("totalRow", totalRow);
 		request.setAttribute("page", indexPage);
 				
 		RequestDispatcher dispatcher = request.getServletContext()
-				.getRequestDispatcher("/WEB-INF/views/information/DepartmentListView.jsp");
+				.getRequestDispatcher("/WEB-INF/views/information/CourseListView.jsp");
 		dispatcher.forward(request, response);
 	}
 

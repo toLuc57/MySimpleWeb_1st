@@ -1,4 +1,4 @@
-package org.hm.SimpleWeb.insertion;
+package org.hm.SimpleWeb.servlet.edition;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -19,34 +19,58 @@ import org.hm.SimpleWeb.utils.DepartmentDBUtils;
 import org.hm.SimpleWeb.utils.MyUtils;
 import org.hm.SimpleWeb.utils.StudentDBUtils;
 
-@WebServlet("/insertStudent")
-public class InsertStudentServlet extends HttpServlet {
+@WebServlet("/editStudent")
+public class EditStudentServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    public InsertStudentServlet() {
+
+    public EditStudentServlet() {
         super();
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Connection conn = MyUtils.getStoredConnection(request);
 		
-		String errorString = null;
+		String code = (String) request.getParameter("id");
+
+		Student editRow = null;
 		List<Department> list = null;
+		String errorString = null;
+		
 		try {
-			//Stub
-			list = DepartmentDBUtils.query(conn,0);
+			editRow = StudentDBUtils.find(code);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			errorString = e.getMessage();
 		}
+		if (editRow == null) {
+			errorString = "Is null";
+			System.out.println(errorString);
+		}
+		else {
+			try {
+				// Stub
+				list = DepartmentDBUtils.query(conn,0);
+			} catch (SQLException e) {
+				e.printStackTrace();
+				errorString = e.getMessage();
+			}	
+		}
+		String birthdaySTR = editRow.getBirthday().toString();
+		String[] spiltBirthday = birthdaySTR.split("-",3);
+
 		request.setAttribute("errorString", errorString);
-		request.setAttribute("departmentList", list);	
+		request.setAttribute("student", editRow);
+		request.setAttribute("day", spiltBirthday[2]);
+		request.setAttribute("month", spiltBirthday[1]);
+		request.setAttribute("year", spiltBirthday[0]);
+		request.setAttribute("departmentList", list);
+		
 		RequestDispatcher dispatcher = request.getServletContext()
-				.getRequestDispatcher("/WEB-INF/views/insertData/insertStudent.jsp");
+				.getRequestDispatcher("/WEB-INF/views/editData/editStudent.jsp");
 		dispatcher.forward(request, response);
 	}
-
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String id = (String) request.getParameter("id");
 		String lastName = (String) request.getParameter("lastName");
 		String firstName = (String) request.getParameter("firstName");
 		String day = (String) request.getParameter("day");
@@ -56,35 +80,30 @@ public class InsertStudentServlet extends HttpServlet {
 		String telephone = (String) request.getParameter("telephone");
 		String address = (String) request.getParameter("address");
 		String idDepartment = (String) request.getParameter("idDepartment");
-
+		
 		Date birthday = Date.valueOf(year + "-" + month + "-" + day);
 		
-		System.out.println("Birthday: " + birthday.toString());
-		System.out.println("Sex: " + sex);
+		Student editStudent = new Student(id,lastName,firstName,birthday,
+				sex,telephone,address,idDepartment);
+		
 		String errorString = null;
 
-		Department findDepartment = null;
-		try {
-			findDepartment = DepartmentDBUtils.find(idDepartment);
-		} catch (SQLException e) {
-			e.printStackTrace();
-			errorString = e.getMessage();
-		}
-		if (errorString == null && findDepartment != null) {
+		if (errorString == null) {
 			try {
-				Student newRow = new Student(lastName,firstName,birthday,
-						sex,telephone,address,idDepartment);
-				StudentDBUtils.insert(newRow);
+				StudentDBUtils.update(editStudent);
 				
 			} catch (SQLException e) {
 				e.printStackTrace();
 				errorString = e.getMessage();
 			}
 		}
+		
 		request.setAttribute("errorString", errorString);
+		request.setAttribute("student", editStudent);
+
 		if (errorString != null) {
 			RequestDispatcher dispatcher = request.getServletContext()
-					.getRequestDispatcher("/WEB-INF/views/insertData/insertTStudent.jsp");
+					.getRequestDispatcher("/WEB-INF/views/editData/editStudent.jsp");
 			dispatcher.forward(request, response);
 		}
 		

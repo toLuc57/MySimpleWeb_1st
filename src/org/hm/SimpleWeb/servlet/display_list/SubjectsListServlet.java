@@ -1,4 +1,4 @@
-package org.hm.SimpleWeb.servlet;
+package org.hm.SimpleWeb.servlet.display_list;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -12,16 +12,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.hm.SimpleWeb.beans.LearningOutcomes;
-import org.hm.SimpleWeb.utils.LearningOutcomesDBUtils;
+import org.hm.SimpleWeb.beans.Subject;
+import org.hm.SimpleWeb.utils.SubjectDBUtils;
 import org.hm.SimpleWeb.utils.MyUtils;
 
-
-@WebServlet("/learningOutcomesList")
-public class LearningOutcomesListServlet extends HttpServlet {
+@WebServlet("/subjectList")
+public class SubjectsListServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-    public LearningOutcomesListServlet() {
+    public SubjectsListServlet() {
         super();
     }
 
@@ -38,27 +37,26 @@ public class LearningOutcomesListServlet extends HttpServlet {
 			}catch(NumberFormatException e) {
 				indexPage = 0;
 			}
-			
 		}
 		String errorString = null;	
-		List<LearningOutcomes> list = null;
+		List<Subject> list = null;
 		int totalRow = 0;
 		try 
 		{
-			list = LearningOutcomesDBUtils.query(conn,indexPage);
-			totalRow = LearningOutcomesDBUtils.getTotalRow();
+			list = SubjectDBUtils.query(conn,indexPage);
+			totalRow = SubjectDBUtils.getTotalRow();
 		} 
 		catch (SQLException e) {
 			e.printStackTrace();
 			errorString = e.getMessage();
 		}
 		request.setAttribute("errorString", errorString);
-		request.setAttribute("learningOutcomesList", list);
+		request.setAttribute("subjectsList", list);
 		request.setAttribute("totalRow", totalRow);
 		request.setAttribute("page", indexPage);
 				
 		RequestDispatcher dispatcher = request.getServletContext()
-				.getRequestDispatcher("/WEB-INF/views/information/LearningOutcomesListView.jsp");
+				.getRequestDispatcher("/WEB-INF/views/information/SubjectListView.jsp");
 		dispatcher.forward(request, response);
 	}
 

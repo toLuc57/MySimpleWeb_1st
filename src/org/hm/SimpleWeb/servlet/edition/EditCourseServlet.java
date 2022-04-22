@@ -1,4 +1,4 @@
-package org.hm.SimpleWeb.insertion;
+package org.hm.SimpleWeb.servlet.edition;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -17,43 +17,65 @@ import org.hm.SimpleWeb.beans.Course;
 import org.hm.SimpleWeb.beans.Subject;
 import org.hm.SimpleWeb.beans.Teacher;
 import org.hm.SimpleWeb.utils.CourseDBUtils;
-import org.hm.SimpleWeb.utils.SubjectDBUtils;
 import org.hm.SimpleWeb.utils.MyUtils;
+import org.hm.SimpleWeb.utils.SubjectDBUtils;
 import org.hm.SimpleWeb.utils.TeacherDBUtils;
 
-
-@WebServlet("/insertCourse")
-public class InsertCourseServlet extends HttpServlet {
+@WebServlet("/editCourse")
+public class EditCourseServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
-    public InsertCourseServlet() {
+       
+    public EditCourseServlet() {
         super();
     }
-
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Connection conn = MyUtils.getStoredConnection(request);
 		
-		Course insertRow = null;
+		String code = (String) request.getParameter("id");
+
+		Course editRow = null;
 		List<Subject> list1 = null;
 		List<Teacher> list2 = null;
 
 		String errorString = null;
 
-		try 
-		{
-			//Stub
-			list1 = SubjectDBUtils.query(conn,0);		
-			list2 = TeacherDBUtils.query(conn,0);
-		} 
-		catch (SQLException e) {
+		try {
+			editRow = CourseDBUtils.find(code);
+		} catch (SQLException e) {
 			e.printStackTrace();
 			errorString = e.getMessage();
 		}
-		
+		if (editRow == null) {
+			System.out.println(errorString);
+		}
+		else {
+			String fromDateSTR = editRow.getFromDate().toString();
+			String[] spiltFromDate = fromDateSTR.split("-",3);
+			String toDateSTR = editRow.getToDate().toString();
+			String[] spiltToDate = toDateSTR.split("-",3);
+			
+			request.setAttribute("fromDay", spiltFromDate[0]);	
+			request.setAttribute("fromMonth", spiltFromDate[1]);	
+			request.setAttribute("fromYear", spiltFromDate[2]);	
+			
+			request.setAttribute("toDay", spiltToDate[0]);	
+			request.setAttribute("toMonth", spiltToDate[1]);	
+			request.setAttribute("toYear", spiltToDate[2]);	
+			try 
+			{
+				// Stub
+				list1 = SubjectDBUtils.query(conn,0);		
+				list2 = TeacherDBUtils.query(conn,0);
+			} 
+			catch (SQLException e) {
+				e.printStackTrace();
+				errorString = e.getMessage();
+			}
+		}
 		request.setAttribute("teacherList", list2);	
 		request.setAttribute("subjectsList", list1);
 		request.setAttribute("errorString", errorString);
-		request.setAttribute("course", insertRow);
+		request.setAttribute("course", editRow);
 		
 		RequestDispatcher dispatcher = request.getServletContext()
 				.getRequestDispatcher("/WEB-INF/views/editData/editCourse.jsp");
@@ -74,32 +96,26 @@ public class InsertCourseServlet extends HttpServlet {
 		Date fromDate = Date.valueOf(fromYear + "-" + fromMonth + "-" + fromDay);
 		Date toDate = Date.valueOf(toYear + "-" + toMonth + "-" + toDay);
 		
-		Course newRow = new Course(id,idTeacher,idSubject,fromDate,toDate);
+		Course editRow = new Course(id,idTeacher,idSubject,fromDate,toDate);
 
 		String errorString = null;
-		Subject findSubject = null;
-		Teacher findTeacher = null;
-		try {
-			findSubject = SubjectDBUtils.find(idSubject);
-			findTeacher = TeacherDBUtils.find(idTeacher);
-		} catch (SQLException e) {
-			e.printStackTrace();
-			errorString = e.getMessage();
-		}
-		
-		if (errorString == null && findSubject != null && findTeacher != null) {
+
+		if (errorString == null) {
 			try {
-				CourseDBUtils.insert(newRow);
+				CourseDBUtils.update(editRow);
 				
 			} catch (SQLException e) {
 				e.printStackTrace();
 				errorString = e.getMessage();
 			}
 		}
+		
 		request.setAttribute("errorString", errorString);
+		request.setAttribute("course", editRow);
+
 		if (errorString != null) {
 			RequestDispatcher dispatcher = request.getServletContext()
-					.getRequestDispatcher("/WEB-INF/views/insertData/insertTCourse.jsp");
+					.getRequestDispatcher("/WEB-INF/views/editData/editCourse.jsp");
 			dispatcher.forward(request, response);
 		}
 		

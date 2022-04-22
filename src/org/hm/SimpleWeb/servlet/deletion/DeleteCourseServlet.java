@@ -1,4 +1,4 @@
-package org.hm.SimpleWeb.deletion;
+package org.hm.SimpleWeb.servlet.deletion;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -10,23 +10,21 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.hm.SimpleWeb.utils.DepartmentDBUtils;
+import org.hm.SimpleWeb.utils.CourseDBUtils;
 
-
-@WebServlet("/deleteDepartment")
-public class DeleteDepartmentServlet extends HttpServlet {
+@WebServlet("/deleteCourse")
+public class DeleteCourseServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
-    public DeleteDepartmentServlet() {
+       
+    public DeleteCourseServlet() {
         super();
     }
-
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String code = (String) request.getParameter("id");
 
 		String errorString = null;
 		try {
-			DepartmentDBUtils.delete(code);
+			CourseDBUtils.delete(code);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			errorString = e.getMessage();
@@ -35,16 +33,15 @@ public class DeleteDepartmentServlet extends HttpServlet {
 		if (errorString != null) {
 			request.setAttribute("errorString", errorString);
 			RequestDispatcher dispatcher = request.getServletContext()
-					.getRequestDispatcher("/WEB-INF/views/information/DepartmentListView.jsp");
+					.getRequestDispatcher("/WEB-INF/views/information/CourseListView.jsp");
 			dispatcher.forward(request, response);
 		}
 		else {
-			response.sendRedirect(request.getContextPath() + "/departmentList");
+			response.sendRedirect(request.getContextPath() + "/courseList");
 		}
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 

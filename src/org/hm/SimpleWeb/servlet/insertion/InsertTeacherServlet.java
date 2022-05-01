@@ -18,7 +18,7 @@ import org.hm.SimpleWeb.utils.TeacherDBUtils;
 import org.hm.SimpleWeb.utils.DepartmentDBUtils;
 import org.hm.SimpleWeb.utils.MyUtils;
 
-@WebServlet("/insertTeacher")
+@WebServlet("/teacher/insert")
 public class InsertTeacherServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 

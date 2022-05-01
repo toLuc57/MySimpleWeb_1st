@@ -54,14 +54,13 @@ public class JDBCFilter implements Filter {
 	}
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) 
 			throws IOException, ServletException {
-		
 		HttpServletRequest req = (HttpServletRequest) request;
+		
 		if(this.needJDBC(req)) {
 			System.out.println("Open Connection for: " + req.getServletPath());
 			Connection conn = null;
 			try {
 				conn = MySQLConnUtils.getMySQLConUtils();
-
 				conn.setAutoCommit(false);
 				
 				MyUtils.storeConnection(request, conn);

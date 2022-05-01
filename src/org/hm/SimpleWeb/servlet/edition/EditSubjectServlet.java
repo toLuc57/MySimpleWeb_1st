@@ -14,7 +14,7 @@ import org.hm.SimpleWeb.beans.Subject;
 import org.hm.SimpleWeb.utils.SubjectDBUtils;
 
 
-@WebServlet("/editSubject")
+@WebServlet("/subject/edit")
 public class EditSubjectServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 

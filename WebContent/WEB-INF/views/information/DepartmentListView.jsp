@@ -34,10 +34,10 @@
 			   <td><%= i.getAddress()%></td>
 			   <td><%= i.getTelephone()%></td>
 			   <td>
-		          <a href="editDepartment?id=<%=i.getId()%>">Edit</a>
+		          <a href="department/edit?id=<%=i.getId()%>">Edit</a>
 		       </td>
 		       <td>
-		      		<a href="deleteDepartment?id=<%=i.getId()%>">Delete</a>
+		      		<a href="department/delete?id=<%=i.getId()%>">Delete</a>
 		       </td>
 	       </tr>
        <% 

@@ -21,7 +21,7 @@ import org.hm.SimpleWeb.utils.MyUtils;
 import org.hm.SimpleWeb.utils.SubjectDBUtils;
 import org.hm.SimpleWeb.utils.TeacherDBUtils;
 
-@WebServlet("/editCourse")
+@WebServlet("/course/edit")
 public class EditCourseServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        

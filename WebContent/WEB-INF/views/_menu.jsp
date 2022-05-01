@@ -51,12 +51,12 @@
 
    <a href="${pageContext.request.contextPath}/">Home</a>
    |
-   <a href="${pageContext.request.contextPath}/userinfo">My Account Info</a>
+   <a href="${pageContext.request.contextPath}/userInfo">My Account Info</a>
    |
    <a href="${pageContext.request.contextPath}/login">Login</a>
    |
    <div class="dropdown">
-	   <a href="">Dropdown</a>
+	   <a>Drop down</a>
 	   <div class="dropdown-content">
 	       <a href="${pageContext.request.contextPath}/teacherList">Teacher List</a>
 		   <a href="${pageContext.request.contextPath}/departmentList">Department List</a>

@@ -40,7 +40,7 @@
       
       </br>
       
-      <form method="POST" action="${pageContext.request.contextPath}/insertTeacher">
+      <form method="POST" action="${pageContext.request.contextPath}/teacher/insert">
          <table border="0">
             <tr>
                <td>Name</td>

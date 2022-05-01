@@ -19,7 +19,7 @@ import org.hm.SimpleWeb.utils.DepartmentDBUtils;
 import org.hm.SimpleWeb.utils.MyUtils;
 import org.hm.SimpleWeb.utils.StudentDBUtils;
 
-@WebServlet("/editStudent")
+@WebServlet("/student/edit")
 public class EditStudentServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 

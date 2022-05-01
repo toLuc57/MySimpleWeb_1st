@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.hm.SimpleWeb.utils.LearningOutcomesDBUtils;
 
 
-@WebServlet("/DeleteLearningOutcomesServlet")
+@WebServlet("/learningOutcomes/delete")
 public class DeleteLearningOutcomesServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 

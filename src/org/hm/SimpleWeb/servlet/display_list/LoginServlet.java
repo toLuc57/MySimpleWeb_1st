@@ -1,7 +1,6 @@
 package org.hm.SimpleWeb.servlet.display_list;
 
 import java.io.IOException;
-import java.sql.Connection;
 import java.sql.SQLException;
 
 import javax.servlet.RequestDispatcher;
@@ -26,12 +25,20 @@ public class LoginServlet extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		int redirectId = -1;
+		try {
+			redirectId = Integer.parseInt(request.getParameter("redirectId"));
+		} catch (Exception e) {
+		}
+		
+		request.setAttribute("redirectId",redirectId);
+		
 		RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/views/loginView.jsp");
 		dispatcher.forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+
 		String userName = request.getParameter("userName");
 		String password = request.getParameter("password");
 		String rememberMeStr = request.getParameter("rememberMe");
@@ -46,13 +53,11 @@ public class LoginServlet extends HttpServlet {
 			errorString = "Required username and password!";
 		} 
 		else {
-			Connection conn = MyUtils.getStoredConnection(request);
 			try {
-				user = UserAccountDBUtils.find(conn, userName, password);
-
+				user = UserAccountDBUtils.find(userName, password);
 				if (user == null) {
 					hasError = true;
-					errorString = "User Name or password invalid";
+					errorString = "User Name or password not correct";
 				} /*
 				else {
 					System.out.println("-----Information for user-----");
@@ -67,20 +72,7 @@ public class LoginServlet extends HttpServlet {
 			}
 		}
 		
-		if (hasError) {
-			user = new UserAccount();
-			user.setUserName(userName);
-			user.setPassword(password);
-
-			request.setAttribute("errorString", errorString);
-			request.setAttribute("user", user);
-
-			RequestDispatcher dispatcher //
-					= this.getServletContext().getRequestDispatcher("/WEB-INF/views/loginView.jsp");
-
-			dispatcher.forward(request, response);
-		}
-		else {
+		if (!hasError) {
 			HttpSession session = request.getSession();
 			MyUtils.storeLoginedUser(session, user);
 
@@ -90,8 +82,28 @@ public class LoginServlet extends HttpServlet {
 			else {
 				MyUtils.deleteUserCookie(response);
 			}
-
-			response.sendRedirect(request.getContextPath() + "/userinfo");
+			
+			int redirectId = -1;
+			try {
+				redirectId = Integer.parseInt(request.getParameter("redirectId"));
+			} catch (Exception e) {
+			}
+			System.out.println("  Redirect Id: " + redirectId);
+			String requestUri = MyUtils.getRedirectAfterLoginUrl(request.getSession(), redirectId);
+			System.out.println("  Request Uri: " + requestUri);
+			if (requestUri != null) {
+				response.sendRedirect(requestUri);
+			} else {
+				// Mặc định (tức là trang trước đó không lưu) 
+				// sau khi đăng nhập thành công
+				// chuyển hướng về trang /userinfo
+				response.sendRedirect(request.getContextPath() + "/userInfo");
+			}
+		}
+		else {
+			request.setAttribute("errorString", errorString);
+			RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/views/loginView.jsp");
+			dispatcher.forward(request, response);
 		}
 	}
 

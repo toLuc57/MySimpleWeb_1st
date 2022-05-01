@@ -14,7 +14,7 @@ import org.hm.SimpleWeb.beans.Department;
 import org.hm.SimpleWeb.utils.DepartmentDBUtils;
 
 
-@WebServlet("/insertDepartment")
+@WebServlet("/department/insert")
 public class InsertDepartmentServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 

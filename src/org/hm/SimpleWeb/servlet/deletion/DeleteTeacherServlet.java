@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.hm.SimpleWeb.utils.TeacherDBUtils;
 
-@WebServlet("/deleteTeacher")
+@WebServlet("/teacher/delete")
 public class DeleteTeacherServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 

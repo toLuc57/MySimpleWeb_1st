@@ -40,7 +40,7 @@
       
       <h3>Edit Teacher</h3>
       
-      <form method="POST" action="${pageContext.request.contextPath}/editTeacher">
+      <form method="POST" action="${pageContext.request.contextPath}/teacher/edit">
          <input type="hidden" name="id" value="${teacher.id}" />
          <table border="0">
          	<tr>

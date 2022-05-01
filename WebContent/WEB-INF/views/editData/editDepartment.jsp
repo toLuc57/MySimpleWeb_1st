@@ -13,7 +13,7 @@
       
       <p style="color: red;">${errorString}</p>
       
-      <form method="POST" action="${pageContext.request.contextPath}/editDepartment">
+      <form method="POST" action="${pageContext.request.contextPath}/department/edit">
          <input type="hidden" name="id" value="${department.id}" />
          <table border="0">
             <tr>

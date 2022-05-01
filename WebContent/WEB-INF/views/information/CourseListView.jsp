@@ -36,10 +36,10 @@
 			   <td><%= i.getFromDate() %></td>
 			   <td><%= i.getToDate() %></td>
 			   <td>
-		          <a href="editCourse?id=<%=i.getIdCourse()%>">Edit</a>
+		          <a href="course/edit?id=<%=i.getIdCourse()%>">Edit</a>
 		       </td>
 		       <td>
-		      		<a href="deleteCourse?id=<%=i.getIdCourse()%>">Delete</a>
+		      		<a href="course/delete?id=<%=i.getIdCourse()%>">Delete</a>
 		       </td>
 	       </tr>
        <% 

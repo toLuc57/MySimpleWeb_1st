@@ -22,7 +22,7 @@ import org.hm.SimpleWeb.utils.MyUtils;
 import org.hm.SimpleWeb.utils.TeacherDBUtils;
 
 
-@WebServlet("/insertCourse")
+@WebServlet("/course/insert")
 public class InsertCourseServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 

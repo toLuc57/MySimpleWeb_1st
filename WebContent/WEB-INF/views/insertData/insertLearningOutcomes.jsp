@@ -73,7 +73,7 @@
       
       <h3>Insert Learning outcomes</h3>
       
-      <form method="POST" action="${pageContext.request.contextPath}/insertLearningOutcomes">
+      <form method="POST" action="${pageContext.request.contextPath}/learningOutcomes/insert">
          <table border="0">
          	<tr>
          		<td>ID student:</td>

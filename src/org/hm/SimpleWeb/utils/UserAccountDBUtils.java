@@ -1,60 +1,65 @@
 package org.hm.SimpleWeb.utils;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.hm.SimpleWeb.beans.UserAccount;
+import org.hm.SimpleWeb.jdbc.MySQLConnUtils;
 
 	public class UserAccountDBUtils {
 		private static final String table = "useraccount";
 		private static final String userName = "username";
 		private static final String password = "password_";
 		private static final String isStudent = "isStudent";
-		public static UserAccount find(Connection conn, //
-			String userName1, String password1) throws SQLException {
+		
+		private static final Map<String, UserAccount> mapUsers = new HashMap<String, UserAccount>();
 
-			String sql = "select " + userName + ", " + password + ", " + isStudent 
-					+ " from " + table 
-					+ " where " +userName +"= ? and " +  password + "= ?";
+		static {
+			try {
+				initUsers();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		private static void initUsers() throws IOException{
+			Connection conn = null;
+			try {
+				conn = MySQLConnUtils.getMySQLConUtils();
+				String sql = "select " + userName + ", " + password + ", " + isStudent 
+						+ " from " + table;
+				PreparedStatement pstm = conn.prepareStatement(sql);
+				ResultSet rs = pstm.executeQuery();
+				while(rs.next()) {
+					String _userName = rs.getString(userName);
+					String _password = rs.getString(password);
+					boolean _isStudent = rs.getBoolean(isStudent);
+					UserAccount newUser = new UserAccount(_userName,_password,_isStudent);
+					mapUsers.put(newUser.getUserName(), newUser);
+				}
+			}
+			catch (ClassNotFoundException | SQLException e) {
+				MySQLConnUtils.rollbackQuietly(conn);
+				e.printStackTrace();
+			}
+			finally {
+				MySQLConnUtils.closeQuietly(conn);
+			}
+		}
 
-			PreparedStatement pstm = conn.prepareStatement(sql);
-			pstm.setString(1, userName1);
-			pstm.setString(2, password1);
-			ResultSet rs = pstm.executeQuery();
-
-			while (rs.next()) {
-				boolean isStudent = rs.getBoolean("isStudent");
-				UserAccount user = new UserAccount();
-				user.setUserName(userName1);
-				user.setPassword(password1);
-				user.setPosition(isStudent);
-				return user;
+		
+		public static UserAccount find(String findUserName, String findPassword) 
+				throws SQLException {
+			UserAccount u = mapUsers.get(findUserName);
+			if (u != null && u.getPassword().equals(findPassword)) {
+				return u;
 			}
 			return null;
 		}
-	public static UserAccount find(Connection conn, //
-			String userName1) throws SQLException {
-
-		String sql = "select " + userName + ", " + password + ", " + isStudent 
-				+ " from " + table 
-				+ " where " +userName +"= ? ";
-
-
-		PreparedStatement pstm = conn.prepareStatement(sql);
-		pstm.setString(1, userName1);
-		ResultSet rs = pstm.executeQuery();
-
-		if (rs.next()) {
-			boolean isStudent = rs.getBoolean("isStudent");
-			String password = rs.getString("password_");
-			UserAccount user = new UserAccount();
-			user.setUserName(userName1);
-			user.setPassword(password);
-			user.setPosition(isStudent);
-			return user;
-		}
-		return null;
-	}
 }

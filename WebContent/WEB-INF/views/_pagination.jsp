@@ -4,7 +4,9 @@
 <style>
 	.pagination{
 		list-style-type: none;
-		float: right;
+		display: inline-block;
+		padding: 0;
+		margin: 8px 0;
 	}
 	.pagination li{
 		display: inline-block;
@@ -37,9 +39,8 @@
  		indexPage = 0;
  	}
 %>
-<div style="float:right">Total pages: <%=totalPages %></div>
-<br/>
-<div style="float:right;margin: 10px">
+<div style="text-align:right">Total pages: <%=totalPages %></div>
+<div style="text-align:right;margin: 10px">
 	<form href="post">
 		Number of page:			
 		<input type="number" name="inputPage" min="0" max="<%= totalPages %>>" size="3" 
@@ -47,14 +48,13 @@
 		<input type="submit" value="Search" />
 	</form>
 </div>
-<br/>
-<div>
+<div style="text-align:right">
   <ul class="pagination">
 	<li>
-	  <a href="#?page=0" > &laquo;</a>
+	  <a href="?page=0" > &laquo;</a>
     <li>
 		<%
-			if(indexPage <= 5){
+			if(indexPage < 4){
 				for(int i = 0; i < 5; ++i){
 		    	   if (indexPage == i){
 		    		%>

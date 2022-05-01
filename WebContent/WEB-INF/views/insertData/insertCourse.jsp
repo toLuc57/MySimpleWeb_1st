@@ -64,7 +64,7 @@
       
       <p style="color: red;">${errorString}</p>
       
-      <form method="POST" action="${pageContext.request.contextPath}/insertCourse">
+      <form method="POST" action="${pageContext.request.contextPath}/course/insert">
          <input type="hidden" name="id" value="${course.id}" />
          <table border="0">
             <tr>

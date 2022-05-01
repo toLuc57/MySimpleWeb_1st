@@ -13,7 +13,7 @@ import javax.servlet.http.HttpSession;
 import org.hm.SimpleWeb.beans.UserAccount;
 import org.hm.SimpleWeb.utils.MyUtils;
 
-@WebServlet("/userinfo")
+@WebServlet("/userInfo")
 public class UserInfoServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -29,7 +29,6 @@ public class UserInfoServlet extends HttpServlet {
 			response.sendRedirect(request.getContextPath() + "/login");
 			return;
 		}
-		
 		request.setAttribute("user", loginedUser);
 
 		RequestDispatcher dispatcher //

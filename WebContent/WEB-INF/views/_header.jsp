@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="org.hm.SimpleWeb.utils.MyUtils" %>
+
 <div style="background: #E0E0E0; height: 65px; padding: 5px;">
   <div style="float: left">
      <h1>My Site</h1>
@@ -12,6 +14,13 @@
    	<br/>
      Search <input name="search" placeholder="Search">
      <br/>
-     Logout
+     <%
+	 if(MyUtils.getLoginedUser(request.getSession()) != null){
+	 %>
+    	<a href="logout">Logout</a>
+     <% 
+     }
+     %>
+     
   </div>
 </div>

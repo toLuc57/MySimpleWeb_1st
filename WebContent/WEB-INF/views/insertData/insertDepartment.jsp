@@ -10,7 +10,7 @@
 	<jsp:include page="..//_header.jsp"></jsp:include>
     <jsp:include page="..//_menu.jsp"></jsp:include>
     
-	<form method="POST" action="${pageContext.request.contextPath}/insertDepartment">
+	<form method="POST" action="${pageContext.request.contextPath}/department/insert">
          <table border="0">
             <tr>
                <td>Name</td>

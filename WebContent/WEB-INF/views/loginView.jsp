@@ -15,6 +15,7 @@
 
 
       <form method="POST" action="${pageContext.request.contextPath}/login">
+      <input type="hidden" name="redirectId" value="${redirectId}">
          <table border="0">
             <tr>
                <td>User Name</td>

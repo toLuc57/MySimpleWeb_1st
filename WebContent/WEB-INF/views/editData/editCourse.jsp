@@ -64,12 +64,12 @@
       
       <p style="color: red;">${errorString}</p>
       
-      <form method="POST" action="${pageContext.request.contextPath}/editCourse">
+      <form method="POST" action="${pageContext.request.contextPath}/course/edit">
          <input type="hidden" name="id" value="${course.id}" />
          <table border="0">
             <tr>
                <td>Name</td>
-               <td><input type="text" name="id" value="${course.id}" /></td>
+               <td><input type="text" name="id" value="${course.name}" /></td>
             </tr>
             <tr>
                <td>ID Subject</td>

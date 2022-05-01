@@ -18,7 +18,7 @@ import org.hm.SimpleWeb.utils.LearningOutcomesDBUtils;
 import org.hm.SimpleWeb.utils.MyUtils;
 import org.hm.SimpleWeb.utils.StudentDBUtils;
 
-@WebServlet("/editLearningOutcomes")
+@WebServlet("/learningOutcomes/edit")
 public class EditLerningOutcomesServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 

@@ -15,7 +15,7 @@ import org.hm.SimpleWeb.jdbc.MySQLConnUtils;
 		private static final String table = "useraccount";
 		private static final String userName = "username";
 		private static final String password = "password_";
-		private static final String isStudent = "isStudent";
+		private static final String id = "_id";
 		
 		private static final Map<String, UserAccount> mapUsers = new HashMap<String, UserAccount>();
 
@@ -23,7 +23,6 @@ import org.hm.SimpleWeb.jdbc.MySQLConnUtils;
 			try {
 				initUsers();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -32,15 +31,15 @@ import org.hm.SimpleWeb.jdbc.MySQLConnUtils;
 			Connection conn = null;
 			try {
 				conn = MySQLConnUtils.getMySQLConUtils();
-				String sql = "select " + userName + ", " + password + ", " + isStudent 
+				String sql = "select " + userName + ", " + password + ", " + id 
 						+ " from " + table;
 				PreparedStatement pstm = conn.prepareStatement(sql);
 				ResultSet rs = pstm.executeQuery();
 				while(rs.next()) {
 					String _userName = rs.getString(userName);
 					String _password = rs.getString(password);
-					boolean _isStudent = rs.getBoolean(isStudent);
-					UserAccount newUser = new UserAccount(_userName,_password,_isStudent);
+					String _id = rs.getString(id);
+					UserAccount newUser = new UserAccount(_userName,_password,_id);
 					mapUsers.put(newUser.getUserName(), newUser);
 				}
 			}
@@ -61,5 +60,14 @@ import org.hm.SimpleWeb.jdbc.MySQLConnUtils;
 				return u;
 			}
 			return null;
+		}
+		
+		public static boolean find(String findUserName) 
+				throws SQLException {
+			UserAccount u = mapUsers.get(findUserName);
+			if (u != null) {
+				return true;
+			}
+			return false;
 		}
 }

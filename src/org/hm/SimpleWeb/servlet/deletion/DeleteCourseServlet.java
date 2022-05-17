@@ -24,7 +24,7 @@ public class DeleteCourseServlet extends HttpServlet {
 
 		String errorString = null;
 		try {
-			CourseDBUtils.delete(code);
+			errorString = CourseDBUtils.delete(code);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			errorString = e.getMessage();

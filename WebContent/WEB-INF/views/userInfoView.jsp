@@ -18,7 +18,7 @@
     <%
     	UserAccount user = (UserAccount) request.getAttribute("user");
     	String job;
-    	if(user.isStudent()){
+    	if(user.getIsStudent()){
     		job = "Student";
     	}
     	else{

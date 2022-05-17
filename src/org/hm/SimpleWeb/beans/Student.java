@@ -3,6 +3,8 @@ package org.hm.SimpleWeb.beans;
 import java.sql.Date;
 
 public class Student {
+	private static final String maPhanChu = "SV";
+	
 	private String id;
 	private String lastName;
 	private String firstName;
@@ -11,7 +13,7 @@ public class Student {
 	private String telephone;
 	private String address;
 	private String idDepartment;
-	
+
 	public Student() {
 		
 	}
@@ -84,5 +86,8 @@ public class Student {
 	}
 	public void setIdDepartment(String idDepartment) {
 		this.idDepartment = idDepartment;
+	}
+	public static String getMaPhanChu() {
+		return maPhanChu;
 	}
 }

@@ -1,12 +1,16 @@
 package org.hm.SimpleWeb.utils;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.hm.SimpleWeb.beans.Teacher;
 import org.hm.SimpleWeb.jdbc.MySQLConnUtils;
@@ -22,6 +26,38 @@ public class TeacherDBUtils {
 	private static final String teplephone = "SoDienThoai";
 	private static final String idDepartment = "MaKhoa";
 		
+	private static List<String> listColumnName = new ArrayList<String>();
+	private static Map<String,String> mapColumn = new HashMap<String,String>();
+	
+	public static final String className = "TeacherDBUtils";
+	
+	static {
+		try {
+			init();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	private static void init() throws IOException{
+		Connection conn = null;
+		try {
+			conn = MySQLConnUtils.getMySQLConUtils();
+			
+            PreparedStatement pstm = conn.prepareStatement("select * from " + table + " limit 1");
+            ResultSet rs = pstm.executeQuery();
+            ResultSetMetaData rsmd = rs.getMetaData();
+            for(int i = 1; i <= rsmd.getColumnCount();++i) {
+            	listColumnName.add(rsmd.getColumnName(i));
+            	mapColumn.put(rsmd.getColumnName(i), rsmd.getColumnTypeName(i));
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+        	e.printStackTrace();
+        }
+		finally {
+			MySQLConnUtils.closeQuietly(conn);
+		}
+	}
+	
 	public static List<Teacher> query(Connection conn, int x) 
 		throws SQLException {
 		String sql = "select " + id + ", " + name + ", " 
@@ -100,9 +136,10 @@ public class TeacherDBUtils {
 			MySQLConnUtils.closeQuietly(conn);
 		}		
 	}
-	public static void delete(String deleteRowById) 
+	public static String delete(String deleteRowById) 
 			throws SQLException {
 		Connection conn = null;
+		String errorMessage = null;
 		try {
 			conn = MySQLConnUtils.getMySQLConUtils();
 			String sql = "delete from " + table + " where " + id + "=?";
@@ -114,11 +151,13 @@ public class TeacherDBUtils {
 			pstm.executeUpdate();
 		} catch (ClassNotFoundException | SQLException e) {
 			MySQLConnUtils.rollbackQuietly(conn);
+			errorMessage = e.getMessage();
 			e.printStackTrace();
 		}
 		finally {
 			MySQLConnUtils.closeQuietly(conn);
 		}
+		return errorMessage;
 	}
 	public static void update(Teacher updateRow) 
 			throws SQLException {
@@ -185,4 +224,11 @@ public class TeacherDBUtils {
 		}
 		return 0;
 	}
+	public static List<String> getColumnName() {
+		return listColumnName;
+	}
+
+	public static Map<String,String> getAllColumnNameAndTypeName() {
+		return mapColumn;
+	}	
 }

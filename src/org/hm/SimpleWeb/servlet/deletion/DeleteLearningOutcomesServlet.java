@@ -23,11 +23,11 @@ public class DeleteLearningOutcomesServlet extends HttpServlet {
 
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String code = (String) request.getParameter("id");
-
+		String idStudent = (String) request.getParameter("idStudent");
+		String idCourse = (String) request.getParameter("idCourse");
 		String errorString = null;
 		try {
-			LearningOutcomesDBUtils.delete(code);
+			errorString = LearningOutcomesDBUtils.delete(idStudent,idCourse);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			errorString = e.getMessage();

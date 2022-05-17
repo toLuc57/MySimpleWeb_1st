@@ -27,10 +27,7 @@ public class DepartmentListServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Connection conn = MyUtils.getStoredConnection(request);
-		String indexPageSTR = request.getParameter("inputPage");
-		if(indexPageSTR == null) {
-			indexPageSTR = request.getParameter("page");
-		}
+		String indexPageSTR = request.getParameter("page");
 		int indexPage = 0;
 		if(indexPageSTR != null) {
 			try {

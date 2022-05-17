@@ -41,9 +41,9 @@
 %>
 <div style="text-align:right">Total pages: <%=totalPages %></div>
 <div style="text-align:right;margin: 10px">
-	<form href="post">
+	<form method="get">
 		Number of page:			
-		<input type="number" name="inputPage" min="0" max="<%= totalPages %>>" size="3" 
+		<input type="number" name="page" min="0" max="<%= totalPages %>>" size="3" 
 			placeholder="<%=indexPage %>" >
 		<input type="submit" value="Search" />
 	</form>

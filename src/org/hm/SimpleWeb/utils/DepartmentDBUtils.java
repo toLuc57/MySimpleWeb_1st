@@ -1,12 +1,16 @@
 package org.hm.SimpleWeb.utils;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.hm.SimpleWeb.beans.Department;
 import org.hm.SimpleWeb.jdbc.MySQLConnUtils;
@@ -21,13 +25,45 @@ public class DepartmentDBUtils {
 	private static final String name = "TenKhoa";
 	private static final String address = "DiaChi";
 	private static final String telephone = "DienThoai";
-		
+	
+	private static List<String> listColumnName = new ArrayList<String>();
+	private static Map<String,String> mapColumn = new HashMap<String,String>();
+	
+	public static final String className = "DepartmentDBUtils";
+	
+	static {
+		try {
+			init();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	private static void init() throws IOException{
+		Connection conn = null;
+		try {
+			conn = MySQLConnUtils.getMySQLConUtils();
+			
+            PreparedStatement pstm = conn.prepareStatement("select * from " + table + " limit 1");
+            ResultSet rs = pstm.executeQuery();
+            ResultSetMetaData rsmd = rs.getMetaData();
+            for(int i = 1; i <= rsmd.getColumnCount();++i) {
+            	listColumnName.add(rsmd.getColumnName(i));
+            	mapColumn.put(rsmd.getColumnName(i), rsmd.getColumnTypeName(i));
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+        	e.printStackTrace();
+        }
+		finally {
+			MySQLConnUtils.closeQuietly(conn);
+		}
+	}
+	
 	public static List<Department> query(Connection conn,int x) 
 		throws SQLException {
 		String sql = "select " + id + ", " + name + ", " 
 				+ address + ", " + telephone 
 				+ " from " + table
-				+" limit " + amountRowsLimit + " offset " + x*amountRowsOffset;;
+				+" limit " + amountRowsLimit + " offset " + x*amountRowsOffset;
 		PreparedStatement pstm = conn.prepareStatement(sql);
 		
 		ResultSet rs = pstm.executeQuery();
@@ -97,14 +133,15 @@ public class DepartmentDBUtils {
 			MySQLConnUtils.closeQuietly(conn);
 		}		
 	}
-	public static void delete(String deleteRowById) 
+	public static String delete(String deleteRowById) 
 			throws SQLException {
 		Connection conn = null;
+		String errorMessage = null;
 		try {
 			conn = MySQLConnUtils.getMySQLConUtils();
 			
-			TeacherDBUtils.deleteIdDepartment(deleteRowById);
-			StudentDBUtils.deleteIdDepartment(deleteRowById);
+			//TeacherDBUtils.deleteIdDepartment(deleteRowById);
+			//StudentDBUtils.deleteIdDepartment(deleteRowById);
 			
 			String sql = "delete from " + table + " where " + id + " = ?";
 			
@@ -115,11 +152,12 @@ public class DepartmentDBUtils {
 			pstm.executeUpdate();
 		} catch (ClassNotFoundException | SQLException e) {
 			MySQLConnUtils.rollbackQuietly(conn);
+			errorMessage = e.getMessage();
 			e.printStackTrace();
 		} finally {
 			MySQLConnUtils.closeQuietly(conn);
 		}
-		
+		return errorMessage;
 	}
 	public static void update( Department updateRow) 
 			throws SQLException {
@@ -167,5 +205,11 @@ public class DepartmentDBUtils {
 		}
 		return 0;
 	}
+	public static List<String> getColumnName() {
+		return listColumnName;
+	}
 
+	public static Map<String,String> getAllColumnNameAndTypeName() {
+		return mapColumn;
+	}
 }

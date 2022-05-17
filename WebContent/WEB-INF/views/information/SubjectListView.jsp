@@ -14,7 +14,9 @@
     <h3>Subject List</h3>
 
     <p style="color: red;">${errorString}</p>
-
+	<br/>
+	<jsp:include page="..//_search.jsp"></jsp:include>
+	<br/>
     <table border="1" cellpadding="5" cellspacing="1" >
        <tr>
           <th>Id</th>

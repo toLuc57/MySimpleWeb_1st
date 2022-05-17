@@ -29,7 +29,8 @@ public class EditLerningOutcomesServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Connection conn = MyUtils.getStoredConnection(request);
 		
-		String code = (String) request.getParameter("id");
+		String idStudent = (String) request.getParameter("idStudent");
+		String idCourse = (String) request.getParameter("idCourse");
 
 		LearningOutcomes editRow = null;
 		List<Student> list1 = null;
@@ -38,7 +39,7 @@ public class EditLerningOutcomesServlet extends HttpServlet {
 		String errorString = null;
 
 		try {
-			editRow = LearningOutcomesDBUtils.find(code);
+			editRow = LearningOutcomesDBUtils.find(idStudent,idCourse);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			errorString = e.getMessage();

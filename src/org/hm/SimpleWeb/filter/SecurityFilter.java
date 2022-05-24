@@ -1,6 +1,7 @@
 package org.hm.SimpleWeb.filter;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.servlet.Filter;
@@ -18,6 +19,7 @@ import org.hm.SimpleWeb.beans.UserAccount;
 import org.hm.SimpleWeb.request.UserRoleRequestWrapper;
 import org.hm.SimpleWeb.utils.MyUtils;
 import org.hm.SimpleWeb.utils.SecurityUtils;
+import org.hm.SimpleWeb.utils.UserAccountDBUtils;
 
 @WebFilter(filterName="SecurityFilter", urlPatterns= {"/home/*"})
 public class SecurityFilter implements Filter {
@@ -63,14 +65,27 @@ public class SecurityFilter implements Filter {
 			// Nếu người dùng chưa đăng nhập,
 			// Redirect (chuyển hướng) tới trang đăng nhập.
 			if (loginedUser == null) {
+				boolean hasError = false;
+				String username = MyUtils.getUserNameCookie(request);
+				if(username != null) {
+					try {
+						if(UserAccountDBUtils.find(username)) {
+							chain.doFilter(request, response);
+						}
+					} catch (SQLException e) {
+						e.printStackTrace();
+						hasError = true;
+					}
+				}
+				if(username == null || hasError) {
+					String requestUri = request.getRequestURI();
 
-				String requestUri = request.getRequestURI();
+					// Lưu trữ trang hiện tại để redirect đến sau khi đăng nhập thành công.
+					int redirectId = MyUtils.storeRedirectAfterLoginUrl(request.getSession(), requestUri);
 
-				// Lưu trữ trang hiện tại để redirect đến sau khi đăng nhập thành công.
-				int redirectId = MyUtils.storeRedirectAfterLoginUrl(request.getSession(), requestUri);
-
-				response.sendRedirect(wrapRequest.getContextPath() + "/login?redirectId=" + redirectId);
-				return;
+					response.sendRedirect(wrapRequest.getContextPath() + "/login?redirectId=" + redirectId);
+					return;
+				}
 			}
 
 			// Kiểm tra người dùng có vai trò hợp lệ hay không?

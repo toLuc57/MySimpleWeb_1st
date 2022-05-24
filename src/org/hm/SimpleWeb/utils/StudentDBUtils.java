@@ -30,6 +30,7 @@ public class StudentDBUtils {
 	private static final String idDepartment = "MaKhoa"; 
 	
 	private static List<String> listColumnName = new ArrayList<String>();
+	private static List<String> listIDs = new ArrayList<String>(); 
 	private static Map<String,String> mapColumn = new HashMap<String,String>();
 	
 	public static final String className = "StudentDBUtils";
@@ -46,12 +47,15 @@ public class StudentDBUtils {
 		try {
 			conn = MySQLConnUtils.getMySQLConUtils();
 			
-            PreparedStatement pstm = conn.prepareStatement("select * from " + table + " limit 1");
+            PreparedStatement pstm = conn.prepareStatement("select * from " + table);
             ResultSet rs = pstm.executeQuery();
             ResultSetMetaData rsmd = rs.getMetaData();
             for(int i = 1; i <= rsmd.getColumnCount();++i) {
             	listColumnName.add(rsmd.getColumnName(i));
             	mapColumn.put(rsmd.getColumnName(i), rsmd.getColumnTypeName(i));
+            }
+            while(rs.next()) {
+            	listIDs.add(rs.getString(id));
             }
         } catch (ClassNotFoundException | SQLException e) {
         	e.printStackTrace();
@@ -60,11 +64,11 @@ public class StudentDBUtils {
 			MySQLConnUtils.closeQuietly(conn);
 		}
 	}
-	public static List<Student> query(Connection conn,int x) 
+	public static List<Student> query(Connection conn,int x,String queryWhere) 
 			throws SQLException {
 		String query = "select "+ id +" ," + lastName +" ," + firstName
 				+ " ," + birthday + " ," + sex + " ," + telephone
-				+ " ," + address + " ," + idDepartment + " from " + table
+				+ " ," + address + " ," + idDepartment + " from " + table + queryWhere
 				+" limit " + amountRowsLimit + " offset " + x*amountRowsOffset;
 		PreparedStatement pstm = conn.prepareStatement(query);
 		
@@ -221,12 +225,12 @@ public class StudentDBUtils {
 		}		
 	}
 	
-	public static int getTotalRow() {
+	public static int getTotalRow(String queryWhere) {
 		Connection conn = null;
 		try {
 			conn = MySQLConnUtils.getMySQLConUtils();
             Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("select count(*) from " + table);
+            ResultSet rs = stmt.executeQuery("select count(*) from " + table + queryWhere);
             int totalRow = 0;
             if(rs.next()) {
             	totalRow = rs.getInt(1);
@@ -248,4 +252,7 @@ public class StudentDBUtils {
 	public static Map<String,String> getAllColumnNameAndTypeName() {
 		return mapColumn;
 	}	
+	public static List<String> getListIDs(){
+		return listIDs;
+	}
 }

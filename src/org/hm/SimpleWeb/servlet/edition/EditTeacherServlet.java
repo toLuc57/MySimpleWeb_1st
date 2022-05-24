@@ -1,7 +1,6 @@
 package org.hm.SimpleWeb.servlet.edition;
 
 import java.io.IOException;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -14,8 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.hm.SimpleWeb.beans.Department;
 import org.hm.SimpleWeb.beans.Teacher;
-import org.hm.SimpleWeb.utils.DepartmentDBUtils;
-import org.hm.SimpleWeb.utils.MyUtils;
 import org.hm.SimpleWeb.utils.TeacherDBUtils;
 
 
@@ -28,8 +25,6 @@ public class EditTeacherServlet extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Connection conn = MyUtils.getStoredConnection(request);
-		
 		String code = (String) request.getParameter("id");
 
 		Teacher editRow = null;
@@ -41,19 +36,6 @@ public class EditTeacherServlet extends HttpServlet {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			errorString = e.getMessage();
-		}
-		if (editRow == null) {
-			errorString = "Is null";
-			System.out.println(errorString);
-		}
-		else {
-			try {
-				// Stub
-				list = DepartmentDBUtils.query(conn,0);
-			} catch (SQLException e) {
-				e.printStackTrace();
-				errorString = e.getMessage();
-			}			
 		}
 		request.setAttribute("errorString", errorString);
 		request.setAttribute("teacher", editRow);

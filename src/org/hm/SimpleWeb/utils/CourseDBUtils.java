@@ -63,12 +63,13 @@ public class CourseDBUtils {
 		}
 	}
 	
-	public static List<Course> query(Connection conn, int x) 
+	public static List<Course> query(Connection conn, int x, String queryWhere) 
 		throws SQLException {
 		String sql = "select " + id + ", " + idTeacher + ", " 
 				+ idSubject + ", " + fromDate + ", " + toDate 
-				+ " from " + table 
-				+" limit " + amountRowsLimit + " offset " + x*amountRowsOffset;
+				+ " from " + table + queryWhere
+				+ " limit " + amountRowsLimit + " offset " + x*amountRowsOffset;
+		//System.out.println(sql);
 		PreparedStatement pstm = conn.prepareStatement(sql);
 		
 		ResultSet rs = pstm.executeQuery();
@@ -230,12 +231,12 @@ public class CourseDBUtils {
 			MySQLConnUtils.closeQuietly(conn);
 		}
 	}
-	public static int getTotalRow() {
+	public static int getTotalRow(String queryWhere) {
 		Connection conn = null;
 		try {
 			conn = MySQLConnUtils.getMySQLConUtils();
             Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("select count(*) from " + table);
+            ResultSet rs = stmt.executeQuery("select count(*) from " + table + queryWhere);
             int totalRow = 0;
             if(rs.next()) {
             	totalRow = rs.getInt(1);
@@ -257,5 +258,9 @@ public class CourseDBUtils {
 
 	public static Map<String,String> getAllColumnNameAndTypeName() {
 		return mapColumn;
+	}
+	
+	public static List<String> getListIDs(){
+		return listIDs;
 	}
 }

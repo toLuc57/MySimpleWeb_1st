@@ -61,9 +61,6 @@ li.dropdown {
      <li>
        <a href="${pageContext.request.contextPath}/userInfo">My Account Info</a>
      </li>
-     <li>
-      <a href="${pageContext.request.contextPath}/login">Login</a>
-     </li>
      <li class="dropdown">
 	   <a class="dropbtn">Drop down</a>
 	   <div class="dropdown-content">

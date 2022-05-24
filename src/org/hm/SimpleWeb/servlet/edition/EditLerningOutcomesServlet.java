@@ -1,7 +1,6 @@
 package org.hm.SimpleWeb.servlet.edition;
 
 import java.io.IOException;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -15,8 +14,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.hm.SimpleWeb.beans.LearningOutcomes;
 import org.hm.SimpleWeb.beans.Student;
 import org.hm.SimpleWeb.utils.LearningOutcomesDBUtils;
-import org.hm.SimpleWeb.utils.MyUtils;
-import org.hm.SimpleWeb.utils.StudentDBUtils;
 
 @WebServlet("/learningOutcomes/edit")
 public class EditLerningOutcomesServlet extends HttpServlet {
@@ -27,8 +24,6 @@ public class EditLerningOutcomesServlet extends HttpServlet {
     }
     
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Connection conn = MyUtils.getStoredConnection(request);
-		
 		String idStudent = (String) request.getParameter("idStudent");
 		String idCourse = (String) request.getParameter("idCourse");
 
@@ -43,21 +38,6 @@ public class EditLerningOutcomesServlet extends HttpServlet {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			errorString = e.getMessage();
-		}
-		if (editRow == null) {
-			System.out.println(errorString);
-		}
-		else {			
-			try 
-			{
-				// Stub
-				list1 = StudentDBUtils.query(conn,0);		
-				list2 = LearningOutcomesDBUtils.query(conn,0);
-			} 
-			catch (SQLException e) {
-				e.printStackTrace();
-				errorString = e.getMessage();
-			}
 		}
 		request.setAttribute("teacherList", list2);	
 		request.setAttribute("subjectsList", list1);

@@ -20,35 +20,37 @@
     <table border="1" cellpadding="5" cellspacing="1" >
        <tr>
           <th>Id</th>
-          <th>Id Subject</th>
           <th>Id Teacher</th>
+          <th>Id Subject</th>          
           <th>From Date</th>
           <th>To Date</th>
           <th>Edit</th>
           <th>Delete</th>
        </tr>
-       <%
+	<%
        List<Course> list = (List<Course>) request.getAttribute("courseList");	
-       for(Course i : list){    	   
-	   %>
-	   	   <tr>
-		   	   <td><%= i.getIdCourse() %></td>
-			   <td><%= i.getIdSubject() %></td>
-			   <td><%= i.getIdTeacher() %></td>
-			   <td><%= i.getFromDate() %></td>
-			   <td><%= i.getToDate() %></td>
-			   <td>
-		          <a href="course/edit?id=<%=i.getIdCourse()%>">Edit</a>
-		       </td>
-		       <td>
-		      		<a href="course/delete?id=<%=i.getIdCourse()%>">Delete</a>
-		       </td>
-	       </tr>
-       <% 
-       } 
-       %>
+       if(list != null && !list.isEmpty()){
+    	   for(Course i : list){    	   
+    		   %>
+    		   	   <tr>
+    			   	   <td><%= i.getIdCourse() %></td>
+    			   	   <td><%= i.getIdTeacher() %></td>
+    				   <td><%= i.getIdSubject() %></td>
+    				   <td><%= i.getFromDate() %></td>
+    				   <td><%= i.getToDate() %></td>
+    				   <td>
+    			          <a href="course/edit?id=<%=i.getIdCourse()%>">Edit</a>
+    			       </td>
+    			       <td>
+    			      		<a href="course/delete?id=<%=i.getIdCourse()%>">Delete</a>
+    			       </td>
+    		       </tr>
+    	       <% 
+    	       } 
+       }
+   	%>
     </table>
-    <a href="insertCourse" >Insert Course</a>
+    <a href="course/insert" >Insert Course</a>
     <br/>
 	<jsp:include page="..//_pagination.jsp"></jsp:include>
 	<br/>

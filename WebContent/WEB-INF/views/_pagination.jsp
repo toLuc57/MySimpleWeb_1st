@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="java.util.List" %>
+<%@ page import="java.util.List, java.util.Map" %>
 <style>
 	.pagination{
 		list-style-type: none;
@@ -38,20 +38,32 @@
  	}catch(NumberFormatException e){
  		indexPage = 0;
  	}
+ 	String queryString = (String) request.getAttribute("queryStringInUrl");
+ 	System.out.println(queryString);
+ 	if(queryString == null || queryString.isEmpty() || queryString.length() == 0){
+ 		queryString = "?page=";
+ 	}
+ 	else if(queryString.equals("?")){
+ 		queryString = queryString.concat("page=");
+ 	}
+ 	else {
+ 		queryString = queryString.concat("&page=");
+ 	}
+ 	
 %>
 <div style="text-align:right">Total pages: <%=totalPages %></div>
 <div style="text-align:right;margin: 10px">
 	<form method="get">
 		Number of page:			
-		<input type="number" name="page" min="0" max="<%= totalPages %>>" size="3" 
-			placeholder="<%=indexPage %>" >
+		<input type="number" name="page" min="0" max="<%= totalPages %>>" size="3" step="1"
+			value="<%=indexPage %>" >
 		<input type="submit" value="Search" />
 	</form>
 </div>
 <div style="text-align:right">
   <ul class="pagination">
 	<li>
-	  <a href="?page=0" > &laquo;</a>
+	  <a href="<%=queryString.concat("0") %>" > &laquo;</a>
     <li>
 		<%
 			if(indexPage < 4){
@@ -63,7 +75,7 @@
 		    	   }
 		    	   else {
 	 		   		%>
-	    		 		<li><a href="?page=<%=i%>"><%=i%></a></li>
+	    		 		<li><a href="<%=queryString.concat(String.valueOf(i))%>"><%=i%></a></li>
 	 		 		<%
 		    	   }
 				}
@@ -72,7 +84,7 @@
 				for(int i = indexPage - 2; i < indexPage; ++i){
 		   		%>
 	  		 		<li>
-	  		 		  <a href="?page=<%=i%>"><%=i%></a>
+	  		 		  <a href="<%=queryString.concat(String.valueOf(i))%>"><%=i%></a>
 	  		 		</li>
 		 		<%
 				}
@@ -82,7 +94,7 @@
 				for(int i = indexPage; i < totalPages && i < indexPage + 2 ; ++i){
 			   		%>
 		  		 		<li>
-		  		 		  <a href="?page=<%=i%>"><%=i%></a>
+		  		 		  <a href="?page=<%=queryString.concat(String.valueOf(i))%>"><%=i%></a>
 		  		 		</li>
 			 		<%
 				}

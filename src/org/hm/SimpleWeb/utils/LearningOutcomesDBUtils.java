@@ -41,13 +41,13 @@ public class LearningOutcomesDBUtils {
 		Connection conn = null;
 		try {
 			conn = MySQLConnUtils.getMySQLConUtils();
-			
             PreparedStatement pstm = conn.prepareStatement("select * from " + table + " limit 1");
             ResultSet rs = pstm.executeQuery();
             ResultSetMetaData rsmd = rs.getMetaData();
             for(int i = 1; i <= rsmd.getColumnCount();++i) {
             	listColumnName.add(rsmd.getColumnName(i));
             	mapColumn.put(rsmd.getColumnName(i), rsmd.getColumnTypeName(i));
+            	//System.out.println("-------------Colunm " + rsmd.getColumnName(i));
             }
         } catch (ClassNotFoundException | SQLException e) {
         	e.printStackTrace();
@@ -57,11 +57,11 @@ public class LearningOutcomesDBUtils {
 		}
 	}
 	
-	public static List<LearningOutcomes> query(Connection conn, int x) 
+	public static List<LearningOutcomes> query(Connection conn, int x,String queryWhere) 
 		throws SQLException {
 		String sql = "select " + idStudent + ", " + idCourse + ", " 
 				+ numberOfTests + ", " + point 
-				+ " from " + table
+				+ " from " + table + queryWhere
 				+" limit " + amountRowsLimit + " offset " + x*amountRowsOffset;
 		PreparedStatement pstm = conn.prepareStatement(sql);
 		
@@ -229,12 +229,12 @@ public class LearningOutcomesDBUtils {
 			MySQLConnUtils.closeQuietly(conn);
 		}		
 	}
-	public static int getTotalRow() {
+	public static int getTotalRow(String queryWhere) {
 		Connection conn = null;
 		try {
 			conn = MySQLConnUtils.getMySQLConUtils();
             Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("select count(*) from " + table);
+            ResultSet rs = stmt.executeQuery("select count(*) from " + table + queryWhere);
             int totalRow = 0;
             if(rs.next()) {
             	totalRow = rs.getInt(1);
@@ -255,5 +255,5 @@ public class LearningOutcomesDBUtils {
 
 	public static Map<String,String> getAllColumnNameAndTypeName() {
 		return mapColumn;
-	}	
+	}
 }

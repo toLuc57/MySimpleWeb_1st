@@ -1,7 +1,6 @@
 package org.hm.SimpleWeb.servlet.insertion;
 
 import java.io.IOException;
-import java.sql.Connection;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.List;
@@ -14,11 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.hm.SimpleWeb.beans.Course;
-import org.hm.SimpleWeb.beans.Subject;
-import org.hm.SimpleWeb.beans.Teacher;
 import org.hm.SimpleWeb.utils.CourseDBUtils;
 import org.hm.SimpleWeb.utils.SubjectDBUtils;
-import org.hm.SimpleWeb.utils.MyUtils;
 import org.hm.SimpleWeb.utils.TeacherDBUtils;
 
 
@@ -31,32 +27,14 @@ public class InsertCourseServlet extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Connection conn = MyUtils.getStoredConnection(request);
-		
-		Course insertRow = null;
-		List<Subject> list1 = null;
-		List<Teacher> list2 = null;
-
-		String errorString = null;
-
-		try 
-		{
-			//Stub
-			list1 = SubjectDBUtils.query(conn,0);		
-			list2 = TeacherDBUtils.query(conn,0);
-		} 
-		catch (SQLException e) {
-			e.printStackTrace();
-			errorString = e.getMessage();
-		}
+		List<String> list1 = SubjectDBUtils.getListIDs();
+		List<String> list2 = TeacherDBUtils.getListIDs();
 		
 		request.setAttribute("teacherList", list2);	
 		request.setAttribute("subjectsList", list1);
-		request.setAttribute("errorString", errorString);
-		request.setAttribute("course", insertRow);
 		
 		RequestDispatcher dispatcher = request.getServletContext()
-				.getRequestDispatcher("/WEB-INF/views/editData/editCourse.jsp");
+				.getRequestDispatcher("/WEB-INF/views/insertData/insertCourse.jsp");
 		dispatcher.forward(request, response);
 	}
 
@@ -77,24 +55,12 @@ public class InsertCourseServlet extends HttpServlet {
 		Course newRow = new Course(id,idTeacher,idSubject,fromDate,toDate);
 
 		String errorString = null;
-		Subject findSubject = null;
-		Teacher findTeacher = null;
 		try {
-			findSubject = SubjectDBUtils.find(idSubject);
-			findTeacher = TeacherDBUtils.find(idTeacher);
+			CourseDBUtils.insert(newRow);
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 			errorString = e.getMessage();
-		}
-		
-		if (errorString == null && findSubject != null && findTeacher != null) {
-			try {
-				CourseDBUtils.insert(newRow);
-				
-			} catch (SQLException e) {
-				e.printStackTrace();
-				errorString = e.getMessage();
-			}
 		}
 		request.setAttribute("errorString", errorString);
 		if (errorString != null) {

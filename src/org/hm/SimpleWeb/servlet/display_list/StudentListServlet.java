@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.hm.SimpleWeb.beans.Student;
+import org.hm.SimpleWeb.module.SearchModule;
 import org.hm.SimpleWeb.utils.MyUtils;
 import org.hm.SimpleWeb.utils.StudentDBUtils;
 
@@ -25,6 +27,8 @@ public class StudentListServlet extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String queryWhere = SearchModule.getSQLWhere(request, StudentDBUtils.className);
+		Map<String,String> mapColumn = StudentDBUtils.getAllColumnNameAndTypeName();
 		Connection conn = MyUtils.getStoredConnection(request);
 		String indexPageSTR = request.getParameter("page");
 
@@ -40,10 +44,12 @@ public class StudentListServlet extends HttpServlet {
 		
 		String errorString = null;
 		List<Student> list = null;
+		List<String> listColumnName = null;
 		int totalRow = 0;
 		try {
-			list = StudentDBUtils.query(conn,indexPage);
-			totalRow = StudentDBUtils.getTotalRow();
+			list = StudentDBUtils.query(conn,indexPage,queryWhere);
+			totalRow = StudentDBUtils.getTotalRow(queryWhere);
+			listColumnName = StudentDBUtils.getColumnName();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			errorString = e.getMessage();
@@ -52,7 +58,9 @@ public class StudentListServlet extends HttpServlet {
 		request.setAttribute("studentList", list);		
 		request.setAttribute("totalRow", totalRow);
 		request.setAttribute("page", indexPage);
-
+		request.setAttribute("listColumnName", listColumnName);
+		request.setAttribute("mapColumn", mapColumn);
+		
 		RequestDispatcher dispatcher = request.getServletContext()
 				.getRequestDispatcher("/WEB-INF/views/information/StudentListView.jsp");
 		dispatcher.forward(request, response);

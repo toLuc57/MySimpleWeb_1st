@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.hm.SimpleWeb.beans.Course;
+import org.hm.SimpleWeb.module.SearchModule;
 import org.hm.SimpleWeb.utils.CourseDBUtils;
 import org.hm.SimpleWeb.utils.MyUtils;
 
@@ -26,7 +27,7 @@ public class CourseListServlet extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+		String queryWhere = SearchModule.getSQLWhere(request, CourseDBUtils.className);
 		Map<String,String> mapColumn = CourseDBUtils.getAllColumnNameAndTypeName();
 		Connection conn = MyUtils.getStoredConnection(request);
 		String indexPageSTR = request.getParameter("page");
@@ -48,10 +49,10 @@ public class CourseListServlet extends HttpServlet {
 		int totalRow = 0;
 		try 
 		{
-			list = CourseDBUtils.query(conn,indexPage);		
+			list = CourseDBUtils.query(conn,indexPage,queryWhere);		
 			listColumnName = CourseDBUtils.getColumnName();
-			totalRow = CourseDBUtils.getTotalRow();
-			System.out.println("Total: " + totalRow);
+			totalRow = CourseDBUtils.getTotalRow(queryWhere);
+			//System.out.println("Total: " + totalRow);
 		} 
 		catch (SQLException e) {
 			e.printStackTrace();

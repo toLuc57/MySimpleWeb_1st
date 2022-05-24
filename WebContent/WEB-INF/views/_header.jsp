@@ -30,6 +30,11 @@
     	<a href="logout">Logout</a>
      <% 
      }
+	 else {
+	 %>
+	 	<a href="${pageContext.request.contextPath}/login">Login</a>
+	 <%
+	 }
      %>
   </div>
 </div>

@@ -1,7 +1,6 @@
 package org.hm.SimpleWeb.servlet.insertion;
 
 import java.io.IOException;
-import java.sql.Connection;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.List;
@@ -16,7 +15,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.hm.SimpleWeb.beans.Department;
 import org.hm.SimpleWeb.beans.Student;
 import org.hm.SimpleWeb.utils.DepartmentDBUtils;
-import org.hm.SimpleWeb.utils.MyUtils;
 import org.hm.SimpleWeb.utils.StudentDBUtils;
 
 @WebServlet("/student/insert")
@@ -28,17 +26,9 @@ public class InsertStudentServlet extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Connection conn = MyUtils.getStoredConnection(request);
-		
+
 		String errorString = null;
 		List<Department> list = null;
-		try {
-			//Stub
-			list = DepartmentDBUtils.query(conn,0);
-		} catch (SQLException e) {
-			e.printStackTrace();
-			errorString = e.getMessage();
-		}
 		request.setAttribute("errorString", errorString);
 		request.setAttribute("departmentList", list);	
 		RequestDispatcher dispatcher = request.getServletContext()

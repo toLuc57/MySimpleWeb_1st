@@ -1,3 +1,4 @@
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>  
 <%@ page import="java.util.List,org.hm.SimpleWeb.beans.Teacher" %>
@@ -21,8 +22,8 @@
        <tr>
           <th>Id</th>
           <th>Name</th>
-          <th>Telephone</th>
           <th>Degree</th>
+          <th>Telephone</th>
           <th>IdDepartment</th>
           <th>Edit</th>
           <th>Delete</th>
@@ -34,8 +35,8 @@
 	   	   <tr>
 		   	   <td><%= i.getId() %></td>
 			   <td><%= i.getName() %></td>
-			   <td><%= i.getTelephone() %></td>
 			   <td><%= i.getDegree() %></td>
+			   <td><%= i.getTelephone() %></td>			   
 			   <td><%= i.getIdDepartment() %></td>
 			   <td>
 		          <a href="editTeacher?id=<%=i.getId()%>">Edit</a>

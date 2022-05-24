@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.hm.SimpleWeb.beans.Department;
+import org.hm.SimpleWeb.module.SearchModule;
 import org.hm.SimpleWeb.utils.DepartmentDBUtils;
 import org.hm.SimpleWeb.utils.MyUtils;
 
@@ -26,6 +28,8 @@ public class DepartmentListServlet extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String queryWhere = SearchModule.getSQLWhere(request, DepartmentDBUtils.className);
+		Map<String,String> mapColumn = DepartmentDBUtils.getAllColumnNameAndTypeName();
 		Connection conn = MyUtils.getStoredConnection(request);
 		String indexPageSTR = request.getParameter("page");
 		int indexPage = 0;
@@ -39,12 +43,13 @@ public class DepartmentListServlet extends HttpServlet {
 		}
 		String errorString = null;	
 		List<Department> list = null;
+		List<String> listColumnName = null;
 		int totalRow = 0;
 		try 
 		{
-			list = DepartmentDBUtils.query(conn,indexPage);	
-			totalRow = DepartmentDBUtils.getTotalRow();
-			
+			list = DepartmentDBUtils.query(conn,indexPage,queryWhere);	
+			totalRow = DepartmentDBUtils.getTotalRow(queryWhere);
+			listColumnName = DepartmentDBUtils.getColumnName();
 		} 
 		catch (SQLException e) {
 			e.printStackTrace();
@@ -54,6 +59,8 @@ public class DepartmentListServlet extends HttpServlet {
 		request.setAttribute("departmentList", list);
 		request.setAttribute("totalRow", totalRow);
 		request.setAttribute("page", indexPage);
+		request.setAttribute("listColumnName", listColumnName);
+		request.setAttribute("mapColumn", mapColumn);
 				
 		RequestDispatcher dispatcher = request.getServletContext()
 				.getRequestDispatcher("/WEB-INF/views/information/DepartmentListView.jsp");

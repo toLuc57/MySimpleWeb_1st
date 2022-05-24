@@ -33,7 +33,8 @@ public class LoginServlet extends HttpServlet {
 		
 		request.setAttribute("redirectId",redirectId);
 		
-		RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/views/loginView.jsp");
+		RequestDispatcher dispatcher = this.getServletContext().
+				getRequestDispatcher("/WEB-INF/views/loginView.jsp");
 		dispatcher.forward(request, response);
 	}
 
@@ -88,9 +89,9 @@ public class LoginServlet extends HttpServlet {
 				redirectId = Integer.parseInt(request.getParameter("redirectId"));
 			} catch (Exception e) {
 			}
-			System.out.println("  Redirect Id: " + redirectId);
+			//System.out.println("  Redirect Id: " + redirectId);
 			String requestUri = MyUtils.getRedirectAfterLoginUrl(request.getSession(), redirectId);
-			System.out.println("  Request Uri: " + requestUri);
+			//System.out.println("  Request Uri: " + requestUri);
 			if (requestUri != null) {
 				response.sendRedirect(requestUri);
 			} else {
@@ -102,7 +103,8 @@ public class LoginServlet extends HttpServlet {
 		}
 		else {
 			request.setAttribute("errorString", errorString);
-			RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/views/loginView.jsp");
+			RequestDispatcher dispatcher = this.getServletContext().
+					getRequestDispatcher("/WEB-INF/views/loginView.jsp");
 			dispatcher.forward(request, response);
 		}
 	}

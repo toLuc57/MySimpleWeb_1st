@@ -1,7 +1,6 @@
 package org.hm.SimpleWeb.servlet.edition;
 
 import java.io.IOException;
-import java.sql.Connection;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.List;
@@ -17,9 +16,6 @@ import org.hm.SimpleWeb.beans.Course;
 import org.hm.SimpleWeb.beans.Subject;
 import org.hm.SimpleWeb.beans.Teacher;
 import org.hm.SimpleWeb.utils.CourseDBUtils;
-import org.hm.SimpleWeb.utils.MyUtils;
-import org.hm.SimpleWeb.utils.SubjectDBUtils;
-import org.hm.SimpleWeb.utils.TeacherDBUtils;
 
 @WebServlet("/course/edit")
 public class EditCourseServlet extends HttpServlet {
@@ -29,8 +25,6 @@ public class EditCourseServlet extends HttpServlet {
         super();
     }
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Connection conn = MyUtils.getStoredConnection(request);
-		
 		String code = (String) request.getParameter("id");
 
 		Course editRow = null;
@@ -61,16 +55,6 @@ public class EditCourseServlet extends HttpServlet {
 			request.setAttribute("toDay", spiltToDate[0]);	
 			request.setAttribute("toMonth", spiltToDate[1]);	
 			request.setAttribute("toYear", spiltToDate[2]);	
-			try 
-			{
-				// Stub
-				list1 = SubjectDBUtils.query(conn,0);		
-				list2 = TeacherDBUtils.query(conn,0);
-			} 
-			catch (SQLException e) {
-				e.printStackTrace();
-				errorString = e.getMessage();
-			}
 		}
 		request.setAttribute("teacherList", list2);	
 		request.setAttribute("subjectsList", list1);

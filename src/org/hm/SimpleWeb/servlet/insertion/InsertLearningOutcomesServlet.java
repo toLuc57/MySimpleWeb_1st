@@ -1,7 +1,6 @@
 package org.hm.SimpleWeb.servlet.insertion;
 
 import java.io.IOException;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -16,8 +15,9 @@ import org.hm.SimpleWeb.beans.LearningOutcomes;
 import org.hm.SimpleWeb.beans.Student;
 import org.hm.SimpleWeb.beans.Course;
 import org.hm.SimpleWeb.utils.LearningOutcomesDBUtils;
-import org.hm.SimpleWeb.utils.MyUtils;
 import org.hm.SimpleWeb.utils.StudentDBUtils;
+import org.hm.SimpleWeb.utils.SubjectDBUtils;
+import org.hm.SimpleWeb.utils.TeacherDBUtils;
 import org.hm.SimpleWeb.utils.CourseDBUtils;
 
 @WebServlet("/learningOutcomes/insert")
@@ -29,22 +29,12 @@ public class InsertLearningOutcomesServlet extends HttpServlet {
     }
     
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Connection conn = MyUtils.getStoredConnection(request);
+		List<String> list1 = SubjectDBUtils.getListIDs();
+		List<String> list2 = TeacherDBUtils.getListIDs();
 		
-		String errorString = null;
-		List<LearningOutcomes> list1 = null;
-		List<Student> list2 = null;
-		try {
-			// Stub
-			list1 = LearningOutcomesDBUtils.query(conn,0);
-			list2 = StudentDBUtils.query(conn,0);
-		} catch (SQLException e) {
-			e.printStackTrace();
-			errorString = e.getMessage();
-		}
-		request.setAttribute("errorString", errorString);
-		request.setAttribute("courseList", list1);	
-		request.setAttribute("studentList", list2);
+		
+		request.setAttribute("teacherList", list2);	
+		request.setAttribute("subjectsList", list1);
 		
 		RequestDispatcher dispatcher = request.getServletContext()
 				.getRequestDispatcher("/WEB-INF/views/insertData/insertLearningOutcomes.jsp");

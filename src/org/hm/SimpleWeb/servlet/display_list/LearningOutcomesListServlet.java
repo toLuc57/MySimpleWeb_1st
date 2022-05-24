@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.hm.SimpleWeb.beans.LearningOutcomes;
+import org.hm.SimpleWeb.module.SearchModule;
 import org.hm.SimpleWeb.utils.LearningOutcomesDBUtils;
 import org.hm.SimpleWeb.utils.MyUtils;
 
@@ -26,6 +28,8 @@ public class LearningOutcomesListServlet extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String queryWhere = SearchModule.getSQLWhere(request, LearningOutcomesDBUtils.className);
+		Map<String,String> mapColumn = LearningOutcomesDBUtils.getAllColumnNameAndTypeName();
 		Connection conn = MyUtils.getStoredConnection(request);
 		String indexPageSTR = request.getParameter("page");
 		int indexPage = 0;
@@ -39,11 +43,13 @@ public class LearningOutcomesListServlet extends HttpServlet {
 		}
 		String errorString = null;	
 		List<LearningOutcomes> list = null;
+		List<String> listColumnName = null;
 		int totalRow = 0;
 		try 
 		{
-			list = LearningOutcomesDBUtils.query(conn,indexPage);
-			totalRow = LearningOutcomesDBUtils.getTotalRow();
+			list = LearningOutcomesDBUtils.query(conn,indexPage, queryWhere);
+			totalRow = LearningOutcomesDBUtils.getTotalRow(queryWhere);
+			listColumnName = LearningOutcomesDBUtils.getColumnName();
 		} 
 		catch (SQLException e) {
 			e.printStackTrace();
@@ -53,7 +59,9 @@ public class LearningOutcomesListServlet extends HttpServlet {
 		request.setAttribute("learningOutcomesList", list);
 		request.setAttribute("totalRow", totalRow);
 		request.setAttribute("page", indexPage);
-				
+		request.setAttribute("listColumnName", listColumnName);
+		request.setAttribute("mapColumn", mapColumn);
+		
 		RequestDispatcher dispatcher = request.getServletContext()
 				.getRequestDispatcher("/WEB-INF/views/information/LearningOutcomesListView.jsp");
 		dispatcher.forward(request, response);

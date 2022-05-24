@@ -10,7 +10,7 @@ public class MySQLConnUtils {
 			ClassNotFoundException {
 		//jdbc:mysql://localhost:3306/qlhtsv_28
 		String hostName = "localhost";
-		String dbName = "qlhtsv_28";
+		String dbName = "qlhtsv_28_1";
 		String userName = "root";
 		String password = "VeLa";
 		

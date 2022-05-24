@@ -1,10 +1,8 @@
 package org.hm.SimpleWeb.servlet.edition;
 
 import java.io.IOException;
-import java.sql.Connection;
 import java.sql.Date;
 import java.sql.SQLException;
-import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -13,10 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.hm.SimpleWeb.beans.Department;
 import org.hm.SimpleWeb.beans.Student;
-import org.hm.SimpleWeb.utils.DepartmentDBUtils;
-import org.hm.SimpleWeb.utils.MyUtils;
 import org.hm.SimpleWeb.utils.StudentDBUtils;
 
 @WebServlet("/student/edit")
@@ -28,12 +23,9 @@ public class EditStudentServlet extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Connection conn = MyUtils.getStoredConnection(request);
-		
 		String code = (String) request.getParameter("id");
 
 		Student editRow = null;
-		List<Department> list = null;
 		String errorString = null;
 		
 		try {
@@ -41,19 +33,6 @@ public class EditStudentServlet extends HttpServlet {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			errorString = e.getMessage();
-		}
-		if (editRow == null) {
-			errorString = "Is null";
-			System.out.println(errorString);
-		}
-		else {
-			try {
-				// Stub
-				list = DepartmentDBUtils.query(conn,0);
-			} catch (SQLException e) {
-				e.printStackTrace();
-				errorString = e.getMessage();
-			}	
 		}
 		String birthdaySTR = editRow.getBirthday().toString();
 		String[] spiltBirthday = birthdaySTR.split("-",3);
@@ -63,7 +42,6 @@ public class EditStudentServlet extends HttpServlet {
 		request.setAttribute("day", spiltBirthday[2]);
 		request.setAttribute("month", spiltBirthday[1]);
 		request.setAttribute("year", spiltBirthday[0]);
-		request.setAttribute("departmentList", list);
 		
 		RequestDispatcher dispatcher = request.getServletContext()
 				.getRequestDispatcher("/WEB-INF/views/editData/editStudent.jsp");

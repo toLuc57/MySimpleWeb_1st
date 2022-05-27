@@ -1,19 +1,16 @@
 package org.hm.SimpleWeb.beans;
 
-import java.sql.Date;
-
 public class Course {
 	private String id;
 	private String idTeacher;
 	private String idSubject;
-	private Date fromDate;
-	private Date toDate; 
+	private String fromDate;
+	private String toDate; 
 	public Course() {
 		
 	}
-	public Course(String id,String idTeacher,String idSubject,
-			Date fromDate, Date toDate ) {
-		this.id = id;
+	public Course(String idTeacher,String idSubject,
+			String fromDate, String toDate ) {
 		this.idTeacher = idTeacher;
 		this.idSubject = idSubject;
 		this.fromDate = fromDate;
@@ -37,16 +34,16 @@ public class Course {
 	public void setIdSubject(String id) {
 		idSubject = id;
 	}
-	public Date getFromDate() {
+	public String getFromDate() {
 		return fromDate;
 	}
-	public void setFromDate(Date date) {
+	public void setFromDate(String date) {
 		fromDate = date;
 	}
-	public Date getToDate() {
+	public String getToDate() {
 		return toDate;
 	}
-	public void setToDate(Date date) {
+	public void setToDate(String date) {
 		toDate = date;
 	}
 

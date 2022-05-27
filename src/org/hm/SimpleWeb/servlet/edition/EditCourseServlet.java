@@ -1,7 +1,6 @@
 package org.hm.SimpleWeb.servlet.edition;
 
 import java.io.IOException;
-import java.sql.Date;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -13,9 +12,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.hm.SimpleWeb.beans.Course;
-import org.hm.SimpleWeb.beans.Subject;
-import org.hm.SimpleWeb.beans.Teacher;
 import org.hm.SimpleWeb.utils.CourseDBUtils;
+import org.hm.SimpleWeb.utils.SubjectDBUtils;
+import org.hm.SimpleWeb.utils.TeacherDBUtils;
 
 @WebServlet("/course/edit")
 public class EditCourseServlet extends HttpServlet {
@@ -28,8 +27,8 @@ public class EditCourseServlet extends HttpServlet {
 		String code = (String) request.getParameter("id");
 
 		Course editRow = null;
-		List<Subject> list1 = null;
-		List<Teacher> list2 = null;
+		List<String> list1 = SubjectDBUtils.getListID();
+		List<String> list2 = TeacherDBUtils.getListID();
 
 		String errorString = null;
 
@@ -67,7 +66,6 @@ public class EditCourseServlet extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String id = (String) request.getParameter("id");
 		String idSubject = (String) request.getParameter("idSubject");
 		String idTeacher = (String) request.getParameter("idTeacher");
 		String fromDay = (String) request.getParameter("fromDay");
@@ -77,10 +75,10 @@ public class EditCourseServlet extends HttpServlet {
 		String toMonth = (String) request.getParameter("toMonth");
 		String toYear = (String) request.getParameter("toYear");
 		
-		Date fromDate = Date.valueOf(fromYear + "-" + fromMonth + "-" + fromDay);
-		Date toDate = Date.valueOf(toYear + "-" + toMonth + "-" + toDay);
+		String fromDate = fromYear + "-" + fromMonth + "-" + fromDay;
+		String toDate = toYear + "-" + toMonth + "-" + toDay;
 		
-		Course editRow = new Course(id,idTeacher,idSubject,fromDate,toDate);
+		Course editRow = new Course(idTeacher,idSubject,fromDate,toDate);
 
 		String errorString = null;
 

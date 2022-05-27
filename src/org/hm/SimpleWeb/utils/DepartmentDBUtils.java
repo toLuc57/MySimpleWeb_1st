@@ -20,6 +20,7 @@ public class DepartmentDBUtils {
 	private static final String table ="tkhoa";
 	private static int amountRowsLimit = 10;
 	private static int amountRowsOffset = 10;
+	private static final String textInID = "K";
 	
 	private static final String id = "MaKhoa";
 	private static final String name = "TenKhoa";
@@ -27,7 +28,7 @@ public class DepartmentDBUtils {
 	private static final String telephone = "DienThoai";
 	
 	private static List<String> listColumnName = new ArrayList<String>();
-	private static List<String> listIDs = new ArrayList<String>(); 
+	private static List<String> listID = new ArrayList<String>(); 
 	private static Map<String,String> mapColumn = new HashMap<String,String>();
 	
 	public static final String className = "DepartmentDBUtils";
@@ -52,7 +53,7 @@ public class DepartmentDBUtils {
             	mapColumn.put(rsmd.getColumnName(i), rsmd.getColumnTypeName(i));
             }
             while(rs.next()) {
-            	listIDs.add(rs.getString(id));
+            	listID.add(rs.getString(id));
             }
         } catch (ClassNotFoundException | SQLException e) {
         	e.printStackTrace();
@@ -119,16 +120,19 @@ public class DepartmentDBUtils {
 		try{
 			conn = MySQLConnUtils.getMySQLConUtils();
 			String sql = "insert into " + table 
-					+ " (" + name + ", " + address + ", " + telephone + ") "
-					+ " values (?,?,?)" ;
+					+ " (" + id + ", " + name + ", " 
+					+ address + ", " + telephone + ") "
+					+ " values (?,?,?,?)" ;
 		
 			PreparedStatement pstm = conn.prepareStatement(sql);
-			
-			pstm.setString(1, insertRow.getName());
-			pstm.setString(2, insertRow.getAddress());
-			pstm.setString(3, insertRow.getTelephone());
+			String newID = getNewID();
+			pstm.setString(1, newID);
+			pstm.setString(2, insertRow.getName());
+			pstm.setString(3, insertRow.getAddress());
+			pstm.setString(4, insertRow.getTelephone());
 			
 			pstm.executeUpdate();
+			listID.add(newID);
 		} 
 		catch(ClassNotFoundException | SQLException e) {
 			MySQLConnUtils.rollbackQuietly(conn);
@@ -154,6 +158,7 @@ public class DepartmentDBUtils {
 			pstm.setString(1,deleteRowById);
 			
 			pstm.executeUpdate();
+			listID.remove(deleteRowById);
 		} catch (ClassNotFoundException | SQLException e) {
 			MySQLConnUtils.rollbackQuietly(conn);
 			errorMessage = e.getMessage();
@@ -216,7 +221,28 @@ public class DepartmentDBUtils {
 	public static Map<String,String> getAllColumnNameAndTypeName() {
 		return mapColumn;
 	}
-	public static List<String> getListIDs(){
-		return listIDs;
+	private static String getNewID() {
+		String numberZeroInID = "";
+		if(listID == null || listID.size() == 0)
+		{
+			for(int i = 1; i < MyUtils.numberInID;++i) {
+				numberZeroInID = numberZeroInID.concat("0");
+			}
+			return textInID + numberZeroInID + "1";
+		}
+		String lastID = listID.get(listID.size() - 1);
+		int numberInID = Integer.parseInt(lastID.substring(textInID.length())) + 1;
+		String numberInIDString = String.valueOf(numberInID);
+		for(int i = numberInIDString.length(); i < MyUtils.numberInID; ++i) {
+			numberZeroInID = numberZeroInID.concat("0");
+		}
+		// newID = textInID + numberZeroInID + numberInIDString
+		String newID = textInID;
+		newID = newID.concat(numberZeroInID);
+		newID = newID.concat(numberInIDString);
+		return newID;
+	}
+	public static List<String> getListID(){
+		return listID;
 	}
 }

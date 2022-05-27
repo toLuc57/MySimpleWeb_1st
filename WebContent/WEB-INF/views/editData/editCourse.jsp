@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="java.util.List,org.hm.SimpleWeb.beans.Subject,org.hm.SimpleWeb.beans.Teacher" %>
+<%@ page import="java.util.List,org.hm.SimpleWeb.beans.Course" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,73 +11,74 @@
 	<jsp:include page="..//_header.jsp"></jsp:include>
       <p style="color: red;">${errorString}</p>      
       
-      <h3>Subject List</h3>
-      <table border="1" cellpadding="5" cellspacing="1" >
-       <tr>
-          <th>ID</th>
-          <th>Name</th>
-          <th>Address</th>
-          <th>Telephone</th>
-
-       </tr>
-       <%
-       List<Subject> list1 = (List<Subject>) request.getAttribute("subjectsList");	
-       for(Subject i : list1){    	   
-	   %>
-	   	   <tr>
-		   	   <td><%= i.getId() %></td>
-			   <td><%= i.getName() %></td>
-			   <td><%= i.getNumberOfPracticeLesson() %></td>
-			   <td><%= i.getNumberOfTheoryLesson() %></td>
-	       </tr>
-       <% 
-       } 
-       %>
-  	</table>
-  	
-  	<h3>Teacher List</h3>
-      <table border="1" cellpadding="5" cellspacing="1" >
-       <tr>
-          <th>ID</th>
-          <th>Name</th>
-          <th>Degree</th>
-          <th>Telephone</th>
-          <th>ID Department</th>			
-       </tr>
-       <%
-       List<Teacher> list2 = (List<Teacher>) request.getAttribute("teacherList");	
-       for(Teacher i : list2){    	   
-	   %>
-	   	   <tr>
-		   	   <td><%= i.getId() %></td>
-			   <td><%= i.getName() %></td>
-			   <td><%= i.getDegree() %></td>
-			   <td><%= i.getTelephone() %></td>
-			   <td><%= i.getIdDepartment() %></td>
-	       </tr>
-       <% 
-       } 
-       %>
-  	</table>
-      
       <h3>Edit Course</h3>
-      
-      <p style="color: red;">${errorString}</p>
-      
+            
       <form method="POST" action="${pageContext.request.contextPath}/course/edit">
          <input type="hidden" name="id" value="${course.id}" />
          <table border="0">
             <tr>
-               <td>Name</td>
-               <td><input type="text" name="id" value="${course.name}" /></td>
-            </tr>
-            <tr>
                <td>ID Subject</td>
-               <td><input type="text" name="idSubject" value="${course.idSubject}" /></td>
+               <td>
+               <select name="idSubject">
+	               <%
+	               Course editCourse = (Course) request.getAttribute("course");
+	               List<String> list = (List<String>) request.getAttribute("subjectsList");
+	               if(list != null && list.size() != 0){
+		               for(String i : list){
+		            	   if(editCourse.getIdSubject().equals(i)){
+		            		   %>
+				                 <option value="<%=i%>" selected><%=i%></option>
+				               <%
+		            	   }
+		            	   else {
+		            		   %>
+				                 <option value="<%=i%>"><%=i%></option>
+				               <%
+		            	   }
+		               }
+	               } 
+	               else {
+	               %>
+               		Không có mã 
+					<%
+				   }
+					%>
+               </select>
+               </td>
             </tr>
             <tr>
                <td>ID Teacher</td>
-               <td><input type="text" name="idTeacher" value="${course.idTeacher}" /></td>
+               <td>
+	               <%
+	               list.clear();
+	               list = (List<String>) request.getAttribute("teacherList");
+	               if(list != null && list.size() != 0){
+	            	   %>
+	            	   <select name="idTeacher">
+	            	   <%
+		               for(String i : list){
+		            	   if(editCourse.getIdTeacher().equals(i)){
+		            		   %>
+				                 <option value="<%=i%>" selected><%=i%></option>
+				               <%
+		            	   }
+		            	   else {
+		            		   %>
+				                 <option value="<%=i%>"><%=i%></option>
+				               <%
+		            	   }
+		               }
+	            	   %>
+	            	   </select>
+	            	   <%
+	               } 
+	               else {
+	               %>
+               		Không có mã
+					<%
+				   }
+					%>
+               </td>
             </tr>
 			<tr>
                <td>From (dd/MM/yyyy): </td>
@@ -102,7 +103,7 @@
             <tr>
                <td colspan="2">                   
                    <input type="submit" value="Submit" />
-                   <a href="courseList">Cancel</a>
+                   <a href="${pageContext.request.contextPath}/courseList">Cancel</a>
                </td>
             </tr>
          </table>

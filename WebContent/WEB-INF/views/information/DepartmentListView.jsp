@@ -47,7 +47,7 @@
        %>
     </table>
 
-    <a href="insertDepartment" >Insert Department</a>
+    <a href="department/insert" >Insert Department</a>
 	<br/>
 	<jsp:include page="..//_pagination.jsp"></jsp:include>
 	<br/>

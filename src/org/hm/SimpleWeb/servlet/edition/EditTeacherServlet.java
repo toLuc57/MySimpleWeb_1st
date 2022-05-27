@@ -11,8 +11,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.hm.SimpleWeb.beans.Department;
 import org.hm.SimpleWeb.beans.Teacher;
+import org.hm.SimpleWeb.utils.DepartmentDBUtils;
 import org.hm.SimpleWeb.utils.TeacherDBUtils;
 
 
@@ -28,7 +28,7 @@ public class EditTeacherServlet extends HttpServlet {
 		String code = (String) request.getParameter("id");
 
 		Teacher editRow = null;
-		List<Department> list = null;
+		List<String> list = DepartmentDBUtils.getListID();
 		String errorString = null;
 		
 		try {
@@ -48,14 +48,11 @@ public class EditTeacherServlet extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
 		String id = (String) request.getParameter("id");
 		String name = (String) request.getParameter("name");
 		String dergee = (String) request.getParameter("degree");
 		String telephone = (String) request.getParameter("telephone");
 		String idDepartment = (String) request.getParameter("idDepartment");
-		
-		System.out.println("EditTeacher-Id: " + id);
 		
 		Teacher editTeacher = new Teacher(id,name,dergee,telephone,idDepartment);
 
@@ -70,11 +67,10 @@ public class EditTeacherServlet extends HttpServlet {
 				errorString = e.getMessage();
 			}
 		}
-		
-		request.setAttribute("errorString", errorString);
-		request.setAttribute("teacher", editTeacher);
 
 		if (errorString != null) {
+			request.setAttribute("errorString", errorString);
+			request.setAttribute("teacher", editTeacher);
 			RequestDispatcher dispatcher = request.getServletContext()
 					.getRequestDispatcher("/WEB-INF/views/editData/editTeacher.jsp");
 			dispatcher.forward(request, response);

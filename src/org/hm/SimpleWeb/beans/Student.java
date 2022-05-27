@@ -1,14 +1,12 @@
 package org.hm.SimpleWeb.beans;
 
-import java.sql.Date;
-
 public class Student {
 	private static final String maPhanChu = "SV";
 	
 	private String id;
 	private String lastName;
 	private String firstName;
-	private Date birthday;
+	private String birthday;
 	private String sex;
 	private String telephone;
 	private String address;
@@ -17,7 +15,7 @@ public class Student {
 	public Student() {
 		
 	}
-	public Student(String lastName, String firstName, Date birthday, 
+	public Student(String lastName, String firstName, String birthday, 
 			String sex, String telephone,String address, String idDepartment) {
 		id = null;
 		this.setLastName(lastName);
@@ -28,7 +26,7 @@ public class Student {
 		this.setAddress(address);
 		this.setIdDepartment(idDepartment);
 	}
-	public Student(String id,String lastName, String firstName, Date birthday, 
+	public Student(String id,String lastName, String firstName, String birthday, 
 			String sex,String telephone,String address,String idDepartment) {
 		this.setId(id);
 		this.setLastName(lastName);
@@ -63,10 +61,10 @@ public class Student {
 	public void setSex(String sex) {
 		this.sex = sex;
 	}
-	public Date getBirthday() {
+	public String getBirthday() {
 		return birthday;
 	}
-	public void setBirthday(Date birthday) {
+	public void setBirthday(String birthday) {
 		this.birthday = birthday;
 	}
 	public String getTelephone() {

@@ -28,7 +28,6 @@ public class InsertDepartmentServlet extends HttpServlet {
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
 		String name = (String) request.getParameter("name");
 		String telephone = (String) request.getParameter("telephone");
 		String address = (String) request.getParameter("address");

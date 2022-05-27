@@ -19,6 +19,7 @@ public class CourseDBUtils {
 	private static final String table ="tkhoahoc";
 	private static int amountRowsLimit = 10;
 	private static int amountRowsOffset = 10;
+	private static final String textInID = "KH";
 	
 	private static final String id = "MaKhoaHoc";
 	private static final String idTeacher = "MaGiaoVien";
@@ -27,7 +28,7 @@ public class CourseDBUtils {
 	private static final String toDate = "NgayKetThuc";
 	
 	private static List<String> listColumnName = new ArrayList<String>();
-	private static List<String> listIDs = new ArrayList<String>(); 
+	private static List<String> listID = new ArrayList<String>(); 
 	private static Map<String,String> mapColumn = new HashMap<String,String>();
 	
 	public static final String className = "CourseDBUtils";
@@ -52,7 +53,7 @@ public class CourseDBUtils {
             	mapColumn.put(rsmd.getColumnName(i), rsmd.getColumnTypeName(i));
             }
             while(rs.next()) {
-            	listIDs.add(rs.getString(id));
+            	listID.add(rs.getString(id));
             }
             conn.close();
         } catch (ClassNotFoundException | SQLException e) {
@@ -78,9 +79,9 @@ public class CourseDBUtils {
 			Course mh = new Course();
 			mh.setIdCourse(rs.getString(id));
 			mh.setIdTeacher(rs.getString(idTeacher));
-			mh.setFromDate(rs.getDate(fromDate));
+			mh.setFromDate(rs.getString(fromDate));
 			mh.setIdSubject(rs.getString(idSubject));
-			mh.setToDate(rs.getDate(toDate));
+			mh.setToDate(rs.getString(toDate));
 			list.add(mh);
 		}
 		return list;
@@ -103,9 +104,9 @@ public class CourseDBUtils {
 				mh = new Course();
 				mh.setIdCourse(rs.getString(id));
 				mh.setIdTeacher(rs.getString(idTeacher));
-				mh.setFromDate(rs.getDate(fromDate));
+				mh.setFromDate(rs.getString(fromDate));
 				mh.setIdSubject(rs.getString(idSubject));
-				mh.setToDate(rs.getDate(toDate));
+				mh.setToDate(rs.getString(toDate));
 			}
 		} catch (ClassNotFoundException | SQLException e) {
 			MySQLConnUtils.rollbackQuietly(conn);
@@ -123,18 +124,20 @@ public class CourseDBUtils {
 		try {
 			conn = MySQLConnUtils.getMySQLConUtils();
 			String sql = "insert into " + table 
-					+ "(" + idTeacher + ", " + idSubject
+					+ "(" + id + ", " + idTeacher + ", " + idSubject
 					+ ", " + fromDate + ", " + toDate + ") "
-					+ " values (?,?,?,?)" ;
+					+ " values (?,?,?,?,?)";
 			PreparedStatement pstm = conn.prepareStatement(sql, 
 					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-			
-			pstm.setString(1, insertRow.getIdTeacher());
-			pstm.setString(2, insertRow.getIdSubject());
-			pstm.setDate(3, insertRow.getFromDate());
-			pstm.setDate(4, insertRow.getToDate());
+			String newID = getNewID();
+			pstm.setString(1, newID);
+			pstm.setString(2, insertRow.getIdTeacher());
+			pstm.setString(3, insertRow.getIdSubject());
+			pstm.setString(4, insertRow.getFromDate());
+			pstm.setString(5, insertRow.getToDate());
 			
 			pstm.executeUpdate();
+			listID.add(newID);
 		} catch (ClassNotFoundException | SQLException e) {
 			MySQLConnUtils.rollbackQuietly(conn);
 			e.printStackTrace();
@@ -157,6 +160,7 @@ public class CourseDBUtils {
 			pstm.setString(1,deleteRowById);
 			
 			pstm.executeUpdate();
+			listID.remove(deleteRowById);
 		} catch (ClassNotFoundException | SQLException e) {
 			MySQLConnUtils.rollbackQuietly(conn);
 			errorMessage = e.getMessage();
@@ -181,8 +185,8 @@ public class CourseDBUtils {
 			
 			pstm.setString(1, updateRow.getIdTeacher());
 			pstm.setString(2, updateRow.getIdSubject());
-			pstm.setDate(3, updateRow.getFromDate());
-			pstm.setDate(4, updateRow.getToDate());
+			pstm.setString(3, updateRow.getFromDate());
+			pstm.setString(4, updateRow.getToDate());
 			pstm.setString(5, updateRow.getIdCourse());
 			
 			pstm.executeUpdate();
@@ -259,8 +263,28 @@ public class CourseDBUtils {
 	public static Map<String,String> getAllColumnNameAndTypeName() {
 		return mapColumn;
 	}
-	
-	public static List<String> getListIDs(){
-		return listIDs;
+	private static String getNewID() {
+		String numberZeroInID = "";
+		if(listID == null || listID.size() == 0)
+		{
+			for(int i = 1; i < MyUtils.numberInID;++i) {
+				numberZeroInID = numberZeroInID.concat("0");
+			}
+			return textInID + numberZeroInID + "1";
+		}
+		String lastID = listID.get(listID.size() - 1);
+		int numberInID = Integer.parseInt(lastID.substring(textInID.length())) + 1;
+		String numberInIDString = String.valueOf(numberInID);
+		for(int i = numberInIDString.length(); i < MyUtils.numberInID; ++i) {
+			numberZeroInID = numberZeroInID.concat("0");
+		}
+		// newID = textInID + numberZeroInID + numberInIDString
+		String newID = textInID;
+		newID = newID.concat(numberZeroInID);
+		newID = newID.concat(numberInIDString);
+		return newID;
+	}
+	public static List<String> getListID(){
+		return listID;
 	}
 }

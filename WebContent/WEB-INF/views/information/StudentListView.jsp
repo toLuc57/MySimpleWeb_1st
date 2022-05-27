@@ -44,10 +44,10 @@
 			   <td><%= i.getAddress() %></td>
 			   <td><%= i.getIdDepartment() %></td>
 			   <td>
-		          <a href="editStudent?id=<%=i.getId()%>">Edit</a>
+		          <a href="student/edit?id=<%=i.getId()%>">Edit</a>
 		       </td>
 		       <td>
-		      		<a href="deleteStudent?id=<%=i.getId()%>">Delete</a>
+		      		<a href="student/delete?id=<%=i.getId()%>">Delete</a>
 		       </td>
 	       </tr>
        <%
@@ -55,7 +55,7 @@
        %>
     </table>
 
-    <a href="insertStudent" >Insert Student</a>
+    <a href="student/insert" >Insert Student</a>
 	<br/>
 	<jsp:include page="..//_pagination.jsp"></jsp:include>
 	<br/>

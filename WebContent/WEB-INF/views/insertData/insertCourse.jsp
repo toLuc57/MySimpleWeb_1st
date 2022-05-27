@@ -18,20 +18,26 @@
       <form method="POST" action="${pageContext.request.contextPath}/course/insert">
          <table border="0">
             <tr>
-               <td>ID</td>
-               <td><input type="text" name="id"  /></td>
-            </tr>
-            <tr>
                <td>ID Subject</td>
                <td>
-               <select name="idSubject">
 	               <%
+	               Course insertCourse = (Course) request.getAttribute("course");
 	               List<String> list = (List<String>) request.getAttribute("subjectsList");
-	               if(list != null && list.size() != 0){
+	               if(list != null && list.size() != 0 && !list.isEmpty()){
+	            	   %>
+	            	   <select name="idSubject">
+	            	   <%
 		               for(String i : list){
-		               %>
-		                 <option value="<%=i%>"><%=i%></option>
-		               <%
+		            	   if(insertCourse == null || !insertCourse.getIdSubject().equals(i)){
+		            		   %>
+				                 <option value="<%=i%>"><%=i%></option>
+				               <%
+		            	   }
+		            	   else {
+		            		   %>
+				                 <option value="<%=i%>" selected><%=i%></option>
+				               <%
+		            	   }
 		               }
 	               } 
 	               else {
@@ -50,11 +56,18 @@
 	               <%
 	               list.clear();
 	               list = (List<String>) request.getAttribute("teacherList");
-	               if(list != null && list.size() != 0){
+	               if(list != null && list.size() != 0 && !list.isEmpty()){
 		               for(String i : list){
-		               %>
-		                 <option value="<%=i%>"><%=i%></option>
-		               <%
+		            	   if(insertCourse == null || !insertCourse.getIdTeacher().equals(i)){
+		            		   %>
+				                 <option value="<%=i%>"><%=i%></option>
+				               <%
+		            	   }
+		            	   else {
+		            		   %>
+				                 <option value="<%=i%>" selected><%=i%></option>
+				               <%
+		            	   }
 		               }
 	               } 
 	               else {
@@ -91,7 +104,7 @@
             <tr>
                <td colspan="2">                   
                    <input type="submit" value="Submit" />
-                   <a href="courseList">Cancel</a>
+                   <a href="${pageContext.request.contextPath}/courseList">Cancel</a>
                </td>
             </tr>
          </table>

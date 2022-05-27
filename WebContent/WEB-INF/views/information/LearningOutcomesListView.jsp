@@ -36,10 +36,12 @@
 			   <td><%= i.getNumberOfTest() %></td>
 			   <td><%= i.getPoint() %></td>
 			   <td>
-		          <a href="editLearningOutcomes?idStudent=<%=i.getIdStudent()%>&idCourse=<%=i.getIdCourse()%>">Edit</a>
+		          <a href="learningOutcomes/edit?idStudent=<%=i.getIdStudent()%>
+		          &idCourse=<%=i.getIdCourse()%>&numberOfTest=<%=i.getNumberOfTest()%>">Edit</a>
 		       </td>
 		       <td>
-		      		<a href="deleteLearningOutcomes?idStudent=<%=i.getIdStudent()%>&idCourse=<%=i.getIdCourse()%>">Delete</a>
+		      		<a href="learningOutcomes/delete?idStudent=<%=i.getIdStudent()%>
+		      		&idCourse=<%=i.getIdCourse()%>&numberOfTest=<%=i.getNumberOfTest()%>">Delete</a>
 		       </td>
 	       </tr>
        <% 
@@ -47,7 +49,7 @@
        %>
     </table>
 
-    <a href="insertLearningOutcomes" >Insert LearningOutcomes</a>
+    <a href="learningOutcomes/insert" >Insert LearningOutcomes</a>
 	<br/>
 	<jsp:include page="..//_pagination.jsp"></jsp:include>
 	<br/>

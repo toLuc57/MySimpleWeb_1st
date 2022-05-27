@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="java.util.List,org.hm.SimpleWeb.beans.Department" %>
+<%@ page import="java.util.List,org.hm.SimpleWeb.beans.Student" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,32 +14,7 @@
       <h3>Insert Student</h3>
       
       <p style="color: red;">${errorString}</p>
-      
-    <table border="1" cellpadding="5" cellspacing="1" >
-       <tr>
-          <th>ID</th>
-          <th>Name</th>
-          <th>Address</th>
-          <th>Telephone</th>
 
-       </tr>
-       <%
-       List<Department> list = (List<Department>) request.getAttribute("departmentList");	
-       for(Department i : list){    	   
-	   %>
-	   	   <tr>
-		   	   <td><%= i.getId() %></td>
-			   <td><%= i.getName() %></td>
-			   <td><%= i.getAddress() %></td>
-			   <td><%= i.getTelephone() %></td>
-	       </tr>
-       <% 
-       } 
-       %>
-  	</table>
-      
-      </br>
-      
       <form method="POST" action="${pageContext.request.contextPath}/student/insert">
          <table border="0">
             <tr>
@@ -59,14 +34,65 @@
                	</td>
             </tr>
             <tr>
-               <td rowspan="3">Sex</td>
-               <td><input type="radio" name="sex" value="Male" />Male</td>
-            </tr>
-            <tr>
-               <td><input type="radio" name="sex" value="Female" />Female</td>
-            </tr>
-            <tr>
-               <td><input type="radio" name="sex" value="Other" />Other</td>
+               <%
+            	Student obj = (Student) request.getAttribute("student");
+                if(obj == null){
+                	%>
+                	<tr>
+                  		<td rowspan="3">Sex</td>
+                  		<td><input type="radio" name="sex" value="Male"/>Male</td>
+               		</tr>
+               		<tr>
+                  		<td><input type="radio" name="sex" value="Female" />Female</td>
+               		</tr>
+               		<tr>
+                  		<td><input type="radio" name="sex" value="Other" />Other</td>
+               		</tr>
+                 <%
+                }
+         		else if (obj.getSex().equals("Nam")){
+            %>
+            	<tr>
+              		<td rowspan="3">Sex</td>
+              		<td><input type="radio" name="sex" value="Male" checked/>Male</td>
+           		</tr>
+           		<tr>
+              		<td><input type="radio" name="sex" value="Female" />Female</td>
+           		</tr>
+           		<tr>
+              		<td><input type="radio" name="sex" value="Other" />Other</td>
+           		</tr>
+             <%
+             	}
+              	else if (obj.getSex().equals("Nữ")){
+           	 %>
+                <tr>
+                	<td rowspan="3">Sex</td>
+                  	<td><input type="radio" name="sex" value="Male"/>Male</td>
+               	</tr>
+               	<tr>
+                  	<td><input type="radio" name="sex" value="Female" checked/>Female</td>
+               	</tr>
+               	<tr>
+                  	<td><input type="radio" name="sex" value="Other" />Other</td>
+               	</tr>
+             <%
+              	}
+              	else {
+              %>
+                <tr>
+                  	<td rowspan="3">Sex</td>
+                  	<td><input type="radio" name="sex" value="Male"/>Male</td>
+               	</tr>
+               	<tr>
+                  	<td><input type="radio" name="sex" value="Female"/>Female</td>
+               	</tr>
+               	<tr>
+                  	<td><input type="radio" name="sex" value="Other" checked/>Other</td>
+               	</tr>
+              <%
+              	}
+              %>
             </tr>
             <tr>
                <td>Telephone</td>
@@ -78,12 +104,44 @@
             </tr>
             <tr>
                <td>Id Department</td>
-               <td><input type="text" name="idDepartment" value="${student.idDepartment}" required /></td>
+               <td>
+               
+	               <%
+	               Student insertStudent= (Student) request.getAttribute("student");
+	               List<String> list = (List<String>) request.getAttribute("departmentList");
+	               if(list != null && list.size() != 0 && !list.isEmpty()){
+	            	   %>
+	            	   <select name="idDepartment">
+	            	   <%
+		               for(String i : list){
+		            	   if(insertStudent == null || !insertStudent.getIdDepartment().equals(i)){
+		            		   %>
+				                 <option value="<%=i%>"><%=i%></option>
+				               <%
+		            	   }
+		            	   else {
+		            		   %>
+				                 <option value="<%=i%>" selected><%=i%></option>
+				               <%
+		            	   }
+		               }
+	            	   %>
+	            	   </select>
+	            	   <%
+	               } 
+	               else {
+	               %>
+               		Không có mã 
+					<%
+				   }
+					%>
+               
+               </td>
             </tr>
             <tr>
                <td colspan="2">                   
                    <input type="submit" value="Submit" />
-                   <a href="studentList">Cancel</a>
+                   <a href="${pageContext.request.contextPath}/studentList">Cancel</a>
                </td>
             </tr>
          </table>

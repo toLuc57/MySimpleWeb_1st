@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="java.util.List,java.sql.Date,org.hm.SimpleWeb.beans.Department,org.hm.SimpleWeb.beans.Student" %>
+<%@ page import="java.util.List,org.hm.SimpleWeb.beans.Student" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,29 +13,6 @@
       
       <p style="color: red;">${errorString}</p>
 
-      <table border="1" cellpadding="5" cellspacing="1">
-       <tr>
-          <th>ID</th>
-          <th>Name</th>
-          <th>Address</th>
-          <th>Telephone</th>
-       </tr>
-       <%
-       List<Department> list = (List<Department>) request.getAttribute("departmentList");	
-       for(Department i : list){    	   
-	   %>
-	   	   <tr>
-		   	   <td><%= i.getId() %></td>
-			   <td><%= i.getName() %></td>
-			   <td><%= i.getAddress() %></td>
-			   <td><%= i.getTelephone() %></td>
-	       </tr>
-       <% 
-       } 
-       %>
-  	</table>
-      
-      <br/>
       <h3>Edit Student</h3>
       
       <form method="POST" action="${pageContext.request.contextPath}/student/edit">
@@ -120,12 +97,43 @@
             </tr>
             <tr>
                <td>Id Department</td>
-               <td><input type="text" name="idDepartment" placeholder="${student.idDepartment}" required/></td>
+               <td>
+	               <%
+	               Student insertStudent= (Student) request.getAttribute("student");
+	               List<String> list = (List<String>) request.getAttribute("departmentList");
+	               if(list != null && list.size() != 0){
+	            	   %>
+	            	   <select name="idDepartment">
+	            	   <%
+		               for(String i : list){
+		            	   if(insertStudent == null || !insertStudent.getIdDepartment().equals(i)){
+		            		   %>
+				                 <option value="<%=i%>"><%=i%></option>
+				               <%
+		            	   }
+		            	   else {
+		            		   %>
+				                 <option value="<%=i%>" selected><%=i%></option>
+				               <%
+		            	   }
+		               }
+	            	   %>
+	            	   </select>
+	            	   <%
+	               } 
+	               else {
+	               %>
+               		Không có mã 
+					<%
+				   }
+					%>
+               
+               </td>
             </tr>
             <tr>
                <td colspan="2">                   
                    <input type="submit" value="Submit" />
-                   <a href="studentList">Cancel</a>
+                   <a href="${pageContext.request.contextPath}/studentList">Cancel</a>
                </td>
             </tr>
          </table>

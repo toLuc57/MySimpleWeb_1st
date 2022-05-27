@@ -8,8 +8,8 @@
 </head>
 <body>
 	<jsp:include page="..//_header.jsp"></jsp:include>
-    <jsp:include page="..//_menu.jsp"></jsp:include>
-    
+    <p style="color: red;">${errorString}</p> 
+    <h3>Insert Department</h3>
 	<form method="POST" action="${pageContext.request.contextPath}/department/insert">
          <table border="0">
             <tr>
@@ -28,7 +28,7 @@
             <tr>
                <td colspan="2">                   
                    <input type="submit" value="Submit" />
-                   <a href="departmentList">Cancel</a>
+                   <a href="${pageContext.request.contextPath}/departmentList">Cancel</a>
                </td>
             </tr>
          </table>

@@ -1,7 +1,6 @@
 package org.hm.SimpleWeb.servlet.edition;
 
 import java.io.IOException;
-import java.sql.Date;
 import java.sql.SQLException;
 
 import javax.servlet.RequestDispatcher;
@@ -47,6 +46,7 @@ public class EditStudentServlet extends HttpServlet {
 				.getRequestDispatcher("/WEB-INF/views/editData/editStudent.jsp");
 		dispatcher.forward(request, response);
 	}
+	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String id = (String) request.getParameter("id");
 		String lastName = (String) request.getParameter("lastName");
@@ -59,13 +59,10 @@ public class EditStudentServlet extends HttpServlet {
 		String address = (String) request.getParameter("address");
 		String idDepartment = (String) request.getParameter("idDepartment");
 		
-		Date birthday = Date.valueOf(year + "-" + month + "-" + day);
-		
+		String birthday = year + "-" + month + "-" + day;		
+		String errorString = null;
 		Student editStudent = new Student(id,lastName,firstName,birthday,
 				sex,telephone,address,idDepartment);
-		
-		String errorString = null;
-
 		if (errorString == null) {
 			try {
 				StudentDBUtils.update(editStudent);
@@ -76,10 +73,12 @@ public class EditStudentServlet extends HttpServlet {
 			}
 		}
 		
-		request.setAttribute("errorString", errorString);
-		request.setAttribute("student", editStudent);
-
 		if (errorString != null) {
+			request.setAttribute("errorString", errorString);
+			request.setAttribute("student", editStudent);
+			request.setAttribute("year", year);
+			request.setAttribute("month", month);
+			request.setAttribute("day", day);
 			RequestDispatcher dispatcher = request.getServletContext()
 					.getRequestDispatcher("/WEB-INF/views/editData/editStudent.jsp");
 			dispatcher.forward(request, response);

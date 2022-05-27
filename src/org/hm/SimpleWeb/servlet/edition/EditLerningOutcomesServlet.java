@@ -26,18 +26,20 @@ public class EditLerningOutcomesServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String idStudent = (String) request.getParameter("idStudent");
 		String idCourse = (String) request.getParameter("idCourse");
+		int numberOfTest = Integer.parseInt(request.getParameter("numberOfTest"));
 
-		LearningOutcomes editRow = null;
+		LearningOutcomes editRow;
 		List<Student> list1 = null;
 		List<LearningOutcomes> list2 = null;
 
 		String errorString = null;
 
 		try {
-			editRow = LearningOutcomesDBUtils.find(idStudent,idCourse);
+			editRow = LearningOutcomesDBUtils.find(idStudent,idCourse,numberOfTest);
 		} catch (SQLException e) {
+			editRow = null;
 			e.printStackTrace();
-			errorString = e.getMessage();
+			errorString = e.getMessage();			
 		}
 		request.setAttribute("teacherList", list2);	
 		request.setAttribute("subjectsList", list1);

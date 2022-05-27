@@ -1,7 +1,6 @@
 package org.hm.SimpleWeb.servlet.insertion;
 
 import java.io.IOException;
-import java.sql.Date;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -27,8 +26,8 @@ public class InsertCourseServlet extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		List<String> list1 = SubjectDBUtils.getListIDs();
-		List<String> list2 = TeacherDBUtils.getListIDs();
+		List<String> list1 = SubjectDBUtils.getListID();
+		List<String> list2 = TeacherDBUtils.getListID();
 		
 		request.setAttribute("teacherList", list2);	
 		request.setAttribute("subjectsList", list1);
@@ -39,7 +38,6 @@ public class InsertCourseServlet extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String id = (String) request.getParameter("id");
 		String idSubject = (String) request.getParameter("idSubject");
 		String idTeacher = (String) request.getParameter("idTeacher");
 		String fromDay = (String) request.getParameter("fromDay");
@@ -49,10 +47,10 @@ public class InsertCourseServlet extends HttpServlet {
 		String toMonth = (String) request.getParameter("toMonth");
 		String toYear = (String) request.getParameter("toYear");
 		
-		Date fromDate = Date.valueOf(fromYear + "-" + fromMonth + "-" + fromDay);
-		Date toDate = Date.valueOf(toYear + "-" + toMonth + "-" + toDay);
+		String fromDate = fromYear + "-" + fromMonth + "-" + fromDay;
+		String toDate = toYear + "-" + toMonth + "-" + toDay;
 		
-		Course newRow = new Course(id,idTeacher,idSubject,fromDate,toDate);
+		Course newRow = new Course(idTeacher,idSubject,fromDate,toDate);
 
 		String errorString = null;
 		try {

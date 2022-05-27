@@ -14,7 +14,8 @@
 <div style="background: #E0E0E0; height: 65px; padding: 5px;">
   <div style="float:left">
  	 <a href="/SimpleWeb">
-  	   <img src="images/logo-home.jpg" alt="Trang chu" width="200" height="65">
+  	   <img src="${pageContext.request.contextPath}/images/logo-home.jpg" 
+  	   alt="Trang chu" width="200" height="65">
   	 </a>
   	 <span style="font-size:40px">My Site</span>
   </div>
@@ -27,7 +28,7 @@
      <%
 	 if(MyUtils.getLoginedUser(request.getSession()) != null){
 	 %>
-    	<a href="logout">Logout</a>
+    	<a href="${pageContext.request.contextPath}/logout">Logout</a>
      <% 
      }
 	 else {

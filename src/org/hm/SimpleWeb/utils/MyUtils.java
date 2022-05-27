@@ -14,8 +14,9 @@ import org.hm.SimpleWeb.beans.UserAccount;
 
 
 public class MyUtils {
-	
+	public static final int numberInID = 4;
 	public static final String ATT_NAME_CONNECTION = "ATTRIBUTE_FOR_CONNECTION"; 
+	
 	private static final String ATT_NAME_USER_NAME = "ATTRIBUTE_FOR_STORE_USER_NAME_IN_COOKIE";
 	
 	private static int REDIRECT_ID = 0;

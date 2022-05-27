@@ -77,10 +77,10 @@ public class LearningOutcomesDBUtils {
 		}
 		return list;
 	}
-	public static LearningOutcomes find(String _idStudent,String _idCourse) 
+	public static List<LearningOutcomes> find(String _idStudent,String _idCourse) 
 			throws SQLException {
 		Connection conn = null;
-		LearningOutcomes mh = null;
+		List<LearningOutcomes> list = new ArrayList<LearningOutcomes>();
 		try {
 			conn = MySQLConnUtils.getMySQLConUtils();
 			String sql = "select " + idStudent + ", " + idCourse + ", " 
@@ -94,7 +94,42 @@ public class LearningOutcomesDBUtils {
 			pstm.setString(2, _idStudent);
 			
 			ResultSet rs = pstm.executeQuery();
-			if(rs.next()) {
+			while(rs.next()) {
+				LearningOutcomes mh = new LearningOutcomes();
+				mh.setIdStudent(rs.getString(idStudent));
+				mh.setIdCourse(rs.getString(idCourse));
+				mh.setNumberOfTest(rs.getInt(numberOfTests));
+				mh.setPoint(rs.getDouble(point));
+				list.add(mh);
+			}
+		} catch (ClassNotFoundException | SQLException e) {
+			MySQLConnUtils.rollbackQuietly(conn);
+			e.printStackTrace();
+		}		
+		finally {
+			MySQLConnUtils.closeQuietly(conn);
+		}
+		return list;
+	}
+	public static LearningOutcomes find(String _idStudent,String _idCourse, int _numberOfTest) 
+			throws SQLException {
+		Connection conn = null;
+		LearningOutcomes mh = null;
+		try {
+			conn = MySQLConnUtils.getMySQLConUtils();
+			String sql = "select " + idStudent + ", " + idCourse + ", " 
+					+ ", " + point + "from " + table 
+					+ " where " + idStudent + " = ?"
+					+ " and " + idCourse + " = ?" 
+					+ " and " + numberOfTests + " = ?";
+			PreparedStatement pstm = conn.prepareStatement(sql, 
+					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);			
+			pstm.setString(1, _idStudent);
+			pstm.setString(2, _idCourse);
+			pstm.setInt(3, _numberOfTest);
+			
+			ResultSet rs = pstm.executeQuery();
+			while(rs.next()) {
 				mh = new LearningOutcomes();
 				mh.setIdStudent(rs.getString(idStudent));
 				mh.setIdCourse(rs.getString(idCourse));
@@ -137,31 +172,30 @@ public class LearningOutcomesDBUtils {
 		}
 	}
 	
-	public static String delete(String _idStudent,String _idCourse) 
+	public static void delete(String _idStudent,String _idCourse,int _numberOfTest) 
 			throws SQLException {
 		Connection conn = null;
-		String errorMessage = null;
 		try {
 			conn = MySQLConnUtils.getMySQLConUtils();
 			String sql = "delete from " + table 
 					+ " where " + idStudent + " = ?"
-					+ " and " + idCourse + " = ?";
+					+ " and " + idCourse + " = ?"
+					+ " and " + numberOfTests + " = ?";
 			
 			PreparedStatement pstm = conn.prepareStatement(sql);
 			
-			pstm.setString(1,_idStudent);
-			pstm.setString(2,_idCourse);
+			pstm.setString(1, _idStudent);
+			pstm.setString(2, _idCourse);
+			pstm.setInt(3, _numberOfTest);
 			
 			pstm.executeUpdate();
 		} catch (ClassNotFoundException | SQLException e) {
 			MySQLConnUtils.rollbackQuietly(conn);
-			errorMessage = e.getMessage();
 			e.printStackTrace();
 		}	
 		finally {
 			MySQLConnUtils.closeQuietly(conn);
 		}	
-		return errorMessage;
 	}
 	// delete all student's information
 	public static void delete(String deleteRowById) 
@@ -190,15 +224,17 @@ public class LearningOutcomesDBUtils {
 		try {
 			conn = MySQLConnUtils.getMySQLConUtils();
 			String sql = "update " + table + " set " 
-					+ numberOfTests +  " = ?, " + point +  " = ? "
-					+ " where " + idStudent + " = ? and " + idCourse + " = ?";
+					 + point +  " = ? "
+					+ " where " + idStudent + " = ? "
+					+ " and " + idCourse + " = ?"
+					+ " and " + numberOfTests +  " = ?";
 				
 			PreparedStatement pstm = conn.prepareStatement(sql);
 			
-			pstm.setInt(1, updateRow.getNumberOfTest());
-			pstm.setDouble(2, updateRow.getPoint());
-			pstm.setString(3, updateRow.getIdStudent());
-			pstm.setString(4, updateRow.getIdCourse());
+			pstm.setDouble(1, updateRow.getPoint());
+			pstm.setString(2, updateRow.getIdStudent());
+			pstm.setString(3, updateRow.getIdCourse());
+			pstm.setInt(4, updateRow.getNumberOfTest());
 			
 			pstm.executeUpdate();
 		} catch (ClassNotFoundException | SQLException e) {

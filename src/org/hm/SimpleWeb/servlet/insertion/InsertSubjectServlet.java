@@ -29,31 +29,29 @@ public class InsertSubjectServlet extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
 		String name = (String) request.getParameter("name");
 		String numberOfPracticeLessonSTR = (String) request.getParameter("numberOfPracticeLesson");
 		String numberOfTheoryLessonSTR = (String) request.getParameter("numberOfTheoryLesson");
 		
 		int numberOfPracticeLesson;
 		int numberOfTheoryLesson;
-
+		String errorString = null;
 		try {
 			numberOfPracticeLesson = Integer.parseInt(numberOfPracticeLessonSTR);
 			numberOfTheoryLesson = Integer.parseInt(numberOfTheoryLessonSTR);
 		}catch (NumberFormatException e) {
-			numberOfPracticeLesson = 0;
-			numberOfTheoryLesson = 0;
+			numberOfPracticeLesson = -1;
+			numberOfTheoryLesson = -1;
+			errorString = e.getMessage();
 		}
-		
-		Subject newRow = new Subject(name, numberOfPracticeLesson, numberOfTheoryLesson);
 
-		String errorString = null;
 		try {
+			Subject newRow = new Subject(name, numberOfPracticeLesson, numberOfTheoryLesson);
 			SubjectDBUtils.insert(newRow);
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
-			errorString = e.getMessage();
+			errorString = errorString.concat(e.getMessage());
 		}
 		
 		request.setAttribute("errorString", errorString);

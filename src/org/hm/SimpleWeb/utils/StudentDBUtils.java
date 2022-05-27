@@ -19,6 +19,7 @@ public class StudentDBUtils {
 	private static final String table = "tSinhVien";
 	private static int amountRowsLimit = 10;
 	private static int amountRowsOffset = 10;
+	private static final String textInID = "SV";
 	
 	private static final String id = "MaSinhVien";
 	private static final String lastName = "HoSinhVien";
@@ -30,7 +31,7 @@ public class StudentDBUtils {
 	private static final String idDepartment = "MaKhoa"; 
 	
 	private static List<String> listColumnName = new ArrayList<String>();
-	private static List<String> listIDs = new ArrayList<String>(); 
+	private static List<String> listID = new ArrayList<String>(); 
 	private static Map<String,String> mapColumn = new HashMap<String,String>();
 	
 	public static final String className = "StudentDBUtils";
@@ -55,7 +56,7 @@ public class StudentDBUtils {
             	mapColumn.put(rsmd.getColumnName(i), rsmd.getColumnTypeName(i));
             }
             while(rs.next()) {
-            	listIDs.add(rs.getString(id));
+            	listID.add(rs.getString(id));
             }
         } catch (ClassNotFoundException | SQLException e) {
         	e.printStackTrace();
@@ -79,7 +80,7 @@ public class StudentDBUtils {
 			sv.setId(rs.getString(id));
 			sv.setLastName(rs.getString(lastName));
 			sv.setFirstName(rs.getString(firstName));
-			sv.setBirthday(rs.getDate(birthday));
+			sv.setBirthday(rs.getString(birthday));
 			sv.setSex(rs.getString(sex));
 			sv.setTelephone(rs.getString(telephone));
 			sv.setAddress(rs.getString(address));
@@ -110,7 +111,7 @@ public class StudentDBUtils {
 				sv.setId(rs.getString(id));
 				sv.setLastName(rs.getString(lastName));
 				sv.setFirstName(rs.getString(firstName));
-				sv.setBirthday(rs.getDate(birthday));
+				sv.setBirthday(rs.getString(birthday));
 				sv.setSex(rs.getString(sex));
 				sv.setTelephone(rs.getString(telephone));
 				sv.setAddress(rs.getString(address));
@@ -130,22 +131,24 @@ public class StudentDBUtils {
 		try {
 			conn = MySQLConnUtils.getMySQLConUtils();
 			String sql ="insert into " + table 
-					+ " (" + lastName + ", " + firstName +", " 
-					+ birthday + ", " + sex + ", " +telephone + ", " 
+					+ " (" + id + ", " + lastName + ", " + firstName +", " 
+					+ birthday + ", " + sex + ", " + telephone + ", " 
 					+ address + ", " + idDepartment + ") "
-					+ " values(?,?,?,?,?,?,?)";
+					+ " values(?,?,?,?,?,?,?,?)";
 			
 			PreparedStatement pstm = conn.prepareStatement(sql);
-			
-			pstm.setString(1,insertRow.getLastName());
-			pstm.setString(2,insertRow.getFirstName());
-			pstm.setDate(3,insertRow.getBirthday());
-			pstm.setString(4,insertRow.getSex());
-			pstm.setString(5,insertRow.getTelephone());
-			pstm.setString(6,insertRow.getAddress());
-			pstm.setString(7,insertRow.getIdDepartment());
+			String newID = getNewID();
+			pstm.setString(1,newID);
+			pstm.setString(2,insertRow.getLastName());
+			pstm.setString(3,insertRow.getFirstName());
+			pstm.setString(4,insertRow.getBirthday());
+			pstm.setString(5,insertRow.getSex());
+			pstm.setString(6,insertRow.getTelephone());
+			pstm.setString(7,insertRow.getAddress());
+			pstm.setString(8,insertRow.getIdDepartment());
 			
 			pstm.executeUpdate();
+			listID.add(newID);
 		} catch (ClassNotFoundException | SQLException e) {
 			MySQLConnUtils.rollbackQuietly(conn);
 			e.printStackTrace();
@@ -167,6 +170,7 @@ public class StudentDBUtils {
 			pstm.setString(1,deleteRowById);
 			
 			pstm.executeUpdate();
+			listID.remove(deleteRowById);
 		} catch (ClassNotFoundException | SQLException e) {
 			MySQLConnUtils.rollbackQuietly(conn);
 			errorMessage = e.getMessage();
@@ -191,7 +195,7 @@ public class StudentDBUtils {
 			
 			pstm.setString(1, updateRow.getLastName());
 			pstm.setString(2, updateRow.getFirstName());
-			pstm.setDate(3, updateRow.getBirthday());
+			pstm.setString(3, updateRow.getBirthday());
 			pstm.setString(4, updateRow.getSex());
 			pstm.setString(5, updateRow.getTelephone());
 			pstm.setString(6, updateRow.getAddress());
@@ -252,7 +256,28 @@ public class StudentDBUtils {
 	public static Map<String,String> getAllColumnNameAndTypeName() {
 		return mapColumn;
 	}	
-	public static List<String> getListIDs(){
-		return listIDs;
+	private static String getNewID() {
+		String numberZeroInID = "";
+		if(listID == null || listID.size() == 0)
+		{
+			for(int i = 1; i < MyUtils.numberInID;++i) {
+				numberZeroInID = numberZeroInID.concat("0");
+			}
+			return textInID + numberZeroInID + "1";
+		}
+		String lastID = listID.get(listID.size() - 1);
+		int numberInID = Integer.parseInt(lastID.substring(textInID.length())) + 1;
+		String numberInIDString = String.valueOf(numberInID);
+		for(int i = numberInIDString.length(); i < MyUtils.numberInID; ++i) {
+			numberZeroInID = numberZeroInID.concat("0");
+		}
+		// newID = textInID + numberZeroInID + numberInIDString
+		String newID = textInID;
+		newID = newID.concat(numberZeroInID);
+		newID = newID.concat(numberInIDString);
+		return newID;
+	}
+	public static List<String> getListID(){
+		return listID;
 	}
 }

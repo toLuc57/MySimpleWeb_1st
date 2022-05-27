@@ -32,7 +32,7 @@
             <tr>
                <td colspan="2">                   
                    <input type="submit" value="Submit" />
-                   <a href="subjectList">Cancel</a>
+                   <a href="${pageContext.request.contextPath}/subjectList">Cancel</a>
                </td>
             </tr>
          </table>

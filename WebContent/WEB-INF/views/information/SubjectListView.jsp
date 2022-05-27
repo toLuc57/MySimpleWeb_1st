@@ -36,10 +36,10 @@
 			   <td><%= i.getNumberOfPracticeLesson() %></td>
 			   <td><%= i.getNumberOfTheoryLesson()%></td>
 			   <td>
-		          <a href="editSubject?id=<%=i.getId()%>">Edit</a>
+		          <a href="subject/edit?id=<%=i.getId()%>">Edit</a>
 		       </td>
 		       <td>
-		      		<a href="deleteSubject?id=<%=i.getId()%>">Delete</a>
+		      		<a href="subject/delete?id=<%=i.getId()%>">Delete</a>
 		       </td>
 	       </tr>
        <% 
@@ -47,7 +47,7 @@
        %>
     </table>
 
-    <a href="insertSubject" >Insert Subject</a>
+    <a href="subject/insert" >Insert Subject</a>
 	<br/>
 	<jsp:include page="..//_pagination.jsp"></jsp:include>
 	<br/>

@@ -39,10 +39,10 @@
 			   <td><%= i.getTelephone() %></td>			   
 			   <td><%= i.getIdDepartment() %></td>
 			   <td>
-		          <a href="editTeacher?id=<%=i.getId()%>">Edit</a>
+		          <a href="teacher/edit?id=<%=i.getId()%>">Edit</a>
 		       </td>
 		       <td>
-		      		<a href="deleteTeacher?id=<%=i.getId()%>">Delete</a>
+		      		<a href="teacher/delete?id=<%=i.getId()%>">Delete</a>
 		       </td>
 	       </tr>
        <%
@@ -50,7 +50,7 @@
        %>
     </table>
 
-    <a href="insertTeacher" >Insert Teacher</a>
+    <a href="teacher/insert" >Insert Teacher</a>
 	<br/>
 	<jsp:include page="..//_pagination.jsp"></jsp:include>
 	<br/>

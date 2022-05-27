@@ -25,9 +25,11 @@ public class DeleteLearningOutcomesServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String idStudent = (String) request.getParameter("idStudent");
 		String idCourse = (String) request.getParameter("idCourse");
+		int numberOfTest = Integer.parseInt(request.getParameter("numberOfTest"));
+		
 		String errorString = null;
 		try {
-			errorString = LearningOutcomesDBUtils.delete(idStudent,idCourse);
+			LearningOutcomesDBUtils.delete(idStudent,idCourse,numberOfTest);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			errorString = e.getMessage();

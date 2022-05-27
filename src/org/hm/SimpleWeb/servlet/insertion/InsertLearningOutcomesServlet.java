@@ -12,12 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.hm.SimpleWeb.beans.LearningOutcomes;
-import org.hm.SimpleWeb.beans.Student;
-import org.hm.SimpleWeb.beans.Course;
 import org.hm.SimpleWeb.utils.LearningOutcomesDBUtils;
 import org.hm.SimpleWeb.utils.StudentDBUtils;
-import org.hm.SimpleWeb.utils.SubjectDBUtils;
-import org.hm.SimpleWeb.utils.TeacherDBUtils;
 import org.hm.SimpleWeb.utils.CourseDBUtils;
 
 @WebServlet("/learningOutcomes/insert")
@@ -29,12 +25,11 @@ public class InsertLearningOutcomesServlet extends HttpServlet {
     }
     
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		List<String> list1 = SubjectDBUtils.getListIDs();
-		List<String> list2 = TeacherDBUtils.getListIDs();
+		List<String> list1 = CourseDBUtils.getListID();
+		List<String> list2 = StudentDBUtils.getListID();
 		
-		
-		request.setAttribute("teacherList", list2);	
-		request.setAttribute("subjectsList", list1);
+		request.setAttribute("courseList", list1);	
+		request.setAttribute("studentList", list2);
 		
 		RequestDispatcher dispatcher = request.getServletContext()
 				.getRequestDispatcher("/WEB-INF/views/insertData/insertLearningOutcomes.jsp");
@@ -42,47 +37,41 @@ public class InsertLearningOutcomesServlet extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
 		String idStudent = (String) request.getParameter("idStudent");
 		String idCourse = (String) request.getParameter("idCourse");
-		String numberOfTestSTR = (String) request.getParameter("numberOfTest");
 		String pointSTR = (String) request.getParameter("point");
 		
-		LearningOutcomes newRow;
-		
-		String errorString = null;
-		Course findCourse = null;
-		Student findStudent = null;
+		LearningOutcomes newRow = null;
+		int numberOfTest = 0;
+		String errorString = "";
 		try {
-			findCourse = CourseDBUtils.find(idCourse);
-			findStudent = StudentDBUtils.find(idStudent);
+			List<LearningOutcomes> findRows = LearningOutcomesDBUtils.find(idStudent, idCourse);
+			if(findRows != null)
+			numberOfTest = findRows.size() + 1;
 		} catch (SQLException e) {
 			e.printStackTrace();
-			errorString = e.getMessage();
+			errorString = errorString.concat(e.getMessage());
 		}
 		
-		if (errorString == null && findCourse != null && findStudent != null) {
-			int numberOfTest;
-			double point;
-			try {
-				numberOfTest = Integer.parseInt(numberOfTestSTR);
-				point = Double.parseDouble(pointSTR);
-			} catch(NumberFormatException e) {
-				numberOfTest = -1;
-				point = -1;
-			}
-			try {
-				newRow = new LearningOutcomes(idStudent,idCourse,numberOfTest,point);
-				LearningOutcomesDBUtils.insert(newRow);
-				
-			} catch (SQLException e) {
-				e.printStackTrace();
-				errorString = e.getMessage();
-			}
+		double point;
+		try {
+			point = Double.parseDouble(pointSTR);
+		} catch(NumberFormatException e) {
+			point = -1;
+			errorString = errorString.concat("<br/>" + e.getMessage());
 		}
 		
-		request.setAttribute("errorString", errorString);
+		try {
+			newRow = new LearningOutcomes(idStudent,idCourse,numberOfTest,point);
+			LearningOutcomesDBUtils.insert(newRow);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			errorString = errorString.concat("<br/>" + e.getMessage());
+		}
+		
 		if (errorString != null) {
+			request.setAttribute("learningOutcomes", newRow);
+			request.setAttribute("errorString", errorString);
 			RequestDispatcher dispatcher = request.getServletContext()
 					.getRequestDispatcher("/WEB-INF/views/insertData/insertLearningOutcomes.jsp");
 			dispatcher.forward(request, response);

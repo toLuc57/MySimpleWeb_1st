@@ -2,10 +2,10 @@ package org.hm.SimpleWeb.beans;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.hm.SimpleWeb.config.SecurityConfig;
 import org.hm.SimpleWeb.utils.ResultOfStudentsViewDBUtils;
+import org.hm.SimpleWeb.utils.StudentDBUtils;
 
 public class UserAccount {
 		   
@@ -13,16 +13,17 @@ public class UserAccount {
 	private String id;
 	private String password;
 	private List<String> roles = new ArrayList<String>();
-	private Map<String, ResultOfStudentsView> mapInfoStudent;
+	private List<ResultOfStudentsView> listInfoStudent;
 
 	public UserAccount(String userName,String password, String id) {
 		this.userName = userName;
 		this.id = id;
 		this.password = password;
-		boolean isStudent = id.contains(Student.getMaPhanChu());
+		boolean isStudent = id.contains(StudentDBUtils.getMaKhoa8()) || 
+				id.contains(StudentDBUtils.getMaKhoa9());
 		if(isStudent) {
 			roles.add(SecurityConfig.ROLE_STUDENT);
-			mapInfoStudent = ResultOfStudentsViewDBUtils.getMapInfoStudent();
+			listInfoStudent = ResultOfStudentsViewDBUtils.getMapInfoStudent(id);
 		}
 		else {
 			roles.add(SecurityConfig.ROLE_TEACHER);
@@ -42,14 +43,16 @@ public class UserAccount {
 		return id;
 	}
 	public boolean getIsStudent(){
-		return id.contains(Student.getMaPhanChu());
+		return id.contains(StudentDBUtils.getMaKhoa8()) 
+				|| id.contains(StudentDBUtils.getMaKhoa9());
 	}
-	public void setPosition(String id) {
-		boolean isStudent = id.contains(Student.getMaPhanChu());
+	public void setPosition(String _id) {
+		boolean isStudent = _id.contains(StudentDBUtils.getMaKhoa8()) || 
+				_id.contains(StudentDBUtils.getMaKhoa9());
 		if(roles == null) {
 			if(isStudent) {
 				roles.add(SecurityConfig.ROLE_STUDENT);
-				mapInfoStudent = ResultOfStudentsViewDBUtils.getMapInfoStudent();
+				listInfoStudent = ResultOfStudentsViewDBUtils.getMapInfoStudent(_id);
 			}
 			else {
 				roles.add(SecurityConfig.ROLE_TEACHER);
@@ -59,10 +62,10 @@ public class UserAccount {
 		else {
 			if(isStudent && roles.contains(SecurityConfig.ROLE_TEACHER)) {
 				roles.remove(SecurityConfig.ROLE_TEACHER);
-				mapInfoStudent = ResultOfStudentsViewDBUtils.getMapInfoStudent();
+				listInfoStudent = ResultOfStudentsViewDBUtils.getMapInfoStudent(_id);
 			} 
 			else {
-				mapInfoStudent.clear();
+				listInfoStudent.clear();
 			}
 		}
 	}
@@ -79,7 +82,7 @@ public class UserAccount {
 	public void setRoles(List<String> roles) {
 		this.roles = roles;
 	}
-	public Map<String, ResultOfStudentsView> getMapInfoStudent() {
-		return mapInfoStudent;
+	public List<ResultOfStudentsView> getListInfoStudent() {
+		return listInfoStudent;
 	}
 }

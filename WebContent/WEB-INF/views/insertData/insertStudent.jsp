@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="java.util.List,org.hm.SimpleWeb.beans.Student" %>
+<%@ page import="java.util.List,org.hm.SimpleWeb.beans.Student, 
+org.hm.SimpleWeb.utils.StudentDBUtils" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,7 +9,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<jsp:include page="..//_header.jsp"></jsp:include>
+	  <jsp:include page="..//_header.jsp"></jsp:include>
       <jsp:include page="..//_menu.jsp"></jsp:include>
       
       <h3>Insert Student</h3>
@@ -17,6 +18,16 @@
 
       <form method="POST" action="${pageContext.request.contextPath}/student/insert">
          <table border="0">
+         	<tr>
+               <td>Khóa: </td>
+               <td>
+                 <select name="khoa">
+
+                   <option value="<%=StudentDBUtils.getNameKhoa8()%>">Khóa 8 </option>
+                   <option value="<%=StudentDBUtils.getNameKhoa9()%>">Khóa 9 </option>
+                 </select>
+               </td>
+            </tr>
             <tr>
                <td>Last Name</td>
                <td><input type="text" name="lastName" value="${student.lastName}" /></td>

@@ -1,8 +1,6 @@
 package org.hm.SimpleWeb.beans;
 
 public class Student {
-	private static final String maPhanChu = "SV";
-	
 	private String id;
 	private String lastName;
 	private String firstName;
@@ -85,7 +83,5 @@ public class Student {
 	public void setIdDepartment(String idDepartment) {
 		this.idDepartment = idDepartment;
 	}
-	public static String getMaPhanChu() {
-		return maPhanChu;
-	}
+
 }

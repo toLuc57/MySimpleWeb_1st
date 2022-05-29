@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
  pageEncoding="UTF-8"%>
-<%@ page import="java.util.List, org.hm.SimpleWeb.beans.UserAccount"%>
+<%@ page import="java.util.List, org.hm.SimpleWeb.beans.UserAccount,
+ org.hm.SimpleWeb.beans.ResultOfStudentsView"%>
 <!DOCTYPE html>
 <html>
  <head>
@@ -17,31 +18,43 @@
     <br/>
     <%
     	UserAccount user = (UserAccount) request.getAttribute("user");
-    	String job;
     	if(user.getIsStudent()){
-    		job = "Student";
-    	}
-    	else{
-    		job = "Teacher";
-    	}
-    %>
-	<label>Job</label>
-	<output><%=job%></output>
-	<br/>
-    <table border="1" cellpadding="5" cellspacing="1" >
+    		List<ResultOfStudentsView> listInfoStudent = 
+    				(List<ResultOfStudentsView>) request.getAttribute("listInfoStudent");
+    	%>
+    	<p>Id Student: ${user.getID()}</p>
+    	<table border="1" cellpadding="5" cellspacing="1" >
 	    <tr>
-	    	<th>Roles</th>
+	    	<th>ID Subject</th>
+	    	<th>Subject Name</th>
+	    	<th>Theory Lesson</th>
+	    	<th>Practice Lesson</th>
+	    	<th>Number of test</th>
 	    </tr>
 	    	<%
-	    	for(String i : user.getRoles()){
-	    	%>
-	    		<tr>
-	    		  <td><%=i%></td>
-	    		</tr>
-	    	<%	
+	    	if(listInfoStudent != null && !listInfoStudent.isEmpty()){
+	    		for(ResultOfStudentsView i : listInfoStudent){
+	    	    	%>
+	    	    		<tr>
+	    	    		  <td><%=i.getIdSubject() %></td>
+	    	    		  <td><%=i.getSubjectName() %></td>
+	    	    		  <td><%=i.getNumberOfTheoryLesson() %></td>
+	    	    		  <td><%=i.getNumberOfPracticeLesson() %></td>
+	    	    		  <td><%=i.getNumberOfTest() %></td>
+	    	    		</tr>
+	    	    	<%	
+	    	    	} 	
 	    	}
 	    	%>
 	 </table>
+    	<%
+    	}
+    	else{
+    	%>
+    		<p>Id Teacher: ${user.getID()}</p>
+    	<%
+    	}
+    %>    
     <jsp:include page="_footer.jsp"></jsp:include>
 
  </body>

@@ -1,6 +1,7 @@
 package org.hm.SimpleWeb.servlet.display_list;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.hm.SimpleWeb.beans.ResultOfStudentsView;
 import org.hm.SimpleWeb.beans.UserAccount;
 import org.hm.SimpleWeb.utils.MyUtils;
 
@@ -28,6 +30,10 @@ public class UserInfoServlet extends HttpServlet {
 		if (loginedUser == null) {
 			response.sendRedirect(request.getContextPath() + "/login");
 			return;
+		} 
+		if(loginedUser.getIsStudent()) {
+			List<ResultOfStudentsView> listInfoStudent = loginedUser.getListInfoStudent();
+			request.setAttribute("listInfoStudent", listInfoStudent);
 		}
 		request.setAttribute("user", loginedUser);
 

@@ -4,24 +4,16 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.hm.SimpleWeb.beans.ResultOfStudentsView;
 import org.hm.SimpleWeb.jdbc.MySQLConnUtils;
 
 public class ResultOfStudentsViewDBUtils {
-	private static final String query = "SELECT" + 
-										"    tketqua.MaSinhVien," + 
-										"    tmonhoc.*," + 
-										"    tketqua.LanThi, " + 
-										"    tketqua.Diem " + 
-										"    FROM " + 
-										"    qlhtsv_28.tketqua " + 
-										"    INNER JOIN " + 
-										"    qlhtsv_28.tkhoahoc USING (MaKhoaHoc)" + 
-										"    INNER JOIN" + 
-										"    qlhtsv_28.tmonhoc USING (MaMonHoc)" ;
 	private static final String viewQuery = "ResultOfStudents";
+	private static final String idStudent = "MaSinhVien";
 	private static final String idSubject = "MaMonHoc";
 	private static final String subjectName = "TenMonHoc";
 	private static final String numberOfTheoryLesson = "SoTietLyThuyet";
@@ -29,27 +21,35 @@ public class ResultOfStudentsViewDBUtils {
 	private static final String numberOfTest = "LanThi";
 	private static final String point = "Diem";
 	
-	private static final Map<String,ResultOfStudentsView> mapInfoStudent 
-		= new HashMap<String,ResultOfStudentsView>();
-	
+	private static final Map<String,List<ResultOfStudentsView>> mapInfoStudent 
+		= new HashMap<String,List<ResultOfStudentsView>>();
+
 	static {
-		String error = initView();
-		if(error != null) {
-			initQuery();
+		try {
+			initView();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		
+
 	}
 	private static String initView() {
 		Connection conn = null;
 		String errorMessage = null;
 		try {
 			conn = MySQLConnUtils.getMySQLConUtils();
-			String sql = "select " + idSubject + ", " + subjectName + ", " + numberOfTheoryLesson 
-					+ numberOfPracticeLesson + numberOfTest + point 
-					+ " from " + viewQuery;
+			String sql = "select " + idStudent + ", " + idSubject + ", " + subjectName 
+					+ ", " + numberOfTheoryLesson + ", " + numberOfPracticeLesson 
+					+ ", " + numberOfTest + ", " + point 
+					+ " from " + viewQuery + " order by " + idStudent;
 			PreparedStatement pstm = conn.prepareStatement(sql);
+
 			ResultSet rs = pstm.executeQuery();
+			// Store each studuent's result into list
+			// Then store into map with: key - IDStudent, value - studuent's result
+			List<ResultOfStudentsView> list = new ArrayList<ResultOfStudentsView>();
+			String eachIdStudent = "";
 			while(rs.next()) {
+				String _idStudent = rs.getString(idStudent);
 				String _idSubject = rs.getString(idSubject);
 				String _subjectName = rs.getString(subjectName);
 				int _numberOfTheoryLesson = rs.getInt(numberOfTheoryLesson);
@@ -57,11 +57,19 @@ public class ResultOfStudentsViewDBUtils {
 				int _numberOfTest = rs.getInt(numberOfTest);
 				double _point = rs.getDouble(point);
 				
-				ResultOfStudentsView newRecords = 
-						new ResultOfStudentsView(_idSubject, _subjectName, _numberOfTheoryLesson,
-								_numberOfPracticeLesson, _numberOfTest, _point);
-				mapInfoStudent.put(newRecords.getIdSubject(), newRecords);
+				ResultOfStudentsView newRecord = 
+						new ResultOfStudentsView(_idStudent,_idSubject, _subjectName, 
+								_numberOfTheoryLesson, _numberOfPracticeLesson, _numberOfTest, _point);
+				if(!eachIdStudent.equals(_idStudent) || rs.isLast()) {
+					mapInfoStudent.put(_idStudent, list);
+					list.clear();
+					eachIdStudent = _idStudent;
+				}
+				else {
+					list.add(newRecord);
+				}
 			}
+			
 		}
 		catch (ClassNotFoundException | SQLException e) {
 			MySQLConnUtils.rollbackQuietly(conn);
@@ -73,6 +81,7 @@ public class ResultOfStudentsViewDBUtils {
 		}
 		return errorMessage;
 	}
+	/*
 	private static void initQuery() {
 		Connection conn = null;
 		try {
@@ -101,8 +110,8 @@ public class ResultOfStudentsViewDBUtils {
 		finally {
 			MySQLConnUtils.closeQuietly(conn);
 		}
-	}
-	public static Map<String,ResultOfStudentsView> getMapInfoStudent(){
-		return mapInfoStudent;
+	}*/
+	public static List<ResultOfStudentsView> getMapInfoStudent(String idStudent){
+		return mapInfoStudent.get(idStudent);
 	}
 }

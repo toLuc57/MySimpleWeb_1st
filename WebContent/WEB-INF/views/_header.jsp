@@ -28,7 +28,7 @@
      <%
 	 if(MyUtils.getLoginedUser(request.getSession()) != null){
 	 %>
-    	<a href="${pageContext.request.contextPath}/logout">Logout</a>
+	 	<a href="${pageContext.request.contextPath}/logout">Logout</a>
      <% 
      }
 	 else {

@@ -1,14 +1,15 @@
 package org.hm.SimpleWeb.beans;
 
 public class ResultOfStudentsView {
+	private String idStudent;
 	private String idSubject;
 	private String subjectName;
 	private int numberOfTheoryLesson;
 	private int numberOfPracticeLesson;
 	private int numberOfTest;
 	private double point;
-	
-	public ResultOfStudentsView(String idSubject, String subjectName,
+
+	public ResultOfStudentsView(String idStudent,String idSubject, String subjectName,
 			int numberOfTheoryLesson, int numberOfPracticeLesson, 
 			int numberOfTest, double point) {
 		this.idSubject = idSubject;
@@ -17,6 +18,12 @@ public class ResultOfStudentsView {
 		this.numberOfPracticeLesson = numberOfPracticeLesson;
 		this.numberOfTest = numberOfTest;
 		this.point = point;
+	}
+	public String getIdStudent() {
+		return idStudent;
+	}
+	public void setIdStudent(String idStudent) {
+		this.idStudent =  idStudent;
 	}
 	public String getIdSubject() {
 		return idSubject;

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
    pageEncoding="UTF-8"%>
+<%@ page import="org.hm.SimpleWeb.utils.MyUtils" %>
 <style>
 .navigation-bars {
   list-style-type: none;
@@ -52,16 +53,13 @@ li.dropdown {
 .dropdown:hover .dropdown-content {
   display: block;
 }
+
 </style>
-<div style="padding: 5px;" >
    <ul class="navigation-bars">
      <li>
        <a href="${pageContext.request.contextPath}/">Home</a>
      </li>
-     <li>
-       <a href="${pageContext.request.contextPath}/userInfo">My Account Info</a>
-     </li>
-     <li class="dropdown">
+     <li class="dropdown" >
 	   <a class="dropbtn">Drop down</a>
 	   <div class="dropdown-content">
 	       <a href="${pageContext.request.contextPath}/teacherList">Teacher List</a>
@@ -72,5 +70,17 @@ li.dropdown {
 		   <a href="${pageContext.request.contextPath}/learningOutcomesList">Learning Outcomes List</a>
 	   </div>
    </li>
+   <%
+   	if(MyUtils.getLoginedUser(request.getSession()) != null){
+	 %>
+	 	<li class="dropdown" style="float:right;">
+	 	  <a class="dropbtn" title="Your personal page">Your personal page</a>
+	 	  <div class="dropdown-content" style="right:0;">
+	 	    <a href="${pageContext.request.contextPath}/userInfo">Your Account Info</a>
+	  		<a href="${pageContext.request.contextPath}/logout">Logout</a>
+	 	  </div>
+	 	</li>
+     <% 
+     }
+   %>
    </ul>
-</div>  

@@ -19,7 +19,10 @@ public class StudentDBUtils {
 	private static final String table = "tSinhVien";
 	private static int amountRowsLimit = 10;
 	private static int amountRowsOffset = 10;
-	private static final String textInID = "SV";
+	private static final String nameKhoa8 = "Khoa 8";
+	private static final String nameKhoa9 = "Khoa 9";
+	private static final String maKhoa8 = "08";
+	private static final String maKhoa9 = "09";
 	
 	private static final String id = "MaSinhVien";
 	private static final String lastName = "HoSinhVien";
@@ -33,7 +36,7 @@ public class StudentDBUtils {
 	private static List<String> listColumnName = new ArrayList<String>();
 	private static List<String> listID = new ArrayList<String>(); 
 	private static Map<String,String> mapColumn = new HashMap<String,String>();
-	
+	private static Map<String,Integer> numberOfStudentIDInEachKhoa = new HashMap<String,Integer>();
 	public static final String className = "StudentDBUtils";
 	
 	static {
@@ -47,16 +50,32 @@ public class StudentDBUtils {
 		Connection conn = null;
 		try {
 			conn = MySQLConnUtils.getMySQLConUtils();
+			int charLength = maKhoa8.length();
 			
-            PreparedStatement pstm = conn.prepareStatement("select * from " + table);
+            PreparedStatement pstm = conn.prepareStatement("select * from " + table + " limit 1");
+            
             ResultSet rs = pstm.executeQuery();
             ResultSetMetaData rsmd = rs.getMetaData();
             for(int i = 1; i <= rsmd.getColumnCount();++i) {
             	listColumnName.add(rsmd.getColumnName(i));
             	mapColumn.put(rsmd.getColumnName(i), rsmd.getColumnTypeName(i));
             }
-            while(rs.next()) {
-            	listID.add(rs.getString(id));
+            String sql = "SELECT LEFT(" + id +", " + charLength + "), "
+            		+ "CAST(Max(substring("+ id +","+ Integer.sum(charLength, 1)+ ")) AS UNSIGNED) "
+					+ "FROM " + table 
+					+ " GROUP BY LEFT(" + id + ", " + charLength + ")";
+            rs.close();
+            pstm.close();
+            System.out.println(sql);
+            PreparedStatement pstm1 = conn.prepareStatement(sql);
+            ResultSet rs1 = pstm1.executeQuery();
+            while(rs1.next()) {
+            	numberOfStudentIDInEachKhoa.put(rs1.getString(1), rs1.getInt(2));
+            }
+            if(numberOfStudentIDInEachKhoa == null || numberOfStudentIDInEachKhoa.isEmpty()) {
+            	System.out.println("!!!!");
+            	numberOfStudentIDInEachKhoa.put(maKhoa8, 0);
+            	numberOfStudentIDInEachKhoa.put(maKhoa9, 0);
             }
         } catch (ClassNotFoundException | SQLException e) {
         	e.printStackTrace();
@@ -126,7 +145,7 @@ public class StudentDBUtils {
 		return sv;
 	}
 	
-	public static void insert(Student insertRow) throws SQLException{
+	public static void insert(Student insertRow, String khoa) throws SQLException{
 		Connection conn = null;
 		try {
 			conn = MySQLConnUtils.getMySQLConUtils();
@@ -137,7 +156,7 @@ public class StudentDBUtils {
 					+ " values(?,?,?,?,?,?,?,?)";
 			
 			PreparedStatement pstm = conn.prepareStatement(sql);
-			String newID = getNewID();
+			String newID = getNewID(khoa);
 			pstm.setString(1,newID);
 			pstm.setString(2,insertRow.getLastName());
 			pstm.setString(3,insertRow.getFirstName());
@@ -256,17 +275,30 @@ public class StudentDBUtils {
 	public static Map<String,String> getAllColumnNameAndTypeName() {
 		return mapColumn;
 	}	
-	private static String getNewID() {
-		String numberZeroInID = "";
-		if(listID == null || listID.size() == 0)
-		{
-			for(int i = 1; i < MyUtils.numberInID;++i) {
-				numberZeroInID = numberZeroInID.concat("0");
-			}
-			return textInID + numberZeroInID + "1";
+	private static String getNewID(String _nameKhoa) {
+		// Default value: maKhoa9
+		String textInID= "";
+		int numberInID;
+		if(_nameKhoa.equals(nameKhoa8)) {
+			textInID = maKhoa8;
+			numberInID = numberOfStudentIDInEachKhoa.get(maKhoa8) + 1;
+			numberOfStudentIDInEachKhoa.replace(maKhoa8, numberInID);
 		}
-		String lastID = listID.get(listID.size() - 1);
-		int numberInID = Integer.parseInt(lastID.substring(textInID.length())) + 1;
+		else {
+			textInID= maKhoa9;
+			numberInID = numberOfStudentIDInEachKhoa.get(maKhoa9) + 1;
+			numberOfStudentIDInEachKhoa.replace(maKhoa9, numberInID);
+		}
+		String numberZeroInID = "";
+//		if(listID == null || listID.size() == 0)
+//		{
+//			for(int i = 1; i < MyUtils.numberInID;++i) {
+//				numberZeroInID = numberZeroInID.concat("0");
+//			}
+//			return textInID + numberZeroInID + String.valueOf(numberInID);
+//		}
+//		String lastID = listID.get(listID.size() - 1);
+//		int numberInID = Integer.parseInt(lastID.substring(textInID.length())) + 1;
 		String numberInIDString = String.valueOf(numberInID);
 		for(int i = numberInIDString.length(); i < MyUtils.numberInID; ++i) {
 			numberZeroInID = numberZeroInID.concat("0");
@@ -279,5 +311,17 @@ public class StudentDBUtils {
 	}
 	public static List<String> getListID(){
 		return listID;
+	}
+	public static String getNameKhoa8() {
+		return nameKhoa8;
+	}
+	public static String getNameKhoa9() {
+		return nameKhoa9;
+	}
+	public static String getMaKhoa8() {
+		return maKhoa8;
+	}
+	public static String getMaKhoa9() {
+		return maKhoa9;
 	}
 }

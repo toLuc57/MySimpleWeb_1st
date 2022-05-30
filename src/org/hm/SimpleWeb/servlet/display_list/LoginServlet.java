@@ -39,7 +39,7 @@ public class LoginServlet extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+		MyUtils.deleteLogOutCookie(response);
 		String userName = request.getParameter("userName");
 		String password = request.getParameter("password");
 		String rememberMeStr = request.getParameter("rememberMe");
@@ -59,13 +59,13 @@ public class LoginServlet extends HttpServlet {
 				if (user == null) {
 					hasError = true;
 					errorString = "User Name or password not correct";
-				} /*
-				else {
-					System.out.println("-----Information for user-----");
-					System.out.println(user.getUserName());
-					System.out.println("Student? " + user.isStudent());
-					System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-				}*/
+				} 
+//				else {
+//					System.out.println("-----Information for user-----");
+//					System.out.println(user.getUserName());
+//					System.out.println("Student? " + user.isStudent());
+//					System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+//				}
 			} catch (SQLException e) {
 				e.printStackTrace();
 				hasError = true;
@@ -78,6 +78,7 @@ public class LoginServlet extends HttpServlet {
 			MyUtils.storeLoginedUser(session, user);
 
 			if (remember) {
+				MyUtils.deleteUserCookie(response);
 				MyUtils.storeUserCookie(response, user);
 			}
 			else {

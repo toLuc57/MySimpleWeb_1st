@@ -62,12 +62,9 @@ import org.hm.SimpleWeb.jdbc.MySQLConnUtils;
 			return null;
 		}
 		
-		public static boolean find(String findUserName) 
+		public static UserAccount find(String findUserName) 
 				throws SQLException {
 			UserAccount u = mapUsers.get(findUserName);
-			if (u != null) {
-				return true;
-			}
-			return false;
+			return u;
 		}
 }

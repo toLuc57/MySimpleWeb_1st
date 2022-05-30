@@ -25,7 +25,7 @@
    	<br/>
      Search <input name="search" placeholder="Search">
      <br/>
-     <%
+     <%     
 	 if(MyUtils.getLoginedUser(request.getSession()) != null){
 	 %>
 	 	<a href="${pageContext.request.contextPath}/logout">Logout</a>

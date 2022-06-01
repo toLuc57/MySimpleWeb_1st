@@ -264,4 +264,7 @@ public class TeacherDBUtils {
 	public static List<String> getListID(){
 		return listID;
 	}
+	public static String getTextInID() {
+		return textInID;
+	}
 }

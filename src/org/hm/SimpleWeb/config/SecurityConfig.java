@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Set;
 
 public class SecurityConfig {
+	public static final String ROLE_ADMIN = "ADMIN";
 	public static final String ROLE_STUDENT = "STUDENT";
 	public static final String ROLE_TEACHER = "TEACHER";
 
@@ -34,26 +35,40 @@ public class SecurityConfig {
 		List<String> urlPatterns2 = new ArrayList<String>();
 
 		urlPatterns2.add("/userInfo");
-		
-		urlPatterns2.add("/teacherList");
-		urlPatterns2.add("/teacher/*");
-		
+		urlPatterns2.add("/teacherList");		
 		urlPatterns2.add("/learningOutcomesList");
-		urlPatterns2.add("/learningOutcomes/*");
-		
 		urlPatterns2.add("/courseList");
-		urlPatterns2.add("/course/*");
-		
 		urlPatterns2.add("/studentList");
-		urlPatterns2.add("/student/*");
-		
 		urlPatterns2.add("/subjectList");
-		urlPatterns2.add("/subject/*");
-		
 		urlPatterns2.add("/departmentList");
-		urlPatterns2.add("/department/*");
 		
 		mapConfig.put(ROLE_TEACHER, urlPatterns2);
+		
+		// Configure role "ADMIN".
+		List<String> urlPatterns3 = new ArrayList<String>();
+
+		urlPatterns3.add("/userInfo");
+		
+		urlPatterns3.add("/teacherList");
+		urlPatterns3.add("/teacher/*");
+		
+		urlPatterns3.add("/learningOutcomesList");
+		urlPatterns3.add("/learningOutcomes/*");
+		
+		urlPatterns3.add("/courseList");
+		urlPatterns3.add("/course/*");
+		
+		urlPatterns3.add("/studentList");
+		urlPatterns3.add("/student/*");
+		
+		urlPatterns3.add("/subjectList");
+		urlPatterns3.add("/subject/*");
+		
+		urlPatterns3.add("/departmentList");
+		urlPatterns3.add("/department/*");
+		
+		mapConfig.put(ROLE_ADMIN, urlPatterns3);
+		
 	}
 
 	public static Set<String> getAllAppRoles() {

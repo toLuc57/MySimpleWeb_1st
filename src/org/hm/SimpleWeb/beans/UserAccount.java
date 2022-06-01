@@ -6,6 +6,7 @@ import java.util.List;
 import org.hm.SimpleWeb.config.SecurityConfig;
 import org.hm.SimpleWeb.utils.ResultOfStudentsViewDBUtils;
 import org.hm.SimpleWeb.utils.StudentDBUtils;
+import org.hm.SimpleWeb.utils.TeacherDBUtils;
 
 public class UserAccount {
 		   
@@ -26,8 +27,15 @@ public class UserAccount {
 			listInfoStudent = ResultOfStudentsViewDBUtils.getMapInfoStudent(id);
 		}
 		else {
-			roles.add(SecurityConfig.ROLE_TEACHER);
-			roles.add(SecurityConfig.ROLE_STUDENT);
+			boolean isTeacher = id.contains(TeacherDBUtils.getTextInID());
+			if (isTeacher) {
+				roles.add(SecurityConfig.ROLE_TEACHER);
+			}
+			else {
+				roles.add(SecurityConfig.ROLE_STUDENT);
+				roles.add(SecurityConfig.ROLE_TEACHER);
+				roles.add(SecurityConfig.ROLE_ADMIN);
+			}
 		}
 	}
    
@@ -46,6 +54,9 @@ public class UserAccount {
 		return id.contains(StudentDBUtils.getMaKhoa8()) 
 				|| id.contains(StudentDBUtils.getMaKhoa9());
 	}
+	public boolean getIsTeacher(){
+		return id.contains(TeacherDBUtils.getTextInID());
+	}
 	public void setPosition(String _id) {
 		boolean isStudent = _id.contains(StudentDBUtils.getMaKhoa8()) || 
 				_id.contains(StudentDBUtils.getMaKhoa9());
@@ -55,17 +66,52 @@ public class UserAccount {
 				listInfoStudent = ResultOfStudentsViewDBUtils.getMapInfoStudent(_id);
 			}
 			else {
-				roles.add(SecurityConfig.ROLE_TEACHER);
-				roles.add(SecurityConfig.ROLE_STUDENT);
+				boolean isTeacher = id.contains(TeacherDBUtils.getTextInID());
+				if (isTeacher) {
+					roles.add(SecurityConfig.ROLE_TEACHER);
+				}
+				else {
+					roles.add(SecurityConfig.ROLE_STUDENT);
+					roles.add(SecurityConfig.ROLE_TEACHER);
+					roles.add(SecurityConfig.ROLE_ADMIN);
+				}
 			}
 		}
 		else {
-			if(isStudent && roles.contains(SecurityConfig.ROLE_TEACHER)) {
-				roles.remove(SecurityConfig.ROLE_TEACHER);
+			if(isStudent) {
+				if(roles.contains(SecurityConfig.ROLE_TEACHER)) {
+					roles.remove(SecurityConfig.ROLE_TEACHER);
+				}
+				if(roles.contains(SecurityConfig.ROLE_ADMIN)) {
+					roles.remove(SecurityConfig.ROLE_ADMIN);
+				}
 				listInfoStudent = ResultOfStudentsViewDBUtils.getMapInfoStudent(_id);
 			} 
 			else {
 				listInfoStudent.clear();
+				boolean isTeacher = id.contains(TeacherDBUtils.getTextInID());
+				if (isTeacher) {
+					if(roles.contains(SecurityConfig.ROLE_STUDENT)) {
+						roles.remove(SecurityConfig.ROLE_STUDENT);
+					}
+					if(roles.contains(SecurityConfig.ROLE_ADMIN)) {
+						roles.remove(SecurityConfig.ROLE_ADMIN);
+					}
+					if(!roles.contains(SecurityConfig.ROLE_TEACHER)) {
+						roles.add(SecurityConfig.ROLE_TEACHER);
+					}
+				}
+				else {
+					if(!roles.contains(SecurityConfig.ROLE_ADMIN)) {
+						roles.add(SecurityConfig.ROLE_ADMIN);
+					}
+					if(!roles.contains(SecurityConfig.ROLE_STUDENT)) {
+						roles.add(SecurityConfig.ROLE_STUDENT);
+					}
+					if(!roles.contains(SecurityConfig.ROLE_TEACHER)) {
+						roles.add(SecurityConfig.ROLE_TEACHER);
+					}
+				}
 			}
 		}
 	}

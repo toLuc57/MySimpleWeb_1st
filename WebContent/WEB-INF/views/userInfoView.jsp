@@ -49,9 +49,14 @@
 	 </table>
     	<%
     	}
-    	else{
+    	else if (user.getIsTeacher()){
     	%>
     		<p>Id Teacher: ${user.getID()}</p>
+    	<%
+    	}
+    	else {
+    	%>
+    		<p>Have all permission </p>
     	<%
     	}
     %>    

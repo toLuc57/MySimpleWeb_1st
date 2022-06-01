@@ -16,6 +16,8 @@
     <ul>
        <li>Login</li>
        <li>Storing user information in cookies</li>
+       <li>Specify certain permissions by user type</li>
+       <li>Will develop more.. &#128517;</li>
      </ul>
      
      <jsp:include page="_footer.jsp"></jsp:include>

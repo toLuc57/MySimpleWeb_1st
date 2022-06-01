@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="org.hm.SimpleWeb.utils.MyUtils" %>
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 <style>
 .top-header {
 	display: block;
@@ -15,7 +16,7 @@
   <div style="float:left">
  	 <a href="/SimpleWeb">
   	   <img src="${pageContext.request.contextPath}/images/logo-home.jpg" 
-  	   alt="Trang chu" width="200" height="65">
+  	   alt="Trang chu" width="65px" height="65px">
   	 </a>
   	 <span style="font-size:40px">My Site</span>
   </div>

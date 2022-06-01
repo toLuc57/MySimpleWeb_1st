@@ -53,7 +53,6 @@ li.dropdown {
 .dropdown:hover .dropdown-content {
   display: block;
 }
-
 </style>
    <ul class="navigation-bars">
      <li>
@@ -74,7 +73,7 @@ li.dropdown {
    	if(MyUtils.getLoginedUser(request.getSession()) != null){
 	 %>
 	 	<li class="dropdown" style="float:right;">
-	 	  <a class="dropbtn" title="Your personal page">Your personal page</a>
+	 	  <a class="dropbtn" title="Your personal page">Your personal page</a> 
 	 	  <div class="dropdown-content" style="right:0;">
 	 	    <a href="${pageContext.request.contextPath}/userInfo">Your Account Info</a>
 	  		<a href="${pageContext.request.contextPath}/logout">Logout</a>

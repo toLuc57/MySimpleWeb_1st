@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Access Denied</title>
 </head>
 <body>
 	<jsp:include page="_header.jsp"></jsp:include>
@@ -13,6 +13,8 @@
       <br/><br/>
       
       <h3 style="color:red;">Access Denied!</h3>
+      
+      <jsp:include page="_footer.jsp"></jsp:include>
       
 </body>
 </html>

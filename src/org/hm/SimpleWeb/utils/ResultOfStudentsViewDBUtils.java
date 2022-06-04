@@ -18,7 +18,7 @@ public class ResultOfStudentsViewDBUtils {
 	private static final String subjectName = "TenMonHoc";
 	private static final String numberOfTheoryLesson = "SoTietLyThuyet";
 	private static final String numberOfPracticeLesson = "SoTietThucHanh";
-	private static final String numberOfTest = "LanThi";
+	private static final String numberOfTests = "LanThi";
 	private static final String point = "Diem";
 	
 	private static final Map<String,List<ResultOfStudentsView>> mapInfoStudent 
@@ -32,14 +32,13 @@ public class ResultOfStudentsViewDBUtils {
 		}
 
 	}
-	private static String initView() {
+	private static void initView() {
 		Connection conn = null;
-		String errorMessage = null;
 		try {
 			conn = MySQLConnUtils.getMySQLConUtils();
 			String sql = "select " + idStudent + ", " + idSubject + ", " + subjectName 
 					+ ", " + numberOfTheoryLesson + ", " + numberOfPracticeLesson 
-					+ ", " + numberOfTest + ", " + point 
+					+ ", " + numberOfTests + ", " + point 
 					+ " from " + viewQuery + " order by " + idStudent;
 			PreparedStatement pstm = conn.prepareStatement(sql);
 
@@ -54,7 +53,7 @@ public class ResultOfStudentsViewDBUtils {
 				String _subjectName = rs.getString(subjectName);
 				int _numberOfTheoryLesson = rs.getInt(numberOfTheoryLesson);
 				int _numberOfPracticeLesson = rs.getInt(numberOfPracticeLesson);
-				int _numberOfTest = rs.getInt(numberOfTest);
+				int _numberOfTest = rs.getInt(numberOfTests);
 				double _point = rs.getDouble(point);
 				
 				ResultOfStudentsView newRecord = 
@@ -74,12 +73,10 @@ public class ResultOfStudentsViewDBUtils {
 		catch (ClassNotFoundException | SQLException e) {
 			MySQLConnUtils.rollbackQuietly(conn);
 			e.printStackTrace();
-			errorMessage = e.getMessage();
 		}
 		finally {
 			MySQLConnUtils.closeQuietly(conn);
 		}
-		return errorMessage;
 	}
 	/*
 	private static void initQuery() {
@@ -111,7 +108,17 @@ public class ResultOfStudentsViewDBUtils {
 			MySQLConnUtils.closeQuietly(conn);
 		}
 	}*/
-	public static List<ResultOfStudentsView> getMapInfoStudent(String idStudent){
-		return mapInfoStudent.get(idStudent);
+	public static List<ResultOfStudentsView> getMapInfoStudent(String _idStudent){
+		return mapInfoStudent.get(_idStudent);
+	}
+	public static void delete(String _idStudent, String _idSubject, int _numberOfTests) {
+		List <ResultOfStudentsView> list = mapInfoStudent.get(_idStudent);
+		if(list == null || list.size() == 0) {
+			return;
+		}
+		ResultOfStudentsView obj = new ResultOfStudentsView(_idStudent,_idSubject,_numberOfTests);
+		if(list.contains(obj)) {
+			list.remove(obj);
+		}
 	}
 }

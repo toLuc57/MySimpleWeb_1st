@@ -8,8 +8,10 @@
 </head>
 <body>
 	<jsp:include page="..//_header.jsp"></jsp:include>
-    <p style="color: red;">${errorString}</p> 
+	<jsp:include page="..//_menu.jsp"></jsp:include>
+     
     <h3>Insert Department</h3>
+    <p style="color: red;">${errorString}</p>
 	<form method="POST" action="${pageContext.request.contextPath}/department/insert">
          <table border="0">
             <tr>

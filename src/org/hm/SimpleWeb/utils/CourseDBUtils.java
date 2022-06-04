@@ -235,6 +235,12 @@ public class CourseDBUtils {
 			MySQLConnUtils.closeQuietly(conn);
 		}
 	}
+	public static String getQueryWhereSearchIDAndName(String search) {
+		String queryWhere = " where " + id + " like '%" + search +"%'"
+				+ " or " + idTeacher + " like '%" + search +"%'"
+				+ " or " + idSubject + " like '%" + search +"%' ";
+		return queryWhere;
+	}
 	public static int getTotalRow(String queryWhere) {
 		Connection conn = null;
 		try {
@@ -245,7 +251,7 @@ public class CourseDBUtils {
             if(rs.next()) {
             	totalRow = rs.getInt(1);
             }
-            System.out.println("So dong (trong CourseDBUtils): " + totalRow);
+           // System.out.println("So dong (trong CourseDBUtils): " + totalRow);
             return totalRow;
         } catch (ClassNotFoundException | SQLException e) {
         	e.printStackTrace();

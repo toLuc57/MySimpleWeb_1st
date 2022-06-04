@@ -9,11 +9,11 @@
 </head>
 <body>
 	<jsp:include page="..//_header.jsp"></jsp:include>
-           
+	<jsp:include page="..//_menu.jsp"></jsp:include>
+	
+	<h3>Edit Learning outcomes</h3>
       <p style="color: red;">${errorString}</p>
-      
-      <h3>Edit Learning outcomes</h3>
-      
+
       <form method="POST" action="${pageContext.request.contextPath}/learningOutcomes/edit">
          <input type="hidden" name="idStudent" value="${learningOutcomes.idStudent}" />
          <input type="hidden" name="idCourse" value="${learningOutcomes.idCourse}" />

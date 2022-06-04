@@ -195,6 +195,12 @@ public class SubjectDBUtils {
 			MySQLConnUtils.closeQuietly(conn); 
 		}
 	}
+	public static String getQueryWhereSearchIDAndName(String search) {
+		String queryWhere = " where " + id + " like '%" + search +"%'"
+				+ " or " + name + " like '%" + search +"%'";
+		return queryWhere;
+	}
+	
 	public static int getTotalRow(String queryWhere) {
 		Connection conn = null;
 		try {

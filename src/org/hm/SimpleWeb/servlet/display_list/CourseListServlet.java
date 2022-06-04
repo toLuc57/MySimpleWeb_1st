@@ -28,8 +28,13 @@ public class CourseListServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String queryWhere = SearchModule.getSQLWhere(request, CourseDBUtils.className);
+		if(queryWhere.equals(" ") && request.getParameter("search") != null) {
+			queryWhere = CourseDBUtils.getQueryWhereSearchIDAndName(
+					request.getParameter("search"));
+		}
 		Map<String,String> mapColumn = CourseDBUtils.getAllColumnNameAndTypeName();
 		Connection conn = MyUtils.getStoredConnection(request);
+
 		String indexPageSTR = request.getParameter("page");
 		if(indexPageSTR == null) {
 			indexPageSTR = request.getParameter("page");
@@ -41,7 +46,6 @@ public class CourseListServlet extends HttpServlet {
 			}catch(NumberFormatException e) {
 				indexPage = 0;
 			}
-			
 		}
 		String errorString = null;	
 		List<Course> list = null;
@@ -49,9 +53,9 @@ public class CourseListServlet extends HttpServlet {
 		int totalRow = 0;
 		try 
 		{
-			list = CourseDBUtils.query(conn,indexPage,queryWhere);		
-			listColumnName = CourseDBUtils.getColumnName();
+			list = CourseDBUtils.query(conn,indexPage,queryWhere);
 			totalRow = CourseDBUtils.getTotalRow(queryWhere);
+			listColumnName = CourseDBUtils.getColumnName();
 			//System.out.println("Total: " + totalRow);
 		} 
 		catch (SQLException e) {

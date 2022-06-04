@@ -29,6 +29,10 @@ public class LearningOutcomesListServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String queryWhere = SearchModule.getSQLWhere(request, LearningOutcomesDBUtils.className);
+		if(queryWhere.equals(" ") && request.getParameter("search") != null) {
+			queryWhere = LearningOutcomesDBUtils.getQueryWhereSearchIDAndName(
+					request.getParameter("search"));
+		}
 		Map<String,String> mapColumn = LearningOutcomesDBUtils.getAllColumnNameAndTypeName();
 		Connection conn = MyUtils.getStoredConnection(request);
 		String indexPageSTR = request.getParameter("page");

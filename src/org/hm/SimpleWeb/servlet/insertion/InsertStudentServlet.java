@@ -34,7 +34,7 @@ public class InsertStudentServlet extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String khoa = (String) request.getParameter("khoa");
+		String grade = (String) request.getParameter("grade");
 		String lastName = (String) request.getParameter("lastName");
 		String firstName = (String) request.getParameter("firstName");
 		String day = (String) request.getParameter("day");
@@ -50,7 +50,7 @@ public class InsertStudentServlet extends HttpServlet {
 		Student newRow = new Student(lastName,firstName,birthday,
 				sex,telephone,address,idDepartment);
 		try {
-			StudentDBUtils.insert(newRow, khoa);
+			StudentDBUtils.insert(newRow, grade);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			errorString = e.getMessage();

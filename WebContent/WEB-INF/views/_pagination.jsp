@@ -29,17 +29,20 @@
 </style>
  <br/>
 <%
+	if (request.getAttribute("totalRow") == null){
+		return;
+	}
     int totalPages = (int) request.getAttribute("totalRow")/10;
  	int indexPage;
  	try{
  		indexPage = (int) request.getAttribute("page");
- 		System.out.println("Index page(_pagination.jsp): "+ indexPage);
+ 		//System.out.println("Index page(_pagination.jsp): "+ indexPage);
  		
  	}catch(NumberFormatException e){
  		indexPage = 0;
  	}
  	String queryString = (String) request.getAttribute("queryStringInUrl");
- 	System.out.println(queryString);
+ 	//System.out.println(queryString);
  	if(queryString == null || queryString.isEmpty() || queryString.length() == 0){
  		queryString = "?page=";
  	}
@@ -94,7 +97,7 @@
 				for(int i = indexPage; i < totalPages && i < indexPage + 2 ; ++i){
 			   		%>
 		  		 		<li>
-		  		 		  <a href="?page=<%=queryString.concat(String.valueOf(i))%>"><%=i%></a>
+		  		 		  <a href="<%=queryString.concat(String.valueOf(i))%>"><%=i%></a>
 		  		 		</li>
 			 		<%
 				}

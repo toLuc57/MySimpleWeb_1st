@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.hm.SimpleWeb.beans.Course;
 import org.hm.SimpleWeb.beans.LearningOutcomes;
 import org.hm.SimpleWeb.jdbc.MySQLConnUtils;
 
@@ -189,6 +190,11 @@ public class LearningOutcomesDBUtils {
 			pstm.setInt(3, _numberOfTest);
 			
 			pstm.executeUpdate();
+			Course findCouse = CourseDBUtils.find(_idCourse);
+			if (findCouse == null) {
+				return;
+			}
+			ResultOfStudentsViewDBUtils.delete(_idStudent, findCouse.getIdSubject(), _numberOfTest);
 		} catch (ClassNotFoundException | SQLException e) {
 			MySQLConnUtils.rollbackQuietly(conn);
 			e.printStackTrace();
@@ -264,6 +270,11 @@ public class LearningOutcomesDBUtils {
 		finally {
 			MySQLConnUtils.closeQuietly(conn);
 		}		
+	}
+	public static String getQueryWhereSearchIDAndName(String search) {
+		String queryWhere = " where " + idStudent + " like '%" + search +"%'"
+				+ " or " + idCourse + " like '%" + search +"%' ";
+		return queryWhere;
 	}
 	public static int getTotalRow(String queryWhere) {
 		Connection conn = null;

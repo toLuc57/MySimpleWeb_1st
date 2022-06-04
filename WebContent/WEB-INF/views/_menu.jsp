@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
    pageEncoding="UTF-8"%>
-<%@ page import="org.hm.SimpleWeb.utils.MyUtils" %>
+<%@ page import="org.hm.SimpleWeb.utils.MyUtils, org.hm.SimpleWeb.beans.UserAccount" %>
 <style>
 .navigation-bars {
   list-style-type: none;
@@ -54,10 +54,16 @@ li.dropdown {
   display: block;
 }
 </style>
+	<%
+	UserAccount loginedUser = MyUtils.getLoginedUser(request.getSession());
+	%>
    <ul class="navigation-bars">
      <li>
        <a href="${pageContext.request.contextPath}/">Home</a>
      </li>
+     <li>
+	   <a href="${pageContext.request.contextPath}/signup">Sign Up</a>
+	 </li>
      <li class="dropdown" >
 	   <a class="dropbtn">Drop down</a>
 	   <div class="dropdown-content">
@@ -68,18 +74,33 @@ li.dropdown {
 		   <a href="${pageContext.request.contextPath}/courseList">Course List</a>
 		   <a href="${pageContext.request.contextPath}/learningOutcomesList">Learning Outcomes List</a>
 	   </div>
-   </li>
-   <%
-   	if(MyUtils.getLoginedUser(request.getSession()) != null){
-	 %>
-	 	<li class="dropdown" style="float:right;">
-	 	  <a class="dropbtn" title="Your personal page">Your personal page</a> 
-	 	  <div class="dropdown-content" style="right:0;">
-	 	    <a href="${pageContext.request.contextPath}/userInfo">Your Account Info</a>
-	  		<a href="${pageContext.request.contextPath}/logout">Logout</a>
-	 	  </div>
-	 	</li>
-     <% 
+   	</li>
+     
+     <%
+     if(loginedUser != null){
+    	 if(loginedUser.getIsStudent()){
+    	     %>
+    	    	<li>
+    	       		<a href="${pageContext.request.contextPath}/CourseRegistration">Course Registration</a>
+    	     	</li>
+    	     <%
+    	     }
+    	     else if(!loginedUser.getIsTeacher()){
+    	     %>
+    	    	<li>
+    	        	<a href="${pageContext.request.contextPath}/signup">Sign Up</a>
+    	       	</li>
+    	     <%
+    	     }
+    	     %>
+    		<li class="dropdown" style="float:right;">
+    		 	  <a class="dropbtn" title="Your personal page">Your personal page</a> 
+    		 	  <div class="dropdown-content" style="right:0;">
+    		 	    <a href="${pageContext.request.contextPath}/userInfo">Your Account Info</a>
+    		  		<a href="${pageContext.request.contextPath}/logout">Logout</a>
+    		 	  </div>
+    		 </li> 
+    <%
      }
-   %>
+    %>
    </ul>

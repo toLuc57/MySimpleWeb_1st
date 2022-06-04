@@ -29,8 +29,12 @@ public class TeacherListServlet extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String queryWhere = SearchModule.getSQLWhere(request, SubjectDBUtils.className);
-		Map<String,String> mapColumn = SubjectDBUtils.getAllColumnNameAndTypeName();
+		String queryWhere = SearchModule.getSQLWhere(request, TeacherDBUtils.className);
+		Map<String,String> mapColumn = TeacherDBUtils.getAllColumnNameAndTypeName();
+		if(queryWhere.equals(" ") && request.getParameter("search") != null) {
+			queryWhere = TeacherDBUtils.getQueryWhereSearchIDAndName(
+					request.getParameter("search"));
+		}
 		Connection conn = MyUtils.getStoredConnection(request);
 		String indexPageSTR = request.getParameter("page");
 		int indexPage = 0;

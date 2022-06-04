@@ -6,7 +6,7 @@ org.hm.SimpleWeb.utils.StudentDBUtils" %>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Insert Student</title>
 </head>
 <body>
 	  <jsp:include page="..//_header.jsp"></jsp:include>
@@ -19,12 +19,12 @@ org.hm.SimpleWeb.utils.StudentDBUtils" %>
       <form method="POST" action="${pageContext.request.contextPath}/student/insert">
          <table border="0">
          	<tr>
-               <td>Khóa: </td>
+               <td>Grade: </td>
                <td>
-                 <select name="khoa">
+                 <select name="grade">
 
-                   <option value="<%=StudentDBUtils.getNameKhoa8()%>">Khóa 8 </option>
-                   <option value="<%=StudentDBUtils.getNameKhoa9()%>">Khóa 9 </option>
+                   <option value="<%=StudentDBUtils.getNameGrade8() %>">Grade 8 </option>
+                   <option value="<%=StudentDBUtils.getNameGrade9() %>">Grade 9 </option>
                  </select>
                </td>
             </tr>

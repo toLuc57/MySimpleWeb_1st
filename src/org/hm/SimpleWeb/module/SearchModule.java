@@ -5,15 +5,33 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.hm.SimpleWeb.beans.UserAccount;
 import org.hm.SimpleWeb.utils.CourseDBUtils;
 import org.hm.SimpleWeb.utils.DepartmentDBUtils;
 import org.hm.SimpleWeb.utils.LearningOutcomesDBUtils;
+import org.hm.SimpleWeb.utils.MyUtils;
 import org.hm.SimpleWeb.utils.StudentDBUtils;
 import org.hm.SimpleWeb.utils.SubjectDBUtils;
 import org.hm.SimpleWeb.utils.TeacherDBUtils;
 
 public class SearchModule {
 	public static String getSQLWhere(HttpServletRequest request, String className) {
+		UserAccount loginedUser = MyUtils.getLoginedUser(request.getSession());
+		if(loginedUser == null) {
+			request.setAttribute("nameURI", request.getRequestURI());
+			String search = request.getParameter("search");
+			if(search != null) {
+				request.setAttribute("queryStringInUrl", "?search=" + search);
+			}
+			return " ";
+		}else if (loginedUser.getIsStudent() || loginedUser.getIsTeacher()) {
+			request.setAttribute("nameURI", request.getRequestURI());
+			String search = request.getParameter("search");
+			if(search != null) {
+				request.setAttribute("queryStringInUrl", "?search=" + search);
+			}
+			return " ";
+		}
 		List<String> listColunm = null;
 		Map<String,String> mapColumn;
 		String queryStringInUrl = "?";

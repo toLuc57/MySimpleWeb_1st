@@ -25,11 +25,11 @@ public class MySQLConnUtils {
 			String connectionURL = "jdbc:mysql://" + hostName + ":3306/" + dbName;
 			
 			Connection conn = (Connection) DriverManager.getConnection(connectionURL,userName,password);
-			System.out.println("Suscessfully!");
+//			System.out.println("Suscessfully!");
 			return conn;
 		}
 		catch (ClassNotFoundException | SQLException e) {
-			System.out.println("Fail!");
+//			System.out.println("Fail!");
 			e.printStackTrace();
 		}
 		return null;

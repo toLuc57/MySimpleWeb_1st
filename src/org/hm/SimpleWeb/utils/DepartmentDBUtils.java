@@ -70,7 +70,7 @@ public class DepartmentDBUtils {
 				+ " from " + table + queryWhere
 				+" limit " + amountRowsLimit + " offset " + x*amountRowsOffset;
 		PreparedStatement pstm = conn.prepareStatement(sql);
-		
+		//System.out.println(sql);
 		ResultSet rs = pstm.executeQuery();
 		List<Department> list = new ArrayList<Department>();
 		while(rs.next()) {
@@ -176,7 +176,7 @@ public class DepartmentDBUtils {
 			String sql = "update " + table + " set " 
 					+ name + " = ?, " + address +  " = ?, " + telephone +  " = ? "
 					+ " where " + id + " = ?";
-			System.out.println(sql);
+			//System.out.println(sql);
 			PreparedStatement pstm = conn.prepareStatement(sql);
 			
 			pstm.setString(1, updateRow.getName());
@@ -194,6 +194,14 @@ public class DepartmentDBUtils {
 		}
 		
 	}
+	public static String getQueryWhereSearchIDAndName(String search) {
+		if(search == null) {
+			return " ";
+		}
+		String queryWhere = " where " + id + " like '%" + search +"%'"
+				+ " or " + name + " like '%" + search +"%' ";
+		return queryWhere;
+	}
 	public static int getTotalRow(String queryWhere) {
 		Connection conn = null;
 		try {
@@ -204,7 +212,7 @@ public class DepartmentDBUtils {
             if(rs.next()) {
             	totalRow = rs.getInt(1);
             }
-            System.out.println("So dong (trong DepartmentDBUtils): " + totalRow);
+            //System.out.println("So dong (trong DepartmentDBUtils): " + totalRow);
             return totalRow;
         } catch (ClassNotFoundException | SQLException e) {
         	e.printStackTrace();

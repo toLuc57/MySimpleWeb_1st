@@ -9,9 +9,11 @@
 </head>
 <body>
 	<jsp:include page="..//_header.jsp"></jsp:include>
-      <p style="color: red;">${errorString}</p>      
+      <jsp:include page="..//_menu.jsp"></jsp:include>
       
       <h3>Edit Course</h3>
+      
+      <p style="color: red;">${errorString}</p>      
             
       <form method="POST" action="${pageContext.request.contextPath}/course/edit">
          <input type="hidden" name="id" value="${course.id}" />

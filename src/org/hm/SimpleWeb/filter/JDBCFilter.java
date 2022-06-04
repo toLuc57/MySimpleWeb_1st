@@ -28,7 +28,7 @@ public class JDBCFilter implements Filter {
 	public void destroy() {
 	}
 	private boolean needJDBC(HttpServletRequest request) {
-		System.out.println("JDBC Filter");
+		//System.out.println("JDBC Filter");
 		
 		String servletPath = request.getServletPath();
 		
@@ -57,7 +57,7 @@ public class JDBCFilter implements Filter {
 		HttpServletRequest req = (HttpServletRequest) request;
 		
 		if(this.needJDBC(req)) {
-			System.out.println("Open Connection for: " + req.getServletPath());
+			//System.out.println("Open Connection for: " + req.getServletPath());
 			Connection conn = null;
 			try {
 				conn = MySQLConnUtils.getMySQLConUtils();
@@ -71,7 +71,7 @@ public class JDBCFilter implements Filter {
 				throw new ServletException();
 			} finally {
 				MySQLConnUtils.closeQuietly(conn);
-				System.out.println("Closed connection...");
+				//System.out.println("Closed connection...");
 			}
 		}
 		else {

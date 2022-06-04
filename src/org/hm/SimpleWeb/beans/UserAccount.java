@@ -20,8 +20,8 @@ public class UserAccount {
 		this.userName = userName;
 		this.id = id;
 		this.password = password;
-		boolean isStudent = id.contains(StudentDBUtils.getMaKhoa8()) || 
-				id.contains(StudentDBUtils.getMaKhoa9());
+		boolean isStudent = id.contains(StudentDBUtils.getIDGrade8()) || 
+				id.contains(StudentDBUtils.getIDGrade9());
 		if(isStudent) {
 			roles.add(SecurityConfig.ROLE_STUDENT);
 			listInfoStudent = ResultOfStudentsViewDBUtils.getMapInfoStudent(id);
@@ -51,15 +51,15 @@ public class UserAccount {
 		return id;
 	}
 	public boolean getIsStudent(){
-		return id.contains(StudentDBUtils.getMaKhoa8()) 
-				|| id.contains(StudentDBUtils.getMaKhoa9());
+		return id.contains(StudentDBUtils.getIDGrade8()) 
+				|| id.contains(StudentDBUtils.getIDGrade9());
 	}
 	public boolean getIsTeacher(){
 		return id.contains(TeacherDBUtils.getTextInID());
 	}
 	public void setPosition(String _id) {
-		boolean isStudent = _id.contains(StudentDBUtils.getMaKhoa8()) || 
-				_id.contains(StudentDBUtils.getMaKhoa9());
+		boolean isStudent = _id.contains(StudentDBUtils.getIDGrade8()) || 
+				_id.contains(StudentDBUtils.getIDGrade9());
 		if(roles == null) {
 			if(isStudent) {
 				roles.add(SecurityConfig.ROLE_STUDENT);

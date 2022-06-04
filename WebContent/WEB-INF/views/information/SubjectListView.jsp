@@ -28,22 +28,24 @@
        </tr>
        <%
        List<Subject> list = (List<Subject>) request.getAttribute("subjectsList");	
-       for(Subject i : list){    	   
-	   %>
-	   	   <tr>
-		   	   <td><%= i.getId() %></td>
-			   <td><%= i.getName()%></td>
-			   <td><%= i.getNumberOfPracticeLesson() %></td>
-			   <td><%= i.getNumberOfTheoryLesson()%></td>
-			   <td>
-		          <a href="subject/edit?id=<%=i.getId()%>">Edit</a>
-		       </td>
-		       <td>
-		      		<a href="subject/delete?id=<%=i.getId()%>">Delete</a>
-		       </td>
-	       </tr>
-       <% 
-       } 
+       if(list != null){
+	       for(Subject i : list){    	   
+		   %>
+		   	   <tr>
+			   	   <td><%= i.getId() %></td>
+				   <td><%= i.getName()%></td>
+				   <td><%= i.getNumberOfPracticeLesson() %></td>
+				   <td><%= i.getNumberOfTheoryLesson()%></td>
+				   <td>
+			          <a href="subject/edit?id=<%=i.getId()%>">Edit</a>
+			       </td>
+			       <td>
+			      		<a href="subject/delete?id=<%=i.getId()%>">Delete</a>
+			       </td>
+		       </tr>
+	       <% 
+       		} 
+       }
        %>
     </table>
 

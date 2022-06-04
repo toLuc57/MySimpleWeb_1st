@@ -28,6 +28,10 @@ public class SubjectsListServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String queryWhere = SearchModule.getSQLWhere(request, SubjectDBUtils.className);
+		if(queryWhere.equals(" ") && request.getParameter("search") != null) {
+			queryWhere = SubjectDBUtils.getQueryWhereSearchIDAndName(
+					request.getParameter("search"));
+		}
 		Map<String,String> mapColumn = SubjectDBUtils.getAllColumnNameAndTypeName();
 		Connection conn = MyUtils.getStoredConnection(request);
 		String indexPageSTR = request.getParameter("page");

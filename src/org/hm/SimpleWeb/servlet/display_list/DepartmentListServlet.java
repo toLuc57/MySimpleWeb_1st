@@ -29,6 +29,10 @@ public class DepartmentListServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String queryWhere = SearchModule.getSQLWhere(request, DepartmentDBUtils.className);
+		if(queryWhere.equals(" ") && request.getParameter("search") != null) {
+			queryWhere = DepartmentDBUtils.getQueryWhereSearchIDAndName
+					(request.getParameter("search"));
+		}		
 		Map<String,String> mapColumn = DepartmentDBUtils.getAllColumnNameAndTypeName();
 		Connection conn = MyUtils.getStoredConnection(request);
 		String indexPageSTR = request.getParameter("page");

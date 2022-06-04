@@ -21,7 +21,7 @@ import org.hm.SimpleWeb.utils.MyUtils;
 import org.hm.SimpleWeb.utils.SecurityUtils;
 import org.hm.SimpleWeb.utils.UserAccountDBUtils;
 
-@WebFilter(filterName="SecurityFilter", urlPatterns= {"/home/*"})
+@WebFilter(filterName="SecurityFilter", urlPatterns= {"/*"})
 public class SecurityFilter implements Filter {
 
 
@@ -35,7 +35,7 @@ public class SecurityFilter implements Filter {
 			throws IOException, ServletException {
 		HttpServletRequest request = (HttpServletRequest) req;
 		HttpServletResponse response = (HttpServletResponse) resp;
-
+		//System.out.print("SecurityFilter: ");
 		String servletPath = request.getServletPath();		
 		
 		// Thông tin người dùng đã được lưu trong Session
@@ -94,7 +94,7 @@ public class SecurityFilter implements Filter {
 			// Gói request cũ bởi một Request mới với các thông tin userName và Roles.
 			wrapRequest = new UserRoleRequestWrapper(userName, roles, request);
 		}
-		
+		//System.out.println(SecurityUtils.isSecurityPage(request));
 		// Các trang bắt buộc phải đăng nhập.
 		if (SecurityUtils.isSecurityPage(request)) {
 				if(loginedUser == null) {

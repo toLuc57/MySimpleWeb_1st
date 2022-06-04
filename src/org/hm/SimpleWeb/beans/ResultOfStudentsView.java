@@ -9,9 +9,15 @@ public class ResultOfStudentsView {
 	private int numberOfTest;
 	private double point;
 
+	public ResultOfStudentsView(String idStudent,String idSubject,int numberOfTest) {
+		this.idStudent = idStudent;
+		this.idSubject = idSubject;
+		this.numberOfTest = numberOfTest;
+	}	
 	public ResultOfStudentsView(String idStudent,String idSubject, String subjectName,
 			int numberOfTheoryLesson, int numberOfPracticeLesson, 
 			int numberOfTest, double point) {
+		this.idStudent = idStudent;
 		this.idSubject = idSubject;
 		this.subjectName = subjectName;
 		this.numberOfTheoryLesson = numberOfTheoryLesson;
@@ -61,4 +67,19 @@ public class ResultOfStudentsView {
 	public void setPoint(double point) {
 		this.point =  point;
 	}
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		// Nếu obj không thuộc lớp ResultOfStudentsView
+		// trả về false
+		if (!(obj instanceof ResultOfStudentsView)) {
+			return false;
+		}
+		ResultOfStudentsView _obj = (ResultOfStudentsView) obj;
+		return idStudent.equals(_obj.idStudent) && idSubject.equals(_obj.idSubject)
+				&& point == _obj.point;
+	}
+	
 }

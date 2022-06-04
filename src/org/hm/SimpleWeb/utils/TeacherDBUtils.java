@@ -24,7 +24,7 @@ public class TeacherDBUtils {
 	private static final String id = "MaGiaoVien";
 	private static final String name = "TenGiaoVien";
 	private static final String degree = "HocVi";
-	private static final String teplephone = "SoDienThoai";
+	private static final String telephone = "SoDienThoai";
 	private static final String idDepartment = "MaKhoa";
 		
 	private static List<String> listColumnName = new ArrayList<String>();
@@ -66,7 +66,7 @@ public class TeacherDBUtils {
 	public static List<Teacher> query(Connection conn, int x, String queryWhere) 
 		throws SQLException {
 		String sql = "select " + id + ", " + name + ", " 
-				+ degree + ", " + teplephone + ", " + idDepartment 
+				+ degree + ", " + telephone + ", " + idDepartment 
 				+ " from " + table + queryWhere
 				+" limit " + amountRowsLimit + " offset " + x*amountRowsOffset;
 		PreparedStatement pstm = conn.prepareStatement(sql);
@@ -77,7 +77,7 @@ public class TeacherDBUtils {
 			Teacher mh = new Teacher();
 			mh.setId(rs.getString(id));
 			mh.setName(rs.getString(name));
-			mh.setTelephone(rs.getString(teplephone));
+			mh.setTelephone(rs.getString(telephone));
 			mh.setDegree(rs.getString(degree));
 			mh.setIdDepartment(rs.getString(idDepartment));
 			list.add(mh);
@@ -103,7 +103,7 @@ public class TeacherDBUtils {
 				mh = new Teacher();
 				mh.setId(rs.getString(id));
 				mh.setName(rs.getString(name));
-				mh.setTelephone(rs.getString(teplephone));
+				mh.setTelephone(rs.getString(telephone));
 				mh.setDegree(rs.getString(degree));
 				mh.setIdDepartment(rs.getString(idDepartment));
 			}
@@ -124,7 +124,7 @@ public class TeacherDBUtils {
 			conn = MySQLConnUtils.getMySQLConUtils();
 			String sql = "insert into " + table 
 					+ "("+ id +", " + name + ", " + degree
-					+ ", " + teplephone + ", " + idDepartment + ") "
+					+ ", " + telephone + ", " + idDepartment + ") "
 					+ " values (?,?,?,?,?)" ;
 			PreparedStatement pstm = conn.prepareStatement(sql);
 			String newID = getNewID();
@@ -175,7 +175,7 @@ public class TeacherDBUtils {
 			conn = MySQLConnUtils.getMySQLConUtils();
 			String sql = "update " + table + " set " 
 					+ name + "=?, " + degree +  "=?, "
-					+ teplephone + "=?, " + idDepartment +  "=? "
+					+ telephone + "=?, " + idDepartment +  "=? "
 					+ " where " + id + "=?";
 				
 			PreparedStatement pstm = conn.prepareStatement(sql);
@@ -213,6 +213,12 @@ public class TeacherDBUtils {
 			MySQLConnUtils.closeQuietly(conn);
 		}
 	}
+	public static String getQueryWhereSearchIDAndName(String search) {
+		String queryWhere = " where " + id + " like '%" + search +"%'"
+				+ " or " + name + " like '%" + search +"%'" 
+				+ " or " + telephone + " like '%" + search +"%'";;
+		return queryWhere;
+	}
 	public static int getTotalRow(String queryWhere) {
 		Connection conn = null;
 		try {
@@ -223,7 +229,7 @@ public class TeacherDBUtils {
             if(rs.next()) {
             	totalRow = rs.getInt(1);
             }
-            System.out.println("So dong (trong DepartmentDBUtils): " + totalRow);
+            //System.out.println("So dong (trong TearcherDBUtils): " + totalRow);
             return totalRow;
         } catch (ClassNotFoundException | SQLException e) {
         	e.printStackTrace();

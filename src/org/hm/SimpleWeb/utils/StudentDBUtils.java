@@ -19,10 +19,10 @@ public class StudentDBUtils {
 	private static final String table = "tSinhVien";
 	private static int amountRowsLimit = 10;
 	private static int amountRowsOffset = 10;
-	private static final String nameKhoa8 = "Khoa 8";
-	private static final String nameKhoa9 = "Khoa 9";
-	private static final String maKhoa8 = "08";
-	private static final String maKhoa9 = "09";
+	private static final String nameGrade8 = "Khoa 8";
+	private static final String nameGrade9 = "Khoa 9";
+	private static final String IDGrade8 = "08";
+	private static final String IDGrade9 = "09";
 	
 	private static final String id = "MaSinhVien";
 	private static final String lastName = "HoSinhVien";
@@ -50,7 +50,7 @@ public class StudentDBUtils {
 		Connection conn = null;
 		try {
 			conn = MySQLConnUtils.getMySQLConUtils();
-			int charLength = maKhoa8.length();
+			int charLength = IDGrade8.length();
 			
             PreparedStatement pstm = conn.prepareStatement("select * from " + table + " limit 1");
             
@@ -74,8 +74,8 @@ public class StudentDBUtils {
             }
             if(numberOfStudentIDInEachKhoa == null || numberOfStudentIDInEachKhoa.isEmpty()) {
             	System.out.println("!!!!");
-            	numberOfStudentIDInEachKhoa.put(maKhoa8, 0);
-            	numberOfStudentIDInEachKhoa.put(maKhoa9, 0);
+            	numberOfStudentIDInEachKhoa.put(IDGrade8, 0);
+            	numberOfStudentIDInEachKhoa.put(IDGrade9, 0);
             }
         } catch (ClassNotFoundException | SQLException e) {
         	e.printStackTrace();
@@ -145,7 +145,7 @@ public class StudentDBUtils {
 		return sv;
 	}
 	
-	public static void insert(Student insertRow, String khoa) throws SQLException{
+	public static void insert(Student insertRow, String grade) throws SQLException{
 		Connection conn = null;
 		try {
 			conn = MySQLConnUtils.getMySQLConUtils();
@@ -156,7 +156,7 @@ public class StudentDBUtils {
 					+ " values(?,?,?,?,?,?,?,?)";
 			
 			PreparedStatement pstm = conn.prepareStatement(sql);
-			String newID = getNewID(khoa);
+			String newID = getNewID(grade);
 			pstm.setString(1,newID);
 			pstm.setString(2,insertRow.getLastName());
 			pstm.setString(3,insertRow.getFirstName());
@@ -247,7 +247,12 @@ public class StudentDBUtils {
 			MySQLConnUtils.closeQuietly(conn);
 		}		
 	}
-	
+	public static String getQueryWhereSearchIDAndName(String search) {
+		String queryWhere = " where " + id + " like '%" + search +"%'"
+				+ " or " + lastName + "  like '%" + search +"%'"
+				+ " or " + firstName + " like '%" + search +"%'";
+		return queryWhere;
+	}
 	public static int getTotalRow(String queryWhere) {
 		Connection conn = null;
 		try {
@@ -275,19 +280,19 @@ public class StudentDBUtils {
 	public static Map<String,String> getAllColumnNameAndTypeName() {
 		return mapColumn;
 	}	
-	private static String getNewID(String _nameKhoa) {
-		// Default value: maKhoa9
+	private static String getNewID(String grade) {
+		// Default value: IDGrade9
 		String textInID= "";
 		int numberInID;
-		if(_nameKhoa.equals(nameKhoa8)) {
-			textInID = maKhoa8;
-			numberInID = numberOfStudentIDInEachKhoa.get(maKhoa8) + 1;
-			numberOfStudentIDInEachKhoa.replace(maKhoa8, numberInID);
+		if(grade.equals(nameGrade8)) {
+			textInID = IDGrade8;
+			numberInID = numberOfStudentIDInEachKhoa.get(IDGrade8) + 1;
+			numberOfStudentIDInEachKhoa.replace(IDGrade8, numberInID);
 		}
 		else {
-			textInID= maKhoa9;
-			numberInID = numberOfStudentIDInEachKhoa.get(maKhoa9) + 1;
-			numberOfStudentIDInEachKhoa.replace(maKhoa9, numberInID);
+			textInID= IDGrade9;
+			numberInID = numberOfStudentIDInEachKhoa.get(IDGrade9) + 1;
+			numberOfStudentIDInEachKhoa.replace(IDGrade9, numberInID);
 		}
 		String numberZeroInID = "";
 //		if(listID == null || listID.size() == 0)
@@ -312,16 +317,16 @@ public class StudentDBUtils {
 	public static List<String> getListID(){
 		return listID;
 	}
-	public static String getNameKhoa8() {
-		return nameKhoa8;
+	public static String getNameGrade8() {
+		return nameGrade8;
 	}
-	public static String getNameKhoa9() {
-		return nameKhoa9;
+	public static String getNameGrade9() {
+		return nameGrade9;
 	}
-	public static String getMaKhoa8() {
-		return maKhoa8;
+	public static String getIDGrade8() {
+		return IDGrade8;
 	}
-	public static String getMaKhoa9() {
-		return maKhoa9;
+	public static String getIDGrade9() {
+		return IDGrade9;
 	}
 }

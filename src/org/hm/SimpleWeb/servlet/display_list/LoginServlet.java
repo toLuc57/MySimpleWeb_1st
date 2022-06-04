@@ -104,6 +104,8 @@ public class LoginServlet extends HttpServlet {
 		}
 		else {
 			request.setAttribute("errorString", errorString);
+			request.setAttribute("userName", userName);
+			request.setAttribute("password", password);
 			RequestDispatcher dispatcher = this.getServletContext().
 					getRequestDispatcher("/WEB-INF/views/loginView.jsp");
 			dispatcher.forward(request, response);

@@ -16,25 +16,27 @@
       <p style="color: red;">${errorString}</p>      
             
       <form method="POST" action="${pageContext.request.contextPath}/course/edit">
-         <input type="hidden" name="id" value="${course.id}" />
+         <input type="hidden" name="id" value="${course.getIdCourse() }" />
          <table border="0">
             <tr>
                <td>ID Subject</td>
                <td>
-               <select name="idSubject">
 	               <%
 	               Course editCourse = (Course) request.getAttribute("course");
-	               List<String> list = (List<String>) request.getAttribute("subjectsList");
-	               if(list != null && list.size() != 0){
-		               for(String i : list){
-		            	   if(editCourse.getIdSubject().equals(i)){
+	               List<String> list1 = (List<String>) request.getAttribute("subjectsList");
+	               if(list1 != null && list1.size() != 0){
+	            	   %>
+	            	   <select name="idSubject">
+	            	   <%
+		               for(String i : list1){
+		            	   if(editCourse == null || editCourse.getIdSubject() != i){
 		            		   %>
-				                 <option value="<%=i%>" selected><%=i%></option>
+				                 <option value="<%=i%>"><%=i%></option>
 				               <%
 		            	   }
 		            	   else {
 		            		   %>
-				                 <option value="<%=i%>"><%=i%></option>
+				                 <option value="<%=i%>" selected><%=i%></option>
 				               <%
 		            	   }
 		               }
@@ -52,21 +54,20 @@
                <td>ID Teacher</td>
                <td>
 	               <%
-	               list.clear();
-	               list = (List<String>) request.getAttribute("teacherList");
-	               if(list != null && list.size() != 0){
+	               List<String> list2 = (List<String>) request.getAttribute("teacherList");
+	               if(list2 != null && list2.size() != 0){
 	            	   %>
 	            	   <select name="idTeacher">
 	            	   <%
-		               for(String i : list){
-		            	   if(editCourse.getIdTeacher().equals(i)){
+		               for(String i : list2){
+		            	   if(editCourse == null || editCourse.getIdTeacher() != i){
 		            		   %>
-				                 <option value="<%=i%>" selected><%=i%></option>
+				                 <option value="<%=i%>"><%=i%></option>
 				               <%
 		            	   }
 		            	   else {
 		            		   %>
-				                 <option value="<%=i%>"><%=i%></option>
+				                 <option value="<%=i%>" selected><%=i%></option>
 				               <%
 		            	   }
 		               }
@@ -86,20 +87,20 @@
                <td>From (dd/MM/yyyy): </td>
                	<td>
                	<input type="number" name="fromDay" min="1" max="31" size="3" 
-               	placeholder="${fromDay}"/>
+               	value="${fromDay}"/>
                	/<input type="number" name="fromMonth" min="1" max="12" size="3" 
-               	placeholder="${fromMonth}"/>
+               	value="${fromMonth}"/>
                	/<input type="number" name="fromYear" size="3"
-               	 placeholder="${fromYear}" pattern="[1-2][0-9]{3}" required/>
+               	 value="${fromYear}" pattern="[1-2][0-9]{3}" required/>
                	</td>
             </tr>
             <tr>
                <td>To (dd/MM/yyyy): </td>
                	<td>
-               	<input type="number" name="toDay" min="1" max="31" size="3" placeholder="${toDay}"/>
-               	/<input type="number" name="toMonth" min="1" max="12" size="3" placeholder="${toMonth}"/>
+               	<input type="number" name="toDay" min="1" max="31" size="3" value="${toDay}"/>
+               	/<input type="number" name="toMonth" min="1" max="12" size="3" value="${toMonth}"/>
                	/<input type="number" name="toYear" size="3"
-               	placeholder="${toYear}" pattern="[1-2][0-9]{3}" required/>
+               	value="${toYear}" pattern="[1-2][0-9]{3}" required/>
                	</td>
             </tr>
             <tr>

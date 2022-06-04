@@ -19,15 +19,15 @@
          <table border="0">
             <tr>
                <td>Name</td>
-               <td><input type="text" name="name" placeholder="${department.name}" /></td>
+               <td><input type="text" name="name" value="${department.name}" /></td>
             </tr>
             <tr>
                <td>Telephone</td>
-               <td><input type="text" name="telephone" placeholder="${department.telephone}" /></td>
+               <td><input type="text" name="telephone" value="${department.telephone}" /></td>
             </tr>
             <tr>
                <td>Address</td>
-               <td><input type="text" name="address" placeholder="${department.address}" /></td>
+               <td><input type="text" name="address" value="${department.address}" /></td>
             </tr>
 
             <tr>

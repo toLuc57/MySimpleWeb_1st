@@ -17,7 +17,6 @@ import org.hm.SimpleWeb.beans.Teacher;
 import org.hm.SimpleWeb.module.SearchModule;
 import org.hm.SimpleWeb.utils.TeacherDBUtils;
 import org.hm.SimpleWeb.utils.MyUtils;
-import org.hm.SimpleWeb.utils.SubjectDBUtils;
 
 
 @WebServlet("/teacherList")
@@ -53,10 +52,21 @@ public class TeacherListServlet extends HttpServlet {
 		try {
 			list = TeacherDBUtils.query(conn,indexPage, queryWhere);
 			totalRow = TeacherDBUtils.getTotalRow(queryWhere);
-			listColumnName = SubjectDBUtils.getColumnName();
+			listColumnName = TeacherDBUtils.getColumnName();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			errorString = e.getMessage();
+		}
+		if(request.getSession().getAttribute("errorString") != null) {
+			if(errorString == null) {
+				
+				errorString = String.valueOf(request.getSession().getAttribute("errorString"));
+			}
+			else {
+				errorString = errorString + "\n" 
+						+ String.valueOf(request.getSession().getAttribute("errorString"));
+			}
+			request.getSession().setAttribute("errorString", null);
 		}
 		request.setAttribute("errorString", errorString);
 		request.setAttribute("teacherList", list);		
@@ -64,11 +74,6 @@ public class TeacherListServlet extends HttpServlet {
 		request.setAttribute("page", indexPage);
 		request.setAttribute("listColumnName", listColumnName);
 		request.setAttribute("mapColumn", mapColumn);
-		
-		System.out.println("===================================");
-		for(Teacher i : list) {
-			System.out.println(i.getId() + " " + i.getName());
-		}
 		
 		RequestDispatcher dispatcher = request.getServletContext()
 				.getRequestDispatcher("/WEB-INF/views/information/TeacherListView.jsp");

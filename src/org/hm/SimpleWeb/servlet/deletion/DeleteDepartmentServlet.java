@@ -3,7 +3,6 @@ package org.hm.SimpleWeb.servlet.deletion;
 import java.io.IOException;
 import java.sql.SQLException;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -28,19 +27,13 @@ public class DeleteDepartmentServlet extends HttpServlet {
 		try {
 			errorString = DepartmentDBUtils.delete(code);
 		} catch (SQLException e) {
-			e.printStackTrace();
-			errorString = e.getMessage();
+			//e.printStackTrace();
+			errorString = e.getMessage();			
 		} 
-		
 		if (errorString != null) {
-			request.setAttribute("errorString", errorString);
-			RequestDispatcher dispatcher = request.getServletContext()
-					.getRequestDispatcher("/WEB-INF/views/information/DepartmentListView.jsp");
-			dispatcher.forward(request, response);
+			request.getSession().setAttribute("errorString", errorString);
 		}
-		else {
-			response.sendRedirect(request.getContextPath() + "/departmentList");
-		}
+		response.sendRedirect(request.getContextPath() + "/departmentList");
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

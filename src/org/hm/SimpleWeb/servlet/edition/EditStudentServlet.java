@@ -2,6 +2,7 @@ package org.hm.SimpleWeb.servlet.edition;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.hm.SimpleWeb.beans.Student;
+import org.hm.SimpleWeb.utils.DepartmentDBUtils;
 import org.hm.SimpleWeb.utils.StudentDBUtils;
 
 @WebServlet("/student/edit")
@@ -23,7 +25,8 @@ public class EditStudentServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String code = (String) request.getParameter("id");
-
+		List<String> list = DepartmentDBUtils.getListID();
+		
 		Student editRow = null;
 		String errorString = null;
 		
@@ -41,6 +44,7 @@ public class EditStudentServlet extends HttpServlet {
 		request.setAttribute("day", spiltBirthday[2]);
 		request.setAttribute("month", spiltBirthday[1]);
 		request.setAttribute("year", spiltBirthday[0]);
+		request.setAttribute("departmentList", list);
 		
 		RequestDispatcher dispatcher = request.getServletContext()
 				.getRequestDispatcher("/WEB-INF/views/editData/editStudent.jsp");

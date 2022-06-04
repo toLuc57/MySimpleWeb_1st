@@ -33,31 +33,26 @@ public class InsertSubjectServlet extends HttpServlet {
 		String numberOfPracticeLessonSTR = (String) request.getParameter("numberOfPracticeLesson");
 		String numberOfTheoryLessonSTR = (String) request.getParameter("numberOfTheoryLesson");
 		
-		int numberOfPracticeLesson;
-		int numberOfTheoryLesson;
+		int numberOfPracticeLesson = 0;
+		int numberOfTheoryLesson = 0;
 		String errorString = null;
 		try {
 			numberOfPracticeLesson = Integer.parseInt(numberOfPracticeLessonSTR);
 			numberOfTheoryLesson = Integer.parseInt(numberOfTheoryLessonSTR);
 		}catch (NumberFormatException e) {
-			numberOfPracticeLesson = -1;
-			numberOfTheoryLesson = -1;
-			errorString = e.getMessage();
 		}
-
 		try {
 			Subject newRow = new Subject(name, numberOfPracticeLesson, numberOfTheoryLesson);
 			SubjectDBUtils.insert(newRow);
 			
 		} catch (SQLException e) {
-			e.printStackTrace();
-			errorString = errorString.concat(e.getMessage());
+			errorString = e.getMessage();
 		}
 		
 		request.setAttribute("errorString", errorString);
 		if (errorString != null) {
 			RequestDispatcher dispatcher = request.getServletContext()
-					.getRequestDispatcher("/WEB-INF/views/insertData/insertTSubject.jsp");
+					.getRequestDispatcher("/WEB-INF/views/insertData/insertSubject.jsp");
 			dispatcher.forward(request, response);
 		}
 		

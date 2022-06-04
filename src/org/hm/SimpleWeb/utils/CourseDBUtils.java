@@ -92,21 +92,22 @@ public class CourseDBUtils {
 		Course mh = null;
 		try {
 			conn = MySQLConnUtils.getMySQLConUtils();
-			String sql = "select *from " + table + " where " + id + " =?";
+			String sql = "select " + idTeacher + ", " + idSubject + ", "
+					+ fromDate + ", " + toDate
+					+ " from " + table + " where " + id + " =?";
 			PreparedStatement pstm = conn.prepareStatement(sql);
 			
 			pstm.setString(1, findRowById);
-			
+			System.out.println(sql + findRowById);
 			ResultSet rs = pstm.executeQuery();
-			System.out.println(sql);
-			System.out.println(rs.first());
 			if(rs.next()) {
 				mh = new Course();
-				mh.setIdCourse(rs.getString(id));
+				mh.setIdCourse(findRowById);
 				mh.setIdTeacher(rs.getString(idTeacher));
 				mh.setFromDate(rs.getString(fromDate));
 				mh.setIdSubject(rs.getString(idSubject));
 				mh.setToDate(rs.getString(toDate));
+				System.out.println("Found course!");
 			}
 		} catch (ClassNotFoundException | SQLException e) {
 			MySQLConnUtils.rollbackQuietly(conn);

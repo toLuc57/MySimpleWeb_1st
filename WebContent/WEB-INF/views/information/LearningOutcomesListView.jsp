@@ -36,12 +36,12 @@
 			   <td><%= i.getNumberOfTest() %></td>
 			   <td><%= i.getPoint() %></td>
 			   <td>
-		          <a href="learningOutcomes/edit?idStudent=<%=i.getIdStudent()%>
-		          &idCourse=<%=i.getIdCourse()%>&numberOfTest=<%=i.getNumberOfTest()%>">Edit</a>
+		          <a href="learningOutcomes/edit?idStudent=<%=i.getIdStudent()%>&idCourse=<%=i.getIdCourse()%>&numberOfTest=<%=i.getNumberOfTest()%>">
+		          Edit</a>
 		       </td>
 		       <td>
-		      		<a href="learningOutcomes/delete?idStudent=<%=i.getIdStudent()%>
-		      		&idCourse=<%=i.getIdCourse()%>&numberOfTest=<%=i.getNumberOfTest()%>">Delete</a>
+		      	  <a href="learningOutcomes/delete?idStudent=<%=i.getIdStudent()%>&idCourse=<%=i.getIdCourse()%>&numberOfTest=<%=i.getNumberOfTest()%>">
+		      	  Delete</a>
 		       </td>
 	       </tr>
        <% 

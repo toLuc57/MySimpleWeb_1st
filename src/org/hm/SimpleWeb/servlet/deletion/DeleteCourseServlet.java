@@ -3,7 +3,6 @@ package org.hm.SimpleWeb.servlet.deletion;
 import java.io.IOException;
 import java.sql.SQLException;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -31,14 +30,10 @@ public class DeleteCourseServlet extends HttpServlet {
 		} 
 		
 		if (errorString != null) {
-			request.setAttribute("errorString", errorString);
-			RequestDispatcher dispatcher = request.getServletContext()
-					.getRequestDispatcher("/WEB-INF/views/information/CourseListView.jsp");
-			dispatcher.forward(request, response);
+			request.getSession().setAttribute("errorString", errorString);
 		}
-		else {
-			response.sendRedirect(request.getContextPath() + "/courseList");
-		}
+		response.sendRedirect(request.getContextPath() + "/courseList");
+
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

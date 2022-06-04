@@ -26,8 +26,8 @@ public class SecurityUtils {
 	// Kiểm tra 'request' này có vai trò phù hợp hay không?
 	public static boolean hasPermission(HttpServletRequest request) {
 		String urlPattern = UrlPatternUtils.getUrlPattern(request);
-		System.out.println("-----SecurityUtils-----");
-		System.out.println(urlPattern);
+//		System.out.println("-----SecurityUtils-----");
+//		System.out.println(urlPattern);
 
 		Set<String> allRoles = SecurityConfig.getAllAppRoles();
 
@@ -38,12 +38,12 @@ public class SecurityUtils {
 			
 			List<String> urlPatterns = SecurityConfig.getUrlPatternsForRole(role);
 			if (urlPatterns != null && urlPatterns.contains(urlPattern)) {
-				System.out.println("  Url Pattern: "+ urlPattern);
-				System.out.println("---------End-----------");
+//				System.out.println("  Url Pattern: "+ urlPattern);
+//				System.out.println("---------End-----------");
 				return true;
 			}
 		}
-		System.out.println("---------End-----------");
+//		System.out.println("---------End-----------");
 		return false;
 	}
 }

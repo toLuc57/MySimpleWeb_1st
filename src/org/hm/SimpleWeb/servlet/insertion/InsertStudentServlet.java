@@ -44,8 +44,17 @@ public class InsertStudentServlet extends HttpServlet {
 		String telephone = (String) request.getParameter("telephone");
 		String address = (String) request.getParameter("address");
 		String idDepartment = (String) request.getParameter("idDepartment");
-
+		if(year == null || year.length() == 0 ) {
+			year = "2000";
+		}
+		if(month == null || month.length() == 0 ) {
+			month = "1";
+		}
+		if(day == null || day.length() == 0) {
+			day = "1";
+		}
 		String birthday = year + "-" + month + "-" + day;
+		
 		String errorString = null;
 		Student newRow = new Student(lastName,firstName,birthday,
 				sex,telephone,address,idDepartment);

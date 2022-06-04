@@ -24,26 +24,26 @@
          	</tr>
             <tr>
                <td>Last Name</td>
-               <td><input type="text" name="lastName" placeholder="${student.firstName}" /></td>
+               <td><input type="text" name="lastName" value="${student.firstName}" /></td>
             </tr>
             <tr>
                <td>First Name</td>
-               <td><input type="text" name="firstName" placeholder="${student.lastName}" /></td>
+               <td><input type="text" name="firstName" value="${student.lastName}" /></td>
             </tr>
             <tr>
                	<td>Birthday:</td>
                	<td>
                	<input type="number" name="day" min="1" max="31" size="3" 
-               	placeholder="${day}" />
+               	value="${day}" />
                	/<input type="number" name="month" min="1" max="12" size="3" 
-               	placeholder="${month}"/>
-               	/<input type="number" name="year" size="3" placeholder="${year}"
+               	value="${month}"/>
+               	/<input type="number" name="year" size="3" value="${year}"
                	pattern="[1-2][0-9]{3}" required/>
                	</td>
             </tr>           
             <%
             	Student obj = (Student) request.getAttribute("student");
-            	if (obj.getSex().equals("Nam")){
+            	if (obj.getSex()=="Nam"){
             %>
             	<tr>
               		<td rowspan="3">Sex</td>
@@ -57,7 +57,7 @@
            		</tr>
              <%
              	}
-              	else if (obj.getSex().equals("Nữ")){
+              	else if (obj.getSex() == "Nữ"){
            	 %>
                 <tr>
                 	<td rowspan="3">Sex</td>
@@ -89,11 +89,11 @@
             
             <tr>
                <td>Telephone</td>
-               <td><input type="text" name="telephone" placeholder="${student.telephone}" /></td>
+               <td><input type="text" name="telephone" value="${student.telephone}" /></td>
             </tr>
             <tr>
                <td>Address</td>
-               <td><input type="text" name="address" placeholder="${student.address}" /></td>
+               <td><input type="text" name="address" value="${student.address}" /></td>
             </tr>
             <tr>
                <td>Id Department</td>
@@ -106,7 +106,7 @@
 	            	   <select name="idDepartment">
 	            	   <%
 		               for(String i : list){
-		            	   if(insertStudent == null || !insertStudent.getIdDepartment().equals(i)){
+		            	   if(insertStudent == null || insertStudent.getIdDepartment() != i){
 		            		   %>
 				                 <option value="<%=i%>"><%=i%></option>
 				               <%

@@ -86,13 +86,13 @@ public class LearningOutcomesDBUtils {
 			conn = MySQLConnUtils.getMySQLConUtils();
 			String sql = "select " + idStudent + ", " + idCourse + ", " 
 					+ numberOfTests + ", " + point 
-					+ "from " + table 
+					+ " from " + table 
 					+ " where " + idStudent + " = ?"
 					+ " and " + idCourse + " = ?";
 			PreparedStatement pstm = conn.prepareStatement(sql, 
 					ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);			
 			pstm.setString(1, _idStudent);
-			pstm.setString(2, _idStudent);
+			pstm.setString(2, _idCourse);
 			
 			ResultSet rs = pstm.executeQuery();
 			while(rs.next()) {
@@ -118,8 +118,7 @@ public class LearningOutcomesDBUtils {
 		LearningOutcomes mh = null;
 		try {
 			conn = MySQLConnUtils.getMySQLConUtils();
-			String sql = "select " + idStudent + ", " + idCourse + ", " 
-					+ ", " + point + "from " + table 
+			String sql = "select "  + point + " from " + table 
 					+ " where " + idStudent + " = ?"
 					+ " and " + idCourse + " = ?" 
 					+ " and " + numberOfTests + " = ?";
@@ -128,13 +127,13 @@ public class LearningOutcomesDBUtils {
 			pstm.setString(1, _idStudent);
 			pstm.setString(2, _idCourse);
 			pstm.setInt(3, _numberOfTest);
-			
+			System.out.println(sql);
 			ResultSet rs = pstm.executeQuery();
-			while(rs.next()) {
+			if(rs.next()) {
 				mh = new LearningOutcomes();
-				mh.setIdStudent(rs.getString(idStudent));
-				mh.setIdCourse(rs.getString(idCourse));
-				mh.setNumberOfTest(rs.getInt(numberOfTests));
+				mh.setIdStudent(_idStudent);
+				mh.setIdCourse(_idCourse);
+				mh.setNumberOfTest(_numberOfTest);
 				mh.setPoint(rs.getDouble(point));
 			}
 		} catch (ClassNotFoundException | SQLException e) {
@@ -173,9 +172,10 @@ public class LearningOutcomesDBUtils {
 		}
 	}
 	
-	public static void delete(String _idStudent,String _idCourse,int _numberOfTest) 
+	public static String delete(String _idStudent,String _idCourse,int _numberOfTest) 
 			throws SQLException {
 		Connection conn = null;
+		String errorMessage = null;
 		try {
 			conn = MySQLConnUtils.getMySQLConUtils();
 			String sql = "delete from " + table 
@@ -192,16 +192,19 @@ public class LearningOutcomesDBUtils {
 			pstm.executeUpdate();
 			Course findCouse = CourseDBUtils.find(_idCourse);
 			if (findCouse == null) {
-				return;
+				return "No find";
 			}
 			ResultOfStudentsViewDBUtils.delete(_idStudent, findCouse.getIdSubject(), _numberOfTest);
 		} catch (ClassNotFoundException | SQLException e) {
 			MySQLConnUtils.rollbackQuietly(conn);
 			e.printStackTrace();
+			errorMessage = e.getMessage();
+			
 		}	
 		finally {
 			MySQLConnUtils.closeQuietly(conn);
 		}	
+		return errorMessage;
 	}
 	// delete all student's information
 	public static void delete(String deleteRowById) 
@@ -229,20 +232,19 @@ public class LearningOutcomesDBUtils {
 		Connection conn = null;
 		try {
 			conn = MySQLConnUtils.getMySQLConUtils();
-			String sql = "update " + table + " set " 
-					 + point +  " = ? "
+			String sql = "update " + table 
+					+ " set " + point +  " = ? "
 					+ " where " + idStudent + " = ? "
 					+ " and " + idCourse + " = ?"
 					+ " and " + numberOfTests +  " = ?";
-				
 			PreparedStatement pstm = conn.prepareStatement(sql);
-			
 			pstm.setDouble(1, updateRow.getPoint());
 			pstm.setString(2, updateRow.getIdStudent());
 			pstm.setString(3, updateRow.getIdCourse());
 			pstm.setInt(4, updateRow.getNumberOfTest());
 			
-			pstm.executeUpdate();
+			int i = pstm.executeUpdate();
+			System.out.println(i);
 		} catch (ClassNotFoundException | SQLException e) {
 			MySQLConnUtils.rollbackQuietly(conn);
 			e.printStackTrace();
@@ -286,7 +288,7 @@ public class LearningOutcomesDBUtils {
             if(rs.next()) {
             	totalRow = rs.getInt(1);
             }
-            System.out.println("So dong (trong DepartmentDBUtils): " + totalRow);
+            //System.out.println("So dong (trong LearningOutcomesDBUtils): " + totalRow);
             return totalRow;
         } catch (ClassNotFoundException | SQLException e) {
         	e.printStackTrace();

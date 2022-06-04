@@ -19,7 +19,8 @@
 			  <label for="<%=i%>">Column <%=++count %></label>
 			</td>
 			<%
-			if(mapColumn.get(i) == "VARCHAR" || mapColumn.get(i) == "CHAR"){
+			System.out.println(mapColumn.get(i));
+			if(mapColumn.get(i) == "VARCHAR" || mapColumn.get(i) == "CHAR" ){
 				String text = request.getParameter(i);
 				if(text == null){
 				%>

@@ -22,16 +22,16 @@
          		<td>
          		
 	               <%
-	               List<String> list = (List<String>) request.getAttribute("studentList");
+	               List<String> list1 = (List<String>) request.getAttribute("studentList");
 	               LearningOutcomes insertLearningOutcomes = 
 	            		   (LearningOutcomes) request.getAttribute("learningOutcomes");
-	               if(list != null && list.size() != 0 && !list.isEmpty()){
-	            	   for(String i : list){
-	            		   %>
-	            		   <select name="idStudent">
-	            		   <%
+	               if(list1 != null && list1.size() != 0 && !list1.isEmpty()){
+	            	   %>
+            		   <select name="idStudent">
+            		   <%
+	            	   for(String i : list1){
 		            	   if(insertLearningOutcomes == null || 
-		            			   !insertLearningOutcomes.getIdStudent().equals(i)){
+		            			   insertLearningOutcomes.getIdStudent() != i){
 		            		   %>
 				                 <option value="<%=i%>"><%=i%></option>
 				               <%
@@ -59,15 +59,14 @@
                <td>
                
 	               <%
-	               list.clear();
-	               list = (List<String>) request.getAttribute("courseList");
-	               if(list != null && list.size() != 0 && !list.isEmpty()){
+	               List<String> list2 = (List<String>) request.getAttribute("courseList");
+	               if(list2 != null && list2.size() != 0 && !list2.isEmpty()){
 	            	   %>
 	            	   <select name="idCourse">
 	            	   <%
-	            	   for(String i : list){
+	            	   for(String i : list2){
 	            		   if(insertLearningOutcomes == null || 
-		            			   !insertLearningOutcomes.getIdCourse().equals(i)){
+		            			   insertLearningOutcomes.getIdCourse()!= i){
 		            		   %>
 				                 <option value="<%=i%>"><%=i%></option>
 				               <%
@@ -93,7 +92,7 @@
             </tr>
             <tr>
                <td>Point:</td>
-               <td><input type="number" name="point" min="0" max="10" step="0.25"/></td>
+               <td><input type="number" name="point" min="0" max="20" step="0.25"/></td>
             </tr>
             <tr>
                <td colspan="2">                   

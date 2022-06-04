@@ -40,7 +40,7 @@
 	            	   <select name="idDepartment">
 	            	   <%
 		               for(String i : list){
-		            	   if(insertTeacher == null || !insertTeacher.getIdDepartment().equals(i)){
+		            	   if(insertTeacher == null || insertTeacher.getIdDepartment() != i){
 		            		   %>
 				                 <option value="<%=i%>"><%=i%></option>
 				               <%

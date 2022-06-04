@@ -14,7 +14,6 @@
 	<h3>Sign Up (Only Admin)!</h3>
 	<%
 	Set<String> listUserName = UserAccountDBUtils.getAllUserName();
-
 	if(listUserName != null){
 		for(String i : listUserName){
 	%>
@@ -25,14 +24,6 @@
 	%>
 	<form method="POST" action="${pageContext.request.contextPath}/signup">
          <table border="0">
-         	<tr>
-         		<td> Role: </td>
-         		<td> 
-         			<select name="role" oninput="chooseID()">
-         				<option value="Student"> Student </option>
-         				<option value="Teacher"> Teacher </option>
-         			</select>
-         	</tr>
             <tr>
                <td>User Name</td>
                <td>
@@ -60,7 +51,7 @@
             <tr>
          		<td> ID: </td>
          		<td> 
-         			<input type="text" name="id" value="id">
+         			<input type="text" name="id" value="${id }">
          		</td>
          	</tr>
             <tr>
@@ -91,17 +82,16 @@
 		  }
 	}
 	function checkPassword(){
-		var password = document.getElementById("password");
-		var confirmPassword = document.getElementById("confirmPassword");
+		var password = document.getElementById("password").value;
+		var confirmPassword = document.getElementById("confirmPassword").value;
 		  if(password == confirmPassword)
 		  {
-		    document.getElementById("errorNotEqualsPassword").innerHTML 
-		    	= "Confirm password does not match the password;
+		    document.getElementById("errorNotEqualsPassword").innerHTML = "";
 		  } 
 		  else {
-		    document.getElementById("errorNotEqualsPassword").innerHTML = "";
+		    document.getElementById("errorNotEqualsPassword").innerHTML = 
+		    	"Confirm password does not match the password";
 		  }
-		
 	}
      </script>
 </body>

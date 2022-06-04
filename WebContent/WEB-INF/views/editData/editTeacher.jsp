@@ -23,15 +23,15 @@
          	</tr>
             <tr>
                <td>Name</td>
-               <td><input type="text" name="name" placeholder="${teacher.name}" /></td>
+               <td><input type="text" name="name" value="${teacher.name}" /></td>
             </tr>
             <tr>
                <td>Telephone</td>
-               <td><input type="text" name="telephone" placeholder="${teacher.telephone}" /></td>
+               <td><input type="text" name="telephone" value="${teacher.telephone}" /></td>
             </tr>
             <tr>
                <td>Degree</td>
-               <td><input type="text" name="degree" placeholder="${teacher.degree}" /></td>
+               <td><input type="text" name="degree" value="${teacher.degree}" /></td>
             </tr>
             <tr>
                <td>Id Department</td>
@@ -45,7 +45,7 @@
 	            	   <select name="idDepartment">
 	            	   <%
 		               for(String i : list){
-		            	   if(insertTeacher == null || !insertTeacher.getIdDepartment().equals(i)){
+		            	   if(insertTeacher == null || insertTeacher.getIdDepartment() != i){
 		            		   %>
 				                 <option value="<%=i%>"><%=i%></option>
 				               <%

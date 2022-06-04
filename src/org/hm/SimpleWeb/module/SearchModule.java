@@ -22,6 +22,7 @@ public class SearchModule {
 			String search = request.getParameter("search");
 			if(search != null) {
 				request.setAttribute("queryStringInUrl", "?search=" + search);
+				request.setAttribute("search", search);
 			}
 			return " ";
 		}else if (loginedUser.getIsStudent() || loginedUser.getIsTeacher()) {
@@ -29,6 +30,7 @@ public class SearchModule {
 			String search = request.getParameter("search");
 			if(search != null) {
 				request.setAttribute("queryStringInUrl", "?search=" + search);
+				request.setAttribute("search", search);
 			}
 			return " ";
 		}
@@ -75,6 +77,7 @@ public class SearchModule {
 				System.out.println("------START" + i + "-------");
 				//System.out.println("  " + i + request.getParameter(i));
 				String typeOfValue = mapColumn.get(i);
+				System.out.println(typeOfValue);
 				if(typeOfValue == "VARCHAR" || typeOfValue == "CHAR") {
 					String value = request.getParameter(i);
 					if(value == null || value.isEmpty()) {

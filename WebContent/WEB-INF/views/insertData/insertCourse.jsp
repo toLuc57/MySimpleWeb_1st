@@ -22,13 +22,13 @@
                <td>
 	               <%
 	               Course insertCourse = (Course) request.getAttribute("course");
-	               List<String> list = (List<String>) request.getAttribute("subjectsList");
-	               if(list != null && list.size() != 0 && !list.isEmpty()){
+	               List<String> list1 = (List<String>) request.getAttribute("subjectsList");
+	               if(list1 != null && list1.size() != 0 && !list1.isEmpty()){
 	            	   %>
 	            	   <select name="idSubject">
 	            	   <%
-		               for(String i : list){
-		            	   if(insertCourse == null || !insertCourse.getIdSubject().equals(i)){
+		               for(String i : list1){
+		            	   if(insertCourse == null || insertCourse.getIdSubject() != i){
 		            		   %>
 				                 <option value="<%=i%>"><%=i%></option>
 				               <%
@@ -54,11 +54,10 @@
                <td>
                <select name="idTeacher">
 	               <%
-	               list.clear();
-	               list = (List<String>) request.getAttribute("teacherList");
-	               if(list != null && list.size() != 0 && !list.isEmpty()){
-		               for(String i : list){
-		            	   if(insertCourse == null || !insertCourse.getIdTeacher().equals(i)){
+	               List<String> list2 = (List<String>) request.getAttribute("teacherList");
+	               if(list2 != null && list2.size() != 0 && !list2.isEmpty()){
+		               for(String i : list2){
+		            	   if(insertCourse == null || insertCourse.getIdTeacher() != i){
 		            		   %>
 				                 <option value="<%=i%>"><%=i%></option>
 				               <%

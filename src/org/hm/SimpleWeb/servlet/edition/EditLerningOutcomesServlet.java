@@ -54,32 +54,18 @@ public class EditLerningOutcomesServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String idCourse = (String) request.getParameter("idCourse");
 		String idStudent = (String) request.getParameter("idStudent");
-		String numberOfTestSTR = (String) request.getParameter("numberOfTest");
-		String pointSTR = (String) request.getParameter("point");
-		int numberOfTest;
-		int point;
-		try {
-			numberOfTest = Integer.valueOf(numberOfTestSTR);
-			point = Integer.valueOf(pointSTR);
-		}catch(NumberFormatException e) {
-			numberOfTest = 0;
-			point = 0;
-		}
-				
-		LearningOutcomes editRow = new LearningOutcomes(idCourse,idStudent,numberOfTest,point);
-
+		int numberOfTest = Integer.valueOf(request.getParameter("numberOfTest"));
+		double point =  Double.valueOf(request.getParameter("point"));
+	
+		LearningOutcomes editRow = new LearningOutcomes(idStudent,idCourse,numberOfTest,point);
 		String errorString = null;
-
-		if (errorString == null) {
-			try {
-				LearningOutcomesDBUtils.update(editRow);
-				
-			} catch (SQLException e) {
-				e.printStackTrace();
-				errorString = e.getMessage();
-			}
+		try {
+			LearningOutcomesDBUtils.update(editRow);
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			errorString = e.getMessage();
 		}
-		
 		request.setAttribute("errorString", errorString);
 		request.setAttribute("learningOutcomes", editRow);
 

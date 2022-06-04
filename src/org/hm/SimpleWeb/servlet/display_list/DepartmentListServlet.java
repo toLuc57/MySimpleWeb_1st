@@ -59,6 +59,17 @@ public class DepartmentListServlet extends HttpServlet {
 			e.printStackTrace();
 			errorString = e.getMessage();
 		}
+		if(request.getSession().getAttribute("errorString") != null) {
+			if(errorString == null) {
+				
+				errorString = String.valueOf(request.getSession().getAttribute("errorString"));
+			}
+			else {
+				errorString = errorString + "\n" 
+						+ String.valueOf(request.getSession().getAttribute("errorString"));
+			}
+			request.getSession().setAttribute("errorString", null);
+		}
 		request.setAttribute("errorString", errorString);
 		request.setAttribute("departmentList", list);
 		request.setAttribute("totalRow", totalRow);

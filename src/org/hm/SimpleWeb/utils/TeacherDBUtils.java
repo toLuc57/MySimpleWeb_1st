@@ -216,7 +216,8 @@ public class TeacherDBUtils {
 	public static String getQueryWhereSearchIDAndName(String search) {
 		String queryWhere = " where " + id + " like '%" + search +"%'"
 				+ " or " + name + " like '%" + search +"%'" 
-				+ " or " + telephone + " like '%" + search +"%'";;
+				+ " or " + telephone + " like '%" + search +"%'"
+				+ " or " + idDepartment + " like '%" + search +"%' ";
 		return queryWhere;
 	}
 	public static int getTotalRow(String queryWhere) {

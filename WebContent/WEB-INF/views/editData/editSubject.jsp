@@ -18,15 +18,15 @@
          <table border="0">
             <tr>
                <td>Name</td>
-               <td><input type="text" name="name" placeholder="${subject.name}" /></td>
+               <td><input type="text" name="name" value="${subject.name}" /></td>
             </tr>
             <tr>
                <td>Practice Lesson</td>
-               <td><input type="text" name="practiceLesson" placeholder="${subject.practiceLesson}" /></td>
+               <td><input type="text" name="practiceLesson" value="${subject.getNumberOfPracticeLesson()}" /></td>
             </tr>
             <tr>
                <td>Theory Lesson</td>
-               <td><input type="text" name="theoryLesson" placeholder="${subject.theoryLesson}" /></td>
+               <td><input type="text" name="theoryLesson" value="${subject.getNumberOfTheoryLesson()}" /></td>
             </tr>
 
             <tr>

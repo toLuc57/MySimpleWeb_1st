@@ -43,14 +43,16 @@ public class InsertLearningOutcomesServlet extends HttpServlet {
 		
 		LearningOutcomes newRow = null;
 		int numberOfTest = 0;
-		String errorString = "";
+		String errorString = null;
 		try {
 			List<LearningOutcomes> findRows = LearningOutcomesDBUtils.find(idStudent, idCourse);
-			if(findRows != null)
-			numberOfTest = findRows.size() + 1;
+			if(findRows != null) {
+				numberOfTest = findRows.size() + 1;
+				System.out.println("numberOfTest: " +numberOfTest );
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			errorString = errorString.concat(e.getMessage());
+			errorString = e.getMessage();
 		}
 		
 		double point;
@@ -58,7 +60,12 @@ public class InsertLearningOutcomesServlet extends HttpServlet {
 			point = Double.parseDouble(pointSTR);
 		} catch(NumberFormatException e) {
 			point = -1;
-			errorString = errorString.concat("<br/>" + e.getMessage());
+			if(errorString != null) {
+				errorString = errorString.concat("<br/>" + e.getMessage());
+			}
+			else {
+				errorString = e.getMessage();
+			} 
 		}
 		
 		try {
@@ -66,7 +73,12 @@ public class InsertLearningOutcomesServlet extends HttpServlet {
 			LearningOutcomesDBUtils.insert(newRow);
 		} catch (SQLException e) {
 			e.printStackTrace();
-			errorString = errorString.concat("<br/>" + e.getMessage());
+			if(errorString != null) {
+				errorString = errorString.concat("<br/>" + e.getMessage());
+			}
+			else {
+				errorString = e.getMessage();
+			} 
 		}
 		
 		if (errorString != null) {
@@ -76,7 +88,6 @@ public class InsertLearningOutcomesServlet extends HttpServlet {
 					.getRequestDispatcher("/WEB-INF/views/insertData/insertLearningOutcomes.jsp");
 			dispatcher.forward(request, response);
 		}
-		
 		else {
 			response.sendRedirect(request.getContextPath() + "/learningOutcomesList");
 		}

@@ -9,6 +9,14 @@ public class Course {
 	public Course() {
 		
 	}
+	public Course(String id, String idTeacher,String idSubject,
+			String fromDate, String toDate ) {
+		this.id = id;
+		this.idTeacher = idTeacher;
+		this.idSubject = idSubject;
+		this.fromDate = fromDate;
+		this.toDate = toDate;
+	}
 	public Course(String idTeacher,String idSubject,
 			String fromDate, String toDate ) {
 		this.idTeacher = idTeacher;

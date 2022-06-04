@@ -125,7 +125,7 @@ org.hm.SimpleWeb.utils.StudentDBUtils" %>
 	            	   <select name="idDepartment">
 	            	   <%
 		               for(String i : list){
-		            	   if(insertStudent == null || !insertStudent.getIdDepartment().equals(i)){
+		            	   if(insertStudent == null || insertStudent.getIdDepartment() != i){
 		            		   %>
 				                 <option value="<%=i%>"><%=i%></option>
 				               <%

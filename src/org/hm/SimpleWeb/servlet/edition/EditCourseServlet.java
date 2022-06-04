@@ -38,22 +38,19 @@ public class EditCourseServlet extends HttpServlet {
 			e.printStackTrace();
 			errorString = e.getMessage();
 		}
-		if (editRow == null) {
-			System.out.println(errorString);
-		}
-		else {
+		if (editRow != null){
 			String fromDateSTR = editRow.getFromDate().toString();
 			String[] spiltFromDate = fromDateSTR.split("-",3);
 			String toDateSTR = editRow.getToDate().toString();
 			String[] spiltToDate = toDateSTR.split("-",3);
 			
-			request.setAttribute("fromDay", spiltFromDate[0]);	
+			request.setAttribute("fromDay", spiltFromDate[2]);	
 			request.setAttribute("fromMonth", spiltFromDate[1]);	
-			request.setAttribute("fromYear", spiltFromDate[2]);	
+			request.setAttribute("fromYear", spiltFromDate[0]);	
 			
-			request.setAttribute("toDay", spiltToDate[0]);	
+			request.setAttribute("toDay", spiltToDate[2]);	
 			request.setAttribute("toMonth", spiltToDate[1]);	
-			request.setAttribute("toYear", spiltToDate[2]);	
+			request.setAttribute("toYear", spiltToDate[0]);	
 		}
 		request.setAttribute("teacherList", list2);	
 		request.setAttribute("subjectsList", list1);
@@ -66,6 +63,7 @@ public class EditCourseServlet extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String id = (String) request.getParameter("id");
 		String idSubject = (String) request.getParameter("idSubject");
 		String idTeacher = (String) request.getParameter("idTeacher");
 		String fromDay = (String) request.getParameter("fromDay");
@@ -78,7 +76,7 @@ public class EditCourseServlet extends HttpServlet {
 		String fromDate = fromYear + "-" + fromMonth + "-" + fromDay;
 		String toDate = toYear + "-" + toMonth + "-" + toDay;
 		
-		Course editRow = new Course(idTeacher,idSubject,fromDate,toDate);
+		Course editRow = new Course(id,idTeacher,idSubject,fromDate,toDate);
 
 		String errorString = null;
 

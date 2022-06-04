@@ -35,7 +35,6 @@ public class EditSubjectServlet extends HttpServlet {
 			errorString = e.getMessage();
 		}
 		if (editRow == null) {
-			errorString += " Is null";
 			System.out.println(errorString);
 		}
 		request.setAttribute("errorString", errorString);

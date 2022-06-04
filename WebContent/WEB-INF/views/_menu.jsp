@@ -61,9 +61,6 @@ li.dropdown {
      <li>
        <a href="${pageContext.request.contextPath}/">Home</a>
      </li>
-     <li>
-	   <a href="${pageContext.request.contextPath}/signup">Sign Up</a>
-	 </li>
      <li class="dropdown" >
 	   <a class="dropbtn">Drop down</a>
 	   <div class="dropdown-content">

@@ -52,7 +52,7 @@ public class StudentDBUtils {
 			conn = MySQLConnUtils.getMySQLConUtils();
 			int charLength = IDGrade8.length();
 			
-            PreparedStatement pstm = conn.prepareStatement("select * from " + table + " limit 1");
+            PreparedStatement pstm = conn.prepareStatement("select * from " + table);
             
             ResultSet rs = pstm.executeQuery();
             ResultSetMetaData rsmd = rs.getMetaData();
@@ -60,13 +60,16 @@ public class StudentDBUtils {
             	listColumnName.add(rsmd.getColumnName(i));
             	mapColumn.put(rsmd.getColumnName(i), rsmd.getColumnTypeName(i));
             }
+            while(rs.next()) {
+            	listID.add(rs.getString(id));
+            }
+            rs.close();
+            pstm.close();
             String sql = "SELECT LEFT(" + id +", " + charLength + "), "
             		+ "CAST(Max(substring("+ id +","+ Integer.sum(charLength, 1)+ ")) AS UNSIGNED) "
 					+ "FROM " + table 
 					+ " GROUP BY LEFT(" + id + ", " + charLength + ")";
-            rs.close();
-            pstm.close();
-            System.out.println(sql);
+            //System.out.println(sql);
             PreparedStatement pstm1 = conn.prepareStatement(sql);
             ResultSet rs1 = pstm1.executeQuery();
             while(rs1.next()) {
@@ -250,7 +253,8 @@ public class StudentDBUtils {
 	public static String getQueryWhereSearchIDAndName(String search) {
 		String queryWhere = " where " + id + " like '%" + search +"%'"
 				+ " or " + lastName + "  like '%" + search +"%'"
-				+ " or " + firstName + " like '%" + search +"%'";
+				+ " or " + firstName + " like '%" + search +"%'"
+				+ " or " + idDepartment + " like '%" + search +"%'";
 		return queryWhere;
 	}
 	public static int getTotalRow(String queryWhere) {
@@ -263,7 +267,7 @@ public class StudentDBUtils {
             if(rs.next()) {
             	totalRow = rs.getInt(1);
             }
-            System.out.println("So dong (trong DepartmentDBUtils): " + totalRow);
+//            System.out.println("So dong (trong StudentDBUtils): " + totalRow);
             return totalRow;
         } catch (ClassNotFoundException | SQLException e) {
         	e.printStackTrace();

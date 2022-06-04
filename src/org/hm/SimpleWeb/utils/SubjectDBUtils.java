@@ -90,7 +90,7 @@ public class SubjectDBUtils {
 			conn = MySQLConnUtils.getMySQLConUtils();
 			String sql = "select " + id + ", " + name + ", " 
 					+ theoryLesson + ", " + practiceLesson 
-					+ " from " + table + "where " + id + " = ?";
+					+ " from " + table + " where " + id + " = ?";
 			PreparedStatement pstm = conn.prepareStatement(sql);
 			
 			pstm.setString(1, findRowById);

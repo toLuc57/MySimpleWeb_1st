@@ -16,6 +16,9 @@
  }
  else {
 	 %>
+	 <p>Search only ID and Name</p>
+	 <jsp:include page="_searchOnlyIDAndName.jsp"></jsp:include>
+	 <p>Search all column (Only Admin)</p>
 	 <jsp:include page="_searchByAdmin.jsp"></jsp:include>
 	 <%
  }

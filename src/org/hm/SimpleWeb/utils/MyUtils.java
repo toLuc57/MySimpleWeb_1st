@@ -1,10 +1,8 @@
 package org.hm.SimpleWeb.utils;
 
-import java.sql.Connection;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.ServletRequest;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,7 +14,6 @@ import org.hm.SimpleWeb.beans.UserAccount;
 public class MyUtils {
 	public static final int numberInID = 4;
 	public static final String LOG_OUT = "LOG_OUT";
-	public static final String ATT_NAME_CONNECTION = "ATTRIBUTE_FOR_CONNECTION"; 
 	
 	private static final String ATT_NAME_USER_NAME = "ATTRIBUTE_FOR_STORE_USER_NAME_IN_COOKIE";
 	private static final String ATT_NAME_LOG_OUT = "ATTRIBUTE_FOR_STORE_LOG_OUT_IN_COOKIE";
@@ -25,14 +22,6 @@ public class MyUtils {
 
 	private static final Map<Integer, String> id_uri_map = new HashMap<Integer, String>();
 	private static final Map<String, Integer> uri_id_map = new HashMap<String, Integer>();
-	
-	public static void storeConnection(ServletRequest request,Connection conn) {
-		request.setAttribute(ATT_NAME_CONNECTION,conn);
-	}
-	public static Connection getStoredConnection(ServletRequest request) {
-		Connection conn = (Connection) request.getAttribute(ATT_NAME_CONNECTION);
-		return conn;
-	}
 	
 	public static void storeLoginedUser(HttpSession session, UserAccount loginedUser) {
 		session.setAttribute("loginedUser", loginedUser);

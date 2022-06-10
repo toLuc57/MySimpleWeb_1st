@@ -14,9 +14,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.hm.SimpleWeb.beans.Subject;
+import org.hm.SimpleWeb.jdbc.MySQLConnUtils;
 import org.hm.SimpleWeb.module.SearchModule;
 import org.hm.SimpleWeb.utils.SubjectDBUtils;
-import org.hm.SimpleWeb.utils.MyUtils;
 
 @WebServlet("/subjectList")
 public class SubjectsListServlet extends HttpServlet {
@@ -33,7 +33,7 @@ public class SubjectsListServlet extends HttpServlet {
 					request.getParameter("search"));
 		}
 		Map<String,String> mapColumn = SubjectDBUtils.getAllColumnNameAndTypeName();
-		Connection conn = MyUtils.getStoredConnection(request);
+		
 		String indexPageSTR = request.getParameter("page");
 		int indexPage = 0;
 		if(indexPageSTR != null) {
@@ -49,11 +49,13 @@ public class SubjectsListServlet extends HttpServlet {
 		int totalRow = 0;
 		try 
 		{
+			Connection conn = MySQLConnUtils.getMySQLConUtils();
 			list = SubjectDBUtils.query(conn,indexPage,queryWhere);
 			totalRow = SubjectDBUtils.getTotalRow(queryWhere);
 			listColumnName = SubjectDBUtils.getColumnName();
+			conn.close();
 		} 
-		catch (SQLException e) {
+		catch (SQLException | ClassNotFoundException e) {
 			e.printStackTrace();
 			errorString = e.getMessage();
 		}

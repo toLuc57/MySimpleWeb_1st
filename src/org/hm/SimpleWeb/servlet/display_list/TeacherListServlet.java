@@ -14,9 +14,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.hm.SimpleWeb.beans.Teacher;
+import org.hm.SimpleWeb.jdbc.MySQLConnUtils;
 import org.hm.SimpleWeb.module.SearchModule;
 import org.hm.SimpleWeb.utils.TeacherDBUtils;
-import org.hm.SimpleWeb.utils.MyUtils;
 
 
 @WebServlet("/teacherList")
@@ -34,7 +34,7 @@ public class TeacherListServlet extends HttpServlet {
 			queryWhere = TeacherDBUtils.getQueryWhereSearchIDAndName(
 					request.getParameter("search"));
 		}
-		Connection conn = MyUtils.getStoredConnection(request);
+		
 		String indexPageSTR = request.getParameter("page");
 		int indexPage = 0;
 		if(indexPageSTR != null) {
@@ -50,10 +50,12 @@ public class TeacherListServlet extends HttpServlet {
 		List<String> listColumnName = null;
 		int totalRow = 0;
 		try {
+			Connection conn = MySQLConnUtils.getMySQLConUtils();
 			list = TeacherDBUtils.query(conn,indexPage, queryWhere);
 			totalRow = TeacherDBUtils.getTotalRow(queryWhere);
 			listColumnName = TeacherDBUtils.getColumnName();
-		} catch (SQLException e) {
+			conn.close();
+		} catch (SQLException | ClassNotFoundException e) {
 			e.printStackTrace();
 			errorString = e.getMessage();
 		}

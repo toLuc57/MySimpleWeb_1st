@@ -16,10 +16,10 @@ import org.hm.SimpleWeb.utils.TeacherDBUtils;
 
 public class SearchModule {
 	public static String getSQLWhere(HttpServletRequest request, String className) {
+		String search = request.getParameter("search");
 		UserAccount loginedUser = MyUtils.getLoginedUser(request.getSession());
 		if(loginedUser == null) {
 			request.setAttribute("nameURI", request.getRequestURI());
-			String search = request.getParameter("search");
 			if(search != null) {
 				request.setAttribute("queryStringInUrl", "?search=" + search);
 				request.setAttribute("search", search);
@@ -27,13 +27,21 @@ public class SearchModule {
 			return " ";
 		}else if (loginedUser.getIsStudent() || loginedUser.getIsTeacher()) {
 			request.setAttribute("nameURI", request.getRequestURI());
-			String search = request.getParameter("search");
 			if(search != null) {
 				request.setAttribute("queryStringInUrl", "?search=" + search);
 				request.setAttribute("search", search);
 			}
 			return " ";
 		}
+		// Admin có 2 loại kiểu tìm kiếm
+		// Nếu tìm kiếm loại 1 thì không cần làm tìm kiếm loại 2
+		if(search != null) {
+			request.setAttribute("nameURI", request.getRequestURI());
+			request.setAttribute("queryStringInUrl", "?search=" + search);
+			request.setAttribute("search", search);
+			return " ";
+		}
+		// Tìm kiếm loại 2
 		List<String> listColunm = null;
 		Map<String,String> mapColumn;
 		String queryStringInUrl = "?";

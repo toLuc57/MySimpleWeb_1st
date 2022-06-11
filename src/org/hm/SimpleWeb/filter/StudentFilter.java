@@ -36,10 +36,11 @@ public class StudentFilter implements Filter {
 		
 		UserAccount loginedUser = MyUtils.getLoginedUser(request.getSession());
 		if(loginedUser == null) {
-			RequestDispatcher dispatcher = request.getServletContext().
-					getRequestDispatcher("/WEB-INF/views/accessDeniedView.jsp");
-			dispatcher.forward(request, response);
-			return;
+			String requestUri = request.getRequestURI();
+			int redirectId = 
+					MyUtils.storeRedirectAfterLoginUrl(request.getSession(), requestUri);
+			response.sendRedirect(request.getContextPath() 
+					+ "/login?redirectId=" + redirectId);
 		}
 		else if(loginedUser.getIsStudent()) {
 			request.setAttribute("idStudent", loginedUser.getID());

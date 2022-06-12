@@ -25,7 +25,7 @@
 				if(text == null){
 				%>
 					<td>
-					  <label>Pattern: </label>
+					  Pattern:
 					  <input type="text" name="<%=i%>" placeholder="Pattern">
 					</td>
 				<%
@@ -33,7 +33,7 @@
 				else {
 				%>
 					<td>
-					  <label>Pattern: </label>
+					  Pattern:
 					  <input type="text" name="<%=i%>" placeholder="Pattern" value="<%=text%>">
 					</td>
 				<%
@@ -45,7 +45,8 @@
 				if (fromValue == null){
 				%>
 				<td>
-				  From <input type="number" name="<%=i%>_start" 
+				  From 
+				  <input type="number" name="<%=i%>_start" 
 				  	placeholder="Number">
 				</td>
 				<%
@@ -53,7 +54,8 @@
 				else {
 				%>
 				<td>
-				  From <input type="number" name="<%=i%>_start" 
+				  From 
+				  <input type="number" name="<%=i%>_start" 
 				  	placeholder="Number" value=<%=fromValue%>>
 				</td>
 				<%
@@ -61,7 +63,8 @@
 				if (toValue == null){
 				%>
 					<td>
-					  To <input type="number" name="<%=i%>_end" 
+					  To 
+					  <input type="number" name="<%=i%>_end" 
 					  placeholder="Number">
 					</td>
 				<%
@@ -69,13 +72,54 @@
 				else {
 					%>
 					<td>
-					  To <input type="number" name="<%=i%>_end" 
+					  To 
+					  <input type="number" name="<%=i%>_end" 
 					  placeholder="Number" value=<%=toValue %>>
 					</td>
 				<%
 				}
-				
-			} else {
+			}
+			else if(mapColumn.get(i) == "DATE" || mapColumn.get(i) == "DATETIME") {
+				String fromValue = request.getParameter(i.concat("_start"));
+				String toValue = request.getParameter(i.concat("_end"));
+				if (fromValue == null){
+				%>
+				<td>
+				  From 
+				  <input type="date" name="<%=i%>_start" 
+				  	placeholder="Date (yyyy-mm-dd)">
+				</td>
+				<%
+				}
+				else {
+				%>
+				<td>
+				  From 
+				  <input type="date" name="<%=i%>_start" 
+				  	placeholder="Date (yyyy-mm-dd)" value=<%=fromValue%>>
+				</td>
+				<%
+				}
+				if (toValue == null){
+				%>
+					<td>
+					  To 
+					  <input type="date" name="<%=i%>_end" 
+					  placeholder="Date (yyyy-mm-dd)">
+					</td>
+				<%
+				} 
+				else {
+					%>
+					<td>
+					  To 
+					  <input type="date" name="<%=i%>_end" 
+					  placeholder="Date (yyyy-mm-dd)" value=<%=toValue %>>
+					</td>
+				<%
+				}
+			}
+			else {
 			%>
 				<td>
 				  Underfined

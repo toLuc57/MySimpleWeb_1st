@@ -85,7 +85,12 @@ public class SearchModule {
 				System.out.println("------START" + i + "-------");
 				//System.out.println("  " + i + request.getParameter(i));
 				String typeOfValue = mapColumn.get(i);
-				System.out.println(typeOfValue);
+				// Kiếm tra kiểu dữ liệu
+				// Nếu kiểu dữ liệu là chuỗi
+				// thì ta sẽ tìm kiếm chuỗi có từ khóa cần tìm ('%value%')				
+				// Nếu không phải là chuỗi
+				// thì ta sẽ tìm kiếm trong đoạn [fromValue;toValue]
+				// Suy ra sẽ có 4 TH
 				if(typeOfValue == "VARCHAR" || typeOfValue == "CHAR") {
 					String value = request.getParameter(i);
 					if(value == null || value.isEmpty()) {
@@ -109,7 +114,8 @@ public class SearchModule {
 						queryStringInUrl = queryStringInUrl.concat(value);
 					}
 				}
-				else if(mapColumn.get(i) == "INT" || mapColumn.get(i) == "DOUBLE") {
+				// Nếu kiểu dữ liệu là số
+				else if(typeOfValue == "INT" || typeOfValue == "DOUBLE") {
 					String startSTR = i.concat("_start");
 					String endSTR = i.concat("_end");
 					String fromValue = request.getParameter(startSTR);
@@ -124,7 +130,6 @@ public class SearchModule {
 							queryWhere = queryWhere.concat(" AND ");
 							queryStringInUrl = queryStringInUrl.concat("&");
 						}
-						//System.out.println(fromValue.isBlank() + " " + fromValue.isEmpty());
 						if((fromValue != null && toValue != null && 
 								!fromValue.isBlank() && !toValue.isBlank())){
 							queryWhere = queryWhere.concat(i);
@@ -159,6 +164,65 @@ public class SearchModule {
 							queryWhere = queryWhere.concat(i);
 							queryWhere = queryWhere.concat(" <= ");
 							queryWhere = queryWhere.concat(toValue);
+							request.setAttribute(endSTR,toValue);
+							
+							queryStringInUrl = queryStringInUrl.concat(endSTR);
+							queryStringInUrl = queryStringInUrl.concat("=");
+							queryStringInUrl = queryStringInUrl.concat(toValue);
+						}
+					}	
+				}
+				// Nếu kiểu dữ liệu là ngày
+				// Giá trị ngày ở câu truy vấn database phải trong ''
+				else if(typeOfValue == "DATE" || typeOfValue == "DATETIME") {
+					String startSTR = i.concat("_start");
+					String endSTR = i.concat("_end");
+					String fromValue = request.getParameter(startSTR);
+					String toValue = request.getParameter(endSTR);
+					if((fromValue == null && toValue == null) || 
+							(fromValue.isEmpty() && toValue.isEmpty()) ) {
+						continue;
+					}
+					else {
+						++numberOfColumnChecked;
+						if(numberOfColumnChecked > 1) {
+							queryWhere = queryWhere.concat(" AND ");
+							queryStringInUrl = queryStringInUrl.concat("&");
+						}
+						if((fromValue != null && toValue != null && 
+								!fromValue.isBlank() && !toValue.isBlank())){
+							queryWhere = queryWhere.concat(i);
+							queryWhere = queryWhere.concat(" >= ");
+							queryWhere = queryWhere.concat("'" + fromValue + "'");
+							queryWhere = queryWhere.concat(" AND ");
+							queryWhere = queryWhere.concat(i);
+							queryWhere = queryWhere.concat(" <= ");
+							queryWhere = queryWhere.concat("'" + toValue + "'");
+							request.setAttribute(startSTR,fromValue);
+							request.setAttribute(endSTR,toValue);
+							
+							queryStringInUrl = queryStringInUrl.concat(startSTR);
+							queryStringInUrl = queryStringInUrl.concat("=");
+							queryStringInUrl = queryStringInUrl.concat(fromValue);
+							queryStringInUrl = queryStringInUrl.concat("&");
+							queryStringInUrl = queryStringInUrl.concat(endSTR);
+							queryStringInUrl = queryStringInUrl.concat("=");
+							queryStringInUrl = queryStringInUrl.concat(toValue);
+						}
+						else if (fromValue != null && !fromValue.isBlank()) {
+							queryWhere = queryWhere.concat(i);
+							queryWhere = queryWhere.concat(" >= ");
+							queryWhere = queryWhere.concat("'" + fromValue + "'");
+							request.setAttribute(startSTR,fromValue);
+							
+							queryStringInUrl = queryStringInUrl.concat(startSTR);
+							queryStringInUrl = queryStringInUrl.concat("=");
+							queryStringInUrl = queryStringInUrl.concat(fromValue);
+						}
+						else if (toValue != null && !toValue.isBlank()) {
+							queryWhere = queryWhere.concat(i);
+							queryWhere = queryWhere.concat(" <= ");
+							queryWhere = queryWhere.concat("'" + toValue + "'");
 							request.setAttribute(endSTR,toValue);
 							
 							queryStringInUrl = queryStringInUrl.concat(endSTR);

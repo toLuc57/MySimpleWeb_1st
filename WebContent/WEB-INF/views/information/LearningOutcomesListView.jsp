@@ -6,6 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>LearningOutcomes List</title>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/CSSFiles/CSSTable.css">
 </head>
 <body>
 <jsp:include page="..//_header.jsp"></jsp:include>

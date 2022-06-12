@@ -62,7 +62,7 @@ li.dropdown {
        <a href="${pageContext.request.contextPath}/">Home</a>
      </li>
      <li class="dropdown" >
-	   <a class="dropbtn">Drop down</a>
+	   <a class="dropbtn">Lists</a>
 	   <div class="dropdown-content">
 	       <a href="${pageContext.request.contextPath}/teacherList">Teacher List</a>
 		   <a href="${pageContext.request.contextPath}/departmentList">Department List</a>

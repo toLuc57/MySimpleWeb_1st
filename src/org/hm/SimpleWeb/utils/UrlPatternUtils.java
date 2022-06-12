@@ -24,7 +24,7 @@ public class UrlPatternUtils {
 	      return false;
 	   }
 
-	   // servletPath:
+	   // Result:
 	   // ==> /spath
 	   // ==> /spath/*
 	   // ==> *.ext

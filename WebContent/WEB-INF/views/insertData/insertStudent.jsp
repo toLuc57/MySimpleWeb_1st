@@ -7,6 +7,7 @@ org.hm.SimpleWeb.utils.StudentDBUtils" %>
 <head>
 <meta charset="UTF-8">
 <title>Insert Student</title>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/CSSFiles/CSSForm.css">
 </head>
 <body>
 	  <jsp:include page="..//_header.jsp"></jsp:include>
@@ -39,9 +40,12 @@ org.hm.SimpleWeb.utils.StudentDBUtils" %>
             <tr>
                	<td>Birthday: ${student.birthday}</td>
                	<td>
-               	<input type="number" name="day" min="1" max="31" size="3" placeholder="day"/>
-               	/<input type="number" name="month" min="1" max="12" size="3" placeholder="month"/>
-               	/<input type="number" name="year" size="3" placeholder="year"/>               	
+               	<input type="number" name="day" min="1" max="31" 
+               	value="${day}" size="3" placeholder="day" />
+               	/<input type="number" name="month" min="1" max="12"
+               	value="${month}" size="3" placeholder="month" />
+               	/<input type="number" name="year" size="3" min="1990" max="2015" 
+               	value="${year}" placeholder="year" />               	
                	</td>
             </tr>
             <tr>
@@ -51,7 +55,7 @@ org.hm.SimpleWeb.utils.StudentDBUtils" %>
                 	%>
                 	<tr>
                   		<td rowspan="3">Sex</td>
-                  		<td><input type="radio" name="sex" value="Male"/>Male</td>
+                  		<td><input type="radio" name="sex" value="Male" checked />Male</td>
                		</tr>
                		<tr>
                   		<td><input type="radio" name="sex" value="Female" />Female</td>
@@ -61,7 +65,7 @@ org.hm.SimpleWeb.utils.StudentDBUtils" %>
                		</tr>
                  <%
                 }
-         		else if (obj.getSex().equals("Nam")){
+         		else if (obj.getSex().equals("Nam") || obj.getSex().equals("Male")){
             %>
             	<tr>
               		<td rowspan="3">Sex</td>
@@ -75,7 +79,7 @@ org.hm.SimpleWeb.utils.StudentDBUtils" %>
            		</tr>
              <%
              	}
-              	else if (obj.getSex().equals("Nữ")){
+              	else if (obj.getSex().equals("Nữ")  || obj.getSex().equals("Female")){
            	 %>
                 <tr>
                 	<td rowspan="3">Sex</td>

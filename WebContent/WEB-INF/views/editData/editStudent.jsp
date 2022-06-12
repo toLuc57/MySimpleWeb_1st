@@ -6,12 +6,11 @@
 <head>
 <meta charset="UTF-8">
 <title>Edit Student</title>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/CSSFiles/CSSForm.css">
 </head>
 <body>
 	<jsp:include page="..//_header.jsp"></jsp:include>
 	<jsp:include page="..//_menu.jsp"></jsp:include>
-      
-      
 
       <h3>Edit Student</h3>
       <p style="color: red;">${errorString}</p>
@@ -43,11 +42,11 @@
             </tr>           
             <%
             	Student obj = (Student) request.getAttribute("student");
-            	if (obj.getSex()=="Nam"){
-            %>
+            if(obj == null){
+            	%>
             	<tr>
               		<td rowspan="3">Sex</td>
-              		<td><input type="radio" name="sex" value="Male" checked/>Male</td>
+              		<td><input type="radio" name="sex" value="Male" checked />Male</td>
            		</tr>
            		<tr>
               		<td><input type="radio" name="sex" value="Female" />Female</td>
@@ -56,35 +55,35 @@
               		<td><input type="radio" name="sex" value="Other" />Other</td>
            		</tr>
              <%
-             	}
-              	else if (obj.getSex() == "Nữ"){
-           	 %>
-                <tr>
-                	<td rowspan="3">Sex</td>
-                  	<td><input type="radio" name="sex" value="Male"/>Male</td>
-               	</tr>
-               	<tr>
-                  	<td><input type="radio" name="sex" value="Female" checked/>Female</td>
-               	</tr>
-               	<tr>
-                  	<td><input type="radio" name="sex" value="Other" />Other</td>
-               	</tr>
-             <%
-              	}
-              	else {
-              %>
-                <tr>
-                  	<td rowspan="3">Sex</td>
-                  	<td><input type="radio" name="sex" value="Male"/>Male</td>
-               	</tr>
-               	<tr>
-                  	<td><input type="radio" name="sex" value="Female"/>Female</td>
-               	</tr>
-               	<tr>
-                  	<td><input type="radio" name="sex" value="Other" checked/>Other</td>
-               	</tr>
-              <%
-              	}
+            }
+     		else if (obj.getSex().equals("Nam") || obj.getSex().equals("Male")){
+        %>
+        	<tr>
+          		<td rowspan="3">Sex</td>
+          		<td><input type="radio" name="sex" value="Male" checked/>Male</td>
+       		</tr>
+       		<tr>
+          		<td><input type="radio" name="sex" value="Female" />Female</td>
+       		</tr>
+       		<tr>
+          		<td><input type="radio" name="sex" value="Other" />Other</td>
+       		</tr>
+         <%
+         	}
+          	else if (obj.getSex().equals("Nữ") || obj.getSex().equals("Female")){
+       	 %>
+            <tr>
+            	<td rowspan="3">Sex</td>
+              	<td><input type="radio" name="sex" value="Male"/>Male</td>
+           	</tr>
+           	<tr>
+              	<td><input type="radio" name="sex" value="Female" checked/>Female</td>
+           	</tr>
+           	<tr>
+              	<td><input type="radio" name="sex" value="Other" />Other</td>
+           	</tr>
+         <%
+          	}
               %>
             
             <tr>

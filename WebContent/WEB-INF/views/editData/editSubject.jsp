@@ -5,6 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Edit Subject</title>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/CSSFiles/CSSForm.css">
 </head>
 <body>
 	<jsp:include page="..//_header.jsp"></jsp:include>
